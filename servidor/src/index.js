@@ -1,6 +1,7 @@
 import http from 'http';
 import { v4 as uuidv4 } from 'uuid';
 import * as metodosAnimales from './controllers/metodosAnimales.js'
+import * as metodosPuntosControl from './controllers/metodosPuntosControl.js'
 
 const HTTP_PORT = 3000;  //Esto es placebo supongo (no se xd)
 const rutaAnimal = "/Animal/"
@@ -67,9 +68,13 @@ const server = http.createServer((req, res) => {
         parametros = parametros.filter(el => el != '')   //filtro los vacios
         if(req.method === 'GET'){
             if(parametros.length == 2){
-
+                metodosPuntosControl.getPuntosControl(req,res)
             }else if(parametros.length == 3){
-                
+                metodosPuntosControl.getPuntoControl(parametros[2],res)
+
+                //ENVIARLO AL FRONT SUPONGO IDK
+
+                res.end()
             }
         }else if(req.method === 'POST'){
             try{
@@ -88,9 +93,9 @@ const server = http.createServer((req, res) => {
             }
         }else if(req.method === 'DELETE'){
             if(parametros.length == 2){
-
+                metodosPuntosControl.deletePuntosControl(req,res)
             }else if(parametros.length == 3){
-                
+                metodosPuntosControl.deletePuntoControl(parametros[2],res)
             }
         }else{ //Caso se confundio de calle
             res.writeHead(404, 'Ruta no encontrada');

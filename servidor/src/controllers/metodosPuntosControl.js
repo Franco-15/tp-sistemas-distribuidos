@@ -1,6 +1,6 @@
 import { readFileSync, writeFileSync, existsSync } from 'fs';
 
-const FILE_PATH = "/servidor/src/data/animales.json"
+const FILE_PATH = "/servidor/src/data/puntosControl.json"
 
 const getJson = () => {
     const fileExist = existsSync(FILE_PATH);
@@ -13,7 +13,7 @@ const getJson = () => {
     } 
 } 
 
-export const getAnimales = (req, res) => {
+export const getPuntosControl = (req, res) => {
     try{
         const result = getJson()
         res.setHeader('Content-Type', 'application/json')
@@ -28,10 +28,10 @@ export const getAnimales = (req, res) => {
     }
 }
 
-export const getAnimal = (idAnimal,res) => {  //Entiendo que aca el req tendria la info sobre que animal se esta buscando
+export const getPuntoControl = (idPtoControl,res) => {  //Entiendo que aca el req tendria la info sobre que animal se esta buscando
     const result = getJson()
     const buscado = result.findIndex((item) => {
-        return item.id === idAnimal
+        return item.id === idPtoControl
     })
     if (buscado < 0){
         res.writeHead(404, 'Ruta no encontrada');
@@ -42,12 +42,12 @@ export const getAnimal = (idAnimal,res) => {  //Entiendo que aca el req tendria 
     }
 }
 
-export const postAnimal = (parsedBody,res) => {
+export const postPuntoControl = (parsedBody,res) => {
     const result = getJson();
 
-    const exists = result.some(animal => animal.id === parsedBody.id);
+    const exists = result.some(ptoControl => ptoControl.id === parsedBody.id);
     if (exists) {
-        res.writeHead(400, 'El animal con este ID ya existe');
+        res.writeHead(400, 'El punto de control con este ID ya existe');
         res.end();
         return;
     }
@@ -56,18 +56,18 @@ export const postAnimal = (parsedBody,res) => {
     res.end();
 }
 
-export const deleteAnimales = (req,res) => {
+export const deletePuntosControl  = (req,res) => {
     const result = getJson()
     result.writeFileSync(FILE_PATH,JSON.stringify({}),'utf-8')
     res.end();
 }
 
-export const deleteAnimal = (idAnimal, res) => {
+export const deletePuntoControl  = (idPtoControl, res) => {
     const result = getJson()
-    const buscado = result.findIndex((item) => item.id === idAnimal);
+    const buscado = result.findIndex((item) => item.id === idPtoControl);
 
     if (buscado < 0) {
-        res.writeHead(404, 'Animal no encontrado');
+        res.writeHead(404, 'Punto de control no encontrado');
         res.end();
         return;
     }else{      
