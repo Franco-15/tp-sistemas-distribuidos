@@ -1,5 +1,6 @@
 import http from 'http';
 import { v4 as uuidv4 } from 'uuid';
+import * as metodosAnimales from './controllers/metodosAnimales.js'
 
 const HTTP_PORT = 3000;  //Esto es placebo supongo (no se xd)
 const rutaAnimal = "/Animal/"
@@ -21,8 +22,14 @@ const server = http.createServer((req, res) => {
         if(req.method === 'GET'){
             if(parametros.length == 2){
                 //Metodo para obtener todas las vacas
+                metodosAnimales.getAnimales(req,res)
             }else if(parametros.length == 3){
                 //Metodo para obtener una vaca especifica
+                const animalBuscado = metodosAnimales.getAnimal(parametros[2],res)
+                
+                //ENVIARLA AL FRONT SUPONGO?
+
+                res.end()
             }
         }else if(req.method === 'POST'){ /*Tomar en consideración que estos datos se supone que se filtran del listado de animales conectados al punto de control.
                                             Por el momento, asumo que las actualizaciones del PdC entraran por aca*/
@@ -34,7 +41,10 @@ const server = http.createServer((req, res) => {
                 req.on('end', () => {
                     const parsedBody = JSON.parse(body);
                     //Habria que aplicar un chequeo de datos(no lo hice porque ni idea que nombres tendran las variables)
+
+                    metodosAnimales.postAnimal(parsedBody,res)
                 })
+
             }catch (e){
                 console.log('Error', e)
                 res.writeHead(500, "Error")
@@ -43,8 +53,10 @@ const server = http.createServer((req, res) => {
         }else if(req.method === 'DELETE'){
             if(parametros.length == 2){
                 //Metodo para eliminar todos los animales
+                metodosAnimales.deleteAnimales(req,res)
             }else if(parametros.length == 3){
                 //Metodo para eliminar un animal especifico
+                metodosAnimales.deleteAnimal(parametros[2],res)
             }
         }else{ //Caso se confundio de calle
             res.writeHead(404, 'Ruta no encontrada');
