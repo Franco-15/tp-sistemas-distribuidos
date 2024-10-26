@@ -61,7 +61,7 @@ export const postAnimal = (parsedBody,res) => {
 
 export const deleteAnimales = (req,res) => {
     const result = getJson()
-    writeFileSync(FILE_PATH,JSON.stringify({}),'utf-8')
+    writeFileSync(FILE_PATH,JSON.stringify([]),'utf-8')
     res.end();
 }
 
@@ -79,4 +79,24 @@ export const deleteAnimal = (idAnimal, res) => {
         res.end();
     }
     
+}
+
+export const patchAnimal = (newAnimal,res) => {
+    const result = getJson();
+    const buscado = result.findIndex((item) => {
+        return item.id === newAnimal.id
+    })
+    if(buscado < 0){
+        res.writeHead(404, 'Ruta no encontrada');
+        res.end()
+        return
+    }else{
+        const oldAnimal = result[buscado];
+        result[buscado] = {
+            id: newAnimal.id,
+            name: newAnimal.name || oldAnimal.name,
+            description: newAnimal.description || oldAnimal.description
+        }
+        writeFileSync(FILE_PATH, JSON.stringify(result),'utf-8')
+    }
 }

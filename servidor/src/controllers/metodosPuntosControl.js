@@ -77,3 +77,23 @@ export const deletePuntoControl  = (idPtoControl, res) => {
     }
     
 }
+
+export const patchPuntosControl = (newCheckpoint,res) => {
+    const result = getJson();
+    const buscado = result.findIndex((item) => {
+        return item.id === newCheckpoint.id
+    })
+    if(buscado < 0){
+        res.writeHead(404, 'Ruta no encontrada');
+        res.end()
+        return
+    }else{
+        const oldCheckpoint = result[buscado];
+        result[buscado] = {
+            id: newCheckpoint.id,
+            name: newCheckpoint.name || oldCheckpoint.name,
+            description: newCheckpoint.description || oldCheckpoint.description
+        }
+        writeFileSync(FILE_PATH, JSON.stringify(result),'utf-8')
+    }
+}

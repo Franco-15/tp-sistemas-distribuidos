@@ -36,8 +36,10 @@ const server = http.createServer((req, res) => {
 
                 res.end()
             }
-        }else if(req.method === 'POST'){ /*Tomar en consideración que estos datos se supone que se filtran del listado de animales conectados al punto de control.
-                                            Por el momento, asumo que las actualizaciones del PdC entraran por aca*/
+        }else if(req.method === 'POST'){ /*-Tomar en consideración que estos datos se supone que se filtran del listado de animales conectados al punto de control.
+                                                Por el momento, asumo que las actualizaciones del PdC entraran por aca
+                                           -El id del animal debería venir del body o del url de la query? Lo pregunte en el docs a ver si alguien me aclara
+                                                porque me quedo medio ambiguo cuando lo anote xd */
             try{
                 let body = '';
                 req.on('data', (chunk) => {
@@ -64,7 +66,27 @@ const server = http.createServer((req, res) => {
                 metodosAnimales.deleteAnimal(parametros[1],res)
             }
         }else if(req.method === 'PATCH'){
-
+            try {
+                let body = '';
+                req.on('data', (chunk) => {
+                    body = body + chunk;
+                });
+                req.on('end', () => {
+                    const parsedBody = JSON.parse(body);
+                    //Habria que aplicar un chequeo de datos(no lo hice porque ni idea que nombres tendran las variables)
+                    const newAnimal = {
+                        id: parsedBody.id,
+                        name: parsedBody.name,
+                        description: parsedBody.description
+                    }
+                    metodosAnimales.patchAnimal(newAnimal,res)
+                    res.end()
+                })
+            } catch (e) {
+                console.log('Error', e)
+                res.writeHead(500, "Error")
+                res.end()
+            }
         }else{ //Caso se confundio de calle
             res.writeHead(404, 'Ruta no encontrada');
             res.end() 
@@ -106,7 +128,27 @@ const server = http.createServer((req, res) => {
                 metodosPuntosControl.deletePuntoControl(parametros[2],res)
             }
         }else if(req.method === 'PATCH'){
-
+            try {
+                let body = '';
+                req.on('data', (chunk) => {
+                    body = body + chunk;
+                });
+                req.on('end', () => {
+                    const parsedBody = JSON.parse(body);
+                    //Habria que aplicar un chequeo de datos(no lo hice porque ni idea que nombres tendran las variables)
+                    const newCheckpoint = {
+                        id: parsedBody.id,
+                        name: parsedBody.name,
+                        description: parsedBody.description
+                    }
+                    metodosPuntosControl.patchCheckpoint(newCheckpoint,res)
+                    res.end()
+                })
+            } catch (e) {
+                console.log('Error', e)
+                res.writeHead(500, "Error")
+                res.end()
+            }
         }else{ //Caso se confundio de calle
             res.writeHead(404, 'Ruta no encontrada');
             res.end() 
