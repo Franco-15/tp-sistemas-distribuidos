@@ -21,13 +21,17 @@ const server = http.createServer((req, res) => {
         parametros = req.url.split("/")
         parametros = parametros.filter(el => el != '')   //filtro los vacios
         if(req.method === 'GET'){
-            if(parametros.length == 2){
+            console.log(parametros.length)
+            if(parametros.length == 1){
                 //Metodo para obtener todas las vacas
                 metodosAnimales.getAnimales(req,res)
-            }else if(parametros.length == 3){
-                //Metodo para obtener una vaca especifica
-                const animalBuscado = metodosAnimales.getAnimal(parametros[2],res)
-                
+            }else if(parametros.length == 2){
+                if(parametros[1] == "position"){
+                    //Metodo para rescatar posiciones de todos los animales
+                }else{
+                    //Metodo para obtener una vaca especifica
+                    const animalBuscado = metodosAnimales.getAnimal(parametros[1],res)
+                }
                 //ENVIARLA AL FRONT SUPONGO?
 
                 res.end()
@@ -42,7 +46,7 @@ const server = http.createServer((req, res) => {
                 req.on('end', () => {
                     const parsedBody = JSON.parse(body);
                     //Habria que aplicar un chequeo de datos(no lo hice porque ni idea que nombres tendran las variables)
-
+                    console.log(parsedBody.id)
                     metodosAnimales.postAnimal(parsedBody,res)
                 })
 
@@ -52,12 +56,12 @@ const server = http.createServer((req, res) => {
                 res.end()
             }
         }else if(req.method === 'DELETE'){
-            if(parametros.length == 2){
+            if(parametros.length == 1){
                 //Metodo para eliminar todos los animales
                 metodosAnimales.deleteAnimales(req,res)
-            }else if(parametros.length == 3){
+            }else if(parametros.length == 2){
                 //Metodo para eliminar un animal especifico
-                metodosAnimales.deleteAnimal(parametros[2],res)
+                metodosAnimales.deleteAnimal(parametros[1],res)
             }
         }else if(req.method === 'PATCH'){
 
@@ -87,6 +91,8 @@ const server = http.createServer((req, res) => {
                 req.on('end', () => {
                     const parsedBody = JSON.parse(body);
                     //Habria que aplicar un chequeo de datos(no lo hice porque ni idea que nombres tendran las variables)
+
+                    metodosPuntosControl.postPuntoControl(parsedBody,res)
                 })
             }catch (e){
                 console.log('Error', e)

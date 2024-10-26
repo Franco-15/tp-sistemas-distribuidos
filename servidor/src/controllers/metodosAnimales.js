@@ -1,6 +1,6 @@
 import { readFileSync, writeFileSync, existsSync } from 'fs';
 
-const FILE_PATH = "/servidor/src/data/animales.json"
+const FILE_PATH =  './servidor/src/data/animales.json'
 
 const getJson = () => {
     const fileExist = existsSync(FILE_PATH);
@@ -34,10 +34,13 @@ export const getAnimal = (idAnimal,res) => {  //Entiendo que aca el req tendria 
         return item.id === idAnimal
     })
     if (buscado < 0){
-        res.writeHead(404, 'Ruta no encontrada');
+        res.writeHead(404, 'El animal buscado no existe o no se encuentra registrado en el sistema');
         res.end()
         return
     }else{
+        /*En este caso no se si deberiamos devolver algo a el front u otro lado, puse el res.end con
+            la info para comprobar que este todo en orden*/
+        //res.end(JSON.stringify(result[buscado]))
         return result[buscado]
     }
 }
@@ -45,20 +48,20 @@ export const getAnimal = (idAnimal,res) => {  //Entiendo que aca el req tendria 
 export const postAnimal = (parsedBody,res) => {
     const result = getJson();
 
-    const exists = result.some(animal => animal.id === parsedBody.id);
-    if (exists) {
+    const exists = result.findIndex((animal) => animal.id === parsedBody.id);
+    if (exists > -1) {
         res.writeHead(400, 'El animal con este ID ya existe');
         res.end();
         return;
     }
     result.push(parsedBody);
-    writeFileSync(FILE_PATH, result,'utf-8')
+    writeFileSync(FILE_PATH, JSON.stringify(result),'utf-8')
     res.end();
 }
 
 export const deleteAnimales = (req,res) => {
     const result = getJson()
-    result.writeFileSync(FILE_PATH,JSON.stringify({}),'utf-8')
+    writeFileSync(FILE_PATH,JSON.stringify({}),'utf-8')
     res.end();
 }
 
@@ -72,7 +75,7 @@ export const deleteAnimal = (idAnimal, res) => {
         return;
     }else{      
         result.splice(buscado, 1); 
-        writeFileSync(FILE_PATH, result,'utf-8')
+        writeFileSync(FILE_PATH, JSON.stringify(result),'utf-8')
         res.end();
     }
     

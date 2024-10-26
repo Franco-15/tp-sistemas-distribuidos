@@ -1,6 +1,6 @@
 import { readFileSync, writeFileSync, existsSync } from 'fs';
 
-const FILE_PATH = "/servidor/src/data/puntosControl.json"
+const FILE_PATH = "./servidor/src/data/puntosControl.json"
 
 const getJson = () => {
     const fileExist = existsSync(FILE_PATH);
@@ -45,20 +45,20 @@ export const getPuntoControl = (idPtoControl,res) => {  //Entiendo que aca el re
 export const postPuntoControl = (parsedBody,res) => {
     const result = getJson();
 
-    const exists = result.some(ptoControl => ptoControl.id === parsedBody.id);
-    if (exists) {
+    const exists = result.findIndex((ptoControl) => ptoControl.id === parsedBody.id);
+    if (exists > -1) {
         res.writeHead(400, 'El punto de control con este ID ya existe');
         res.end();
         return;
     }
     result.push(parsedBody);
-    writeFileSync(FILE_PATH, result,'utf-8')
+    writeFileSync(FILE_PATH, JSON.stringify(result),'utf-8')
     res.end();
 }
 
 export const deletePuntosControl  = (req,res) => {
     const result = getJson()
-    result.writeFileSync(FILE_PATH,JSON.stringify({}),'utf-8')
+    writeFileSync(FILE_PATH,JSON.stringify({}),'utf-8')
     res.end();
 }
 
@@ -72,7 +72,7 @@ export const deletePuntoControl  = (idPtoControl, res) => {
         return;
     }else{      
         result.splice(buscado, 1); 
-        writeFileSync(FILE_PATH, result,'utf-8')
+        writeFileSync(FILE_PATH, JSON.stringify(result),'utf-8')
         res.end();
     }
     
