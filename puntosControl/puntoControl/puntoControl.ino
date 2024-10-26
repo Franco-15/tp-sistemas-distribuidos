@@ -9,13 +9,13 @@ const char* password = "";
 // Configuración MQTT
 const char* mqtt_server = ""; // Dirección del broker MQTT
 const char* topic = "";   // Topic MQTT para publicar dispositivos detectados
-const char* placaID = "PC_1";           // Identificador de la placa
+const char* boardId = "PC_1";           // Identificador de la placa
 
 WiFiClient espClient;
 PubSubClient client(espClient);
 NimBLEScan* pBLEScan;
 
-void setup_wifi() {
+void wifiConnect() {
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
@@ -23,16 +23,16 @@ void setup_wifi() {
 }
 
 // Conectar a MQTT
-void reconnect() {
+void mqttConnect() {
   while (!client.connected()) {
-    if (!client.connect(placaID)) {
+    if (!client.connect(boardId)) {
       delay(5000);
     }
   }
 }
 
 void setup() {
-  setup_wifi();
+  wifiConnect();
   client.setServer(mqtt_server, 1883);
 
   // Inicializar NimBLE
@@ -45,7 +45,7 @@ void setup() {
 
 void loop() {
   if (!client.connected()) {
-    reconnect();
+    mqttConnect();
   }
   client.loop();
 
@@ -57,7 +57,7 @@ void loop() {
     NimBLEAdvertisedDevice device = foundDevices.getDevice(i);
     
     // Obtener la dirección y la potencia de la señal (RSSI) del dispositivo
-    String deviceInfo = String(placaID) + " - " + String(device.getAddress().toString().c_str()) + " - RSSI: " + String(device.getRSSI());
+    String deviceInfo = String(boardId) + " - " + String(device.getAddress().toString().c_str()) + " - RSSI: " + String(device.getRSSI());
     
     // Publicar la información en el topic MQTT
     if (client.connected()) {
