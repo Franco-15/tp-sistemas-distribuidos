@@ -4,12 +4,12 @@ import * as metodosAnimales from './controllers/metodosAnimales.js'
 import * as metodosPuntosControl from './controllers/metodosPuntosControl.js'
 
 const HTTP_PORT = 3000;  //Esto es placebo supongo (no se xd)
-const rutaAnimal = "/Animal/"
-const rutaPtoDeCtrl = "/PuntoControl"
+const rutaAnimal = "/animals"
+const rutaPtoDeCtrl = "/checkpoints"
+const rutaLogin = "/login"
+const rutaRefresh = "/refresh"
 
 /* Dudas/pensamientos/cosas para hacer:
-    - Habria que crear metodos para gestionar el tema de los GET y DELETE(Revisar codigos viejos de Martin)
-        Esto se podría hacer en la misma clase o en otras clases (Siento que esto ultimo es más la vibe de martin)
     - Viendo un tp viejo(Angus) usan mucho setHeader al principio de los createServer, investigar porque xd
     - Habria que hacer verificaciones de las solicitudes para asegurarse de que lleguen de algun punto de control
 */
@@ -59,6 +59,8 @@ const server = http.createServer((req, res) => {
                 //Metodo para eliminar un animal especifico
                 metodosAnimales.deleteAnimal(parametros[2],res)
             }
+        }else if(req.method === 'PATCH'){
+
         }else{ //Caso se confundio de calle
             res.writeHead(404, 'Ruta no encontrada');
             res.end() 
@@ -97,11 +99,17 @@ const server = http.createServer((req, res) => {
             }else if(parametros.length == 3){
                 metodosPuntosControl.deletePuntoControl(parametros[2],res)
             }
+        }else if(req.method === 'PATCH'){
+
         }else{ //Caso se confundio de calle
             res.writeHead(404, 'Ruta no encontrada');
             res.end() 
         }
-    }else{ //Caso se confundio de calle
+    }else if(req.url.startsWith(rutaLogin)){
+
+    }else if(req.url.startsWith(rutaRefresh)){
+
+    }else { //Caso se confundio de calle
         res.writeHead(404, 'Ruta no encontrada');
         res.end() 
     }
