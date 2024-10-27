@@ -29,14 +29,20 @@ void wifiConnect() {
 
 // Conectar a MQTT
 void mqttConnect() {
+  int connectionAttempts = 0;
   Serial.print("\nConnecting to MQTT server");
-  while (!client.connected()) {
+  while (!client.connected() && connectionAttempts<10) {
     if (!client.connect(boardId)) {
-      delay(100);
+      Serial.print(".");
+      connectionAttempts+=1;
+      delay(10);
     }
   }
-  Serial.println("\nSuccesfully connection to MQTT server!");
 
+  if(client.connected()){
+    Serial.println("\nSuccesfully connection to MQTT server!");
+  }else
+    Serial.println("\nFailed to connect to the MQTT server!");
 }
 
 void setup() {
@@ -53,7 +59,7 @@ void setup() {
 }
 
 void loop() {
-  if (!client.connected()) {
+  while(!client.connected()) {
     mqttConnect();
   }
   client.loop();
