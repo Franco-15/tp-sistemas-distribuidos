@@ -16,22 +16,31 @@ PubSubClient client(espClient);
 NimBLEScan* pBLEScan;
 
 void wifiConnect() {
+  Serial.println("\nConnecting to ");
+  Serial.print(ssid);
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
+    Serial.print(".");
+    delay(100);
   }
+  Serial.print("\nConnected to network: ");
+  Serial.println(ssid);
 }
 
 // Conectar a MQTT
 void mqttConnect() {
+  Serial.print("\nConnecting to MQTT server");
   while (!client.connected()) {
     if (!client.connect(boardId)) {
-      delay(5000);
+      delay(100);
     }
   }
+  Serial.println("\nSuccesfully connection to MQTT server!");
+
 }
 
 void setup() {
+  Serial.begin(115200);
   wifiConnect();
   client.setServer(mqtt_server, 1883);
 
