@@ -91,7 +91,8 @@ export const patchPuntosControl = (newCheckpoint,res) => {
         const oldCheckpoint = result[buscado];
         result[buscado] = {
             id: newCheckpoint.id,
-            name: newCheckpoint.name || oldCheckpoint.name,
+            lat: newCheckpoint.lat || oldCheckpoint.lat,
+            long: newCheckpoint.long || oldCheckpoint.long,
             description: newCheckpoint.description || oldCheckpoint.description
         }
         writeFileSync(FILE_PATH, JSON.stringify(result),'utf-8')

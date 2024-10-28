@@ -2,6 +2,7 @@ import http from 'http';
 import { v4 as uuidv4 } from 'uuid';
 import * as metodosAnimales from './controllers/metodosAnimales.js'
 import * as metodosPuntosControl from './controllers/metodosPuntosControl.js'
+import { parse } from 'path';
 
 const HTTP_PORT = 3000;  //Esto es placebo supongo (no se xd)
 const rutaAnimal = "/animals"
@@ -36,8 +37,7 @@ const server = http.createServer((req, res) => {
 
                 res.end()
             }
-        }else if(req.method === 'POST'){ /*-Tomar en consideración que estos datos se supone que se filtran del listado de animales conectados al punto de control.
-                                                Por el momento, asumo que las actualizaciones del PdC entraran por aca */
+        }else if(req.method === 'POST'){ 
             try{
                 let body = '';
                 req.on('data', (chunk) => {
@@ -102,7 +102,7 @@ const server = http.createServer((req, res) => {
 
                 res.end()
             }
-        }else if(req.method === 'POST'){
+        }else if(req.method === 'POST'){ //Habria que crear el id a traves de UUID ahora que lo pienso(un flaco lo recalco en el docs)
             try{
                 let body = '';
                 req.on('data', (chunk) => {
@@ -136,7 +136,8 @@ const server = http.createServer((req, res) => {
                     //Habria que aplicar un chequeo de datos(no lo hice porque ni idea que nombres tendran las variables)
                     const newCheckpoint = {
                         id: parametros[1],
-                        name: parsedBody.name,
+                        lat: parsedBody.lat,
+                        long: parsedBody.long,
                         description: parsedBody.description
                     }
                     metodosPuntosControl.patchCheckpoint(newCheckpoint,res)
