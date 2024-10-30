@@ -10,7 +10,7 @@ const char* password = "";
 // Configuracion MQTT
 const char* mqtt_server = ""; // Direccion broker MQTT
 const char* topic = "checkpoint"; // Topic MQTT
-const char* boardId = "";
+const char* boardId = "cee1f9bf-6e42-4071-859a-82d71e231cc1";
 
 WiFiClient espClient;
 PubSubClient client(espClient);
