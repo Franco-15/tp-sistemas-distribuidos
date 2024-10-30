@@ -20,6 +20,7 @@ export const getAnimales = (req, res) => {
         const response = {
             data: result
         }
+        return JSON.stringify(response)
         res.end(JSON.stringify(response))
     }catch (e) {
         console.log(e)
@@ -41,7 +42,7 @@ export const getAnimal = (idAnimal,res) => {  //Entiendo que aca el req tendria 
         /*En este caso no se si deberiamos devolver algo a el front u otro lado, puse el res.end con
             la info para comprobar que este todo en orden*/
         //res.end(JSON.stringify(result[buscado]))
-        return result[buscado]
+        return JSON.stringify(result[buscado])
     }
 }
 

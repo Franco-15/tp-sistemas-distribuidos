@@ -1,8 +1,8 @@
 import { readFileSync, writeFileSync, existsSync } from 'fs';
 
-const FILE_PATH = "./servidor/src/data/puntosControl.json"
+const FILE_PATH = "./servidor/src/data/checkpoints.json"
 
-const getJson = () => {
+export const getJson = () => {
     const fileExist = existsSync(FILE_PATH);
     if (fileExist) {
         const file = readFileSync(FILE_PATH, 'utf-8');
@@ -20,6 +20,7 @@ export const getPuntosControl = (req, res) => {
         const response = {
             data: result
         }
+        return JSON.stringify(response)
         res.end(JSON.stringify(response))
     }catch (e) {
         console.log(e)
@@ -38,7 +39,7 @@ export const getPuntoControl = (idPtoControl,res) => {  //Entiendo que aca el re
         res.end()
         return
     }else{
-        return result[buscado]
+        return JSON.stringify(result[buscado])
     }
 }
 

@@ -25,18 +25,44 @@ const server = http.createServer((req, res) => {
             console.log(parametros.length)
             if(parametros.length == 1){
                 //Metodo para obtener todas las vacas
-                metodosAnimales.getAnimales(req,res)
+                const allAnimals = metodosAnimales.getAnimales(req,res)
             }else if(parametros.length == 2){
                 if(parametros[1] == "position"){
-                    //Metodo para rescatar posiciones de todos los animales
+                    try {
+                        //Metodo para rescatar posiciones de todos los animales
+                        let body = '';
+                        req.on('data', (chunk) => {
+                            body = body + chunk;
+                        });
+                        req.on('end', () => {
+                            const parsedBody = JSON.parse(body);
+                            //Habria que verificar que el UUID del arduino concuerde con alguno del checkpoints.json
+                            const checkpointsJson = metodosPuntosControl.getJson()
+                            const externalId = parsedBody.id
+                            const exists = checkpoints.some(checkpoint => checkpoint.id === externalId);
+                            if (exists) {
+                                //Habria que filtrar del listado del checkpoint que animales se encuentran en el json y que "animales" son un pendejo con un Nokia
+                                //HAY QUE VER COMO SE ENVIA LA RESPUESTA AL FRONT
+                            } else {
+                                res.writeHead(500, "Id desconocido")
+                                res.end()
+                            }
+                            
+                            res.end()
+                        })
+                    } catch (e) {
+                    res.writeHead(500, "Error")
+                    res.end()
+                }
+                   
                 }else{
                     //Metodo para obtener una vaca especifica
                     const animalBuscado = metodosAnimales.getAnimal(parametros[1],res)
                 }
-                //ENVIARLA AL FRONT SUPONGO?
-
-                res.end()
             }
+            //HAY QUE VER COMO SE ENVIA LA RESPUESTA AL FRONT
+
+            res.end()
         }else if(req.method === 'POST'){ 
             try{
                 let body = '';
@@ -94,15 +120,13 @@ const server = http.createServer((req, res) => {
         parametros = parametros.filter(el => el != '')   //filtro los vacios
         if(req.method === 'GET'){
             if(parametros.length == 2){
-                metodosPuntosControl.getPuntosControl(req,res)
+                const checkpoints = metodosPuntosControl.getPuntosControl(req,res)
             }else if(parametros.length == 3){
-                metodosPuntosControl.getPuntoControl(parametros[2],res)
-
-                //ENVIARLO AL FRONT SUPONGO IDK
-
-                res.end()
+                const checkpoint = metodosPuntosControl.getPuntoControl(parametros[2],res)
             }
-        }else if(req.method === 'POST'){ //Habria que crear el id a traves de UUID ahora que lo pienso(un flaco lo recalco en el docs)
+            //HAY QUE VER COMO SE ENVIA LA RESPUESTA AL FRONT
+            res.end()
+        }else if(req.method === 'POST'){ 
             try{
                 let body = '';
                 req.on('data', (chunk) => {
