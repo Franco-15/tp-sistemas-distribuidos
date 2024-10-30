@@ -18,7 +18,7 @@ function renderAnimalList() {
     // Aquí realizarías la llamada al backend
     animalList.innerHTML = `
         <ul>
-            <li>Animal 1 - <button onclick="editAnimal(1)">Editar</button> <button onclick="deleteAnimal(1)">Eliminar</button></li>
+            <li>Animal 1 - <button onclick="editAnimal(1)">Editar</button> <button onclick="deleteAnimal(1)">Eliminar</button></li>/
             <li>Animal 2 - <button onclick="editAnimal(2)">Editar</button> <button onclick="deleteAnimal(2)">Eliminar</button></li>
         </ul>
     `;
