@@ -15,15 +15,28 @@ function deleteA(id) {
     }
 }
 
-function get() {
-    
-    // deberia ahcer un get al back
-    renderAnimalList();
-    
+function renderAnimalsArray() {
+    // Llama a la función getAnimals (es la q esta en api.js) y espera su resultado
+    getAnimals().then(animalArray => { //devuelve promesa
+        
+        console.log("Array de animales:", animalArray); // Muestra el array en la consola
+
+        // HTML
+        const app = document.getElementById('app');
+        app.innerHTML = `
+            <h2>Lista de Animales</h2>
+            <ul>
+                ${animalArray.map(animal => `
+                    <li>ID: ${animal.id}, Nombre: ${animal.nombre}, Descripción: ${animal.description}</li>
+                `).join('')}
+            </ul>
+        `;
+    });
 }
 
 
-//! no se si va esto aca
+
+//! no va esto aca
 function post(id, name, description) {
     
     //deberia ahcer un get desde al back

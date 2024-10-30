@@ -1,3 +1,7 @@
+
+
+//!esto se va entero, tengo que mudar las funciones nomas
+
 // Función para cargar la vista de Animales
 function loadAnimalsView() {
     const app = document.getElementById('app');
