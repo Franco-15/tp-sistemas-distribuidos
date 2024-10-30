@@ -38,12 +38,16 @@ const server = http.createServer((req, res) => {
                             const parsedBody = JSON.parse(body);
                             //Habria que verificar que el UUID del arduino concuerde con alguno del checkpoints.json
                             const checkpointsJson = metodosPuntosControl.getJson()
-                            const externalId = parsedBody.id
+                            const externalId = parsedBody.checkpointID
                             const exists = checkpoints.some(checkpoint => checkpoint.id === externalId);
-                            if (exists) {
-                                //Habria que filtrar del listado del checkpoint que animales se encuentran en el json y que "animales" son un pendejo con un Nokia
-                                //HAY QUE VER COMO SE ENVIA LA RESPUESTA AL FRONT
-                            } else {
+                            if (exists) {    
+                                const allAnimals= metodosAnimales.getAnimales(req,res)
+                                //directamente dejo los animales que tengo registrados
+                                const filteredAnimals = checkpoint.animals.filter(animal => allAnimals.hasOwnProperty(animal.id));
+                                //Aca se mandarian los animales al front
+                                
+                            } 
+                            else {
                                 res.writeHead(500, "Id desconocido")
                                 res.end()
                             }
