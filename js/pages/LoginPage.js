@@ -1,7 +1,31 @@
+
+
+export function loadLoginView() {
+    const app = document.getElementById('app');
+    app.innerHTML = `
+        <div class="login-container" style: "width:800px; margin: 0 auto">
+            <h2>Iniciar Sesion</h2>
+            <form id="login-form">
+                <input type="text" id="username" placeholder="username" required />
+                <input type="password" id="password" placeholder="password" required />
+                <button type="submit">LogIn</button>
+            </form>
+        </div>
+    `;
+//todo ver de centrar esto, tema del token 
+    document.getElementById("login-form").addEventListener("submit", (e) => {
+        e.preventDefault();
+        console.log("Formulario de login enviado");
+        
+        window.location.hash = '#/animals';
+    });
+}
+
+
 //* todo lo siguiente es de lo de martin:
 //todo ver bien que sirve y que no 
 
-
+/*
 import { navigateTo } from '../index.js';
 import AuthAPIHelper from '../helper/api/AuthAPIHelper.js';
 import { validateLogin } from '../helper/validations/authValidations.js';
@@ -58,3 +82,4 @@ export default class LoginPage {
         this.container.innerHTML = formHtml;
     }
 }
+    */

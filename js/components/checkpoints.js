@@ -1,3 +1,5 @@
+import { getPtosControl } from "../api.js";
+
 // Editar animal
 function patch(lat, long, description) {
     alert(`Editar checkpoint con ID: ${id}`);
@@ -15,13 +17,26 @@ function deleteC(id) {
     }
 }
 
-function get() {
-    
-    // deberia ahcer un get al back, devuelve un array 
-    renderAnimalList();
-    
-}
 
+export function renderPtosCtrolArray() { //todo vendria siendo el get, cambiarlo
+    // Llama a la función getAnimals (es la q esta en api.js) y espera su resultado
+    getPtosControl().then(ptoCtrolArray => { //devuelve promesa
+        
+        console.log("Puntos de control:", ptoCtrolArray); // Muestra el array en la consola
+
+        // HTML
+        const app = document.getElementById('app');
+        app.innerHTML = `
+            <h2>Lista de checkpoints (segun Rama)</h2>
+            <ul>
+                ${ptoCtrolArray.map(ptoCtrol => `
+                    <li>ID: ${ptoCtrol.id}, Nombre: ${ptoCtrol.nombre}, Description: ${ptoCtrol.description}</li>
+                `).join('')}
+                //todo: agregarle mas mistica para que quede mas fachero
+            </ul>
+        `;
+    });
+}
 
 //! no se si va esto aca
 function post(id, lat, long, description) {

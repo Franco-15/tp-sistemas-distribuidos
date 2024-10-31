@@ -16,7 +16,7 @@ function loadAnimalsView() {
     renderAnimalList();
 }
 
-// Función para renderizar la lista de animales
+// Funcion para renderizar la lista de animales
 function renderAnimalList() {
     const animalList = document.getElementById('animal-list');
     // Aquí realizarías la llamada al backend
@@ -28,7 +28,7 @@ function renderAnimalList() {
     `;
 }
 
-// Función para mostrar el formulario de agregar animal
+// Funcion para mostrar el formulario de agregar animal
 function showAddAnimalForm() {
     const form = document.getElementById('animal-form');
     form.style.display = 'block';
