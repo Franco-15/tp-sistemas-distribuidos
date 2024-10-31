@@ -27,7 +27,7 @@ function renderAnimalsArray() {
             <h2>Lista de Animales</h2>
             <ul>
                 ${animalArray.map(animal => `
-                    <li>ID: ${animal.id}, Nombre: ${animal.nombre}, Descripción: ${animal.description}</li>
+                    <li>ID: ${animal.id}, Nombre: ${animal.nombre}, Description: ${animal.description}</li>
                 `).join('')}
             </ul>
         `;

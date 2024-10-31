@@ -1,10 +1,12 @@
+import { renderAnimalsArray } from './animals.js';
+
 function router() {
     const app = document.getElementById('app');
     const hash = window.location.hash || '#/animales';
 
     switch (hash) {
         case '#/animales':
-            loadAnimalsView();
+            renderAnimalsArray(); // invoca la funcion que muestra el array con los animales
             break;
         case '#/puntos-de-control':
             loadControlPointsView();
