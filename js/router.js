@@ -1,8 +1,8 @@
 // router.js
 
 import { loadLoginView } from './pages/LoginPage.js';
-import { renderAnimalsArray } from './components/animals.js';
 import { renderPtosCtrolArray } from './components/checkpoints.js';
+import { loadAnimalPage, renderAnimalsArray } from './pages/AnimalsPage.js';
 
 function router() {
     const app = document.getElementById('app');
@@ -22,7 +22,7 @@ function router() {
             break;
         case '#/animals':
             console.log("animales") //!borrar
-            renderAnimalsArray();
+            loadAnimalPage(); 
             break;
         case '#/puntos-de-control': 
             console.log("ptos de control") //!borrar 

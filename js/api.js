@@ -14,11 +14,12 @@ export function getAnimals() {
         { id: 3, nombre: "Animal 3", description: "Descripción del Animal 3" }
     ];
 
+    
     // Retorna los datos simulados como una promesa
     return new Promise(resolve => {
         setTimeout(() => resolve(mockData), 500); // Simula una espera de 500ms (no se pq es esto pero chatgpt)
     });
-
+    
 
     
     /*
@@ -57,3 +58,4 @@ export function getPtosControl() {
         setTimeout(() => resolve(mockData), 500); // Simula una espera de 500ms (no se pq es esto pero chatgpt)
     });
 }
+

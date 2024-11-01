@@ -1,4 +1,5 @@
 import { getAnimals } from "../api.js";
+//!se va esto, paso a animalsPage.js
 
 // Editar animal
 function patch(id) {
@@ -17,25 +18,7 @@ function deleteA(id) {
     }
 }
 
-export function renderAnimalsArray() { //todo vendria siendo el get, cambiarlo
-    // Llama a la función getAnimals (es la q esta en api.js) y espera su resultado
-    getAnimals().then(animalArray => { //devuelve promesa
-        
-        console.log("Array de animales:", animalArray); // Muestra el array en la consola
 
-        // HTML
-        const app = document.getElementById('app');
-        app.innerHTML = `
-            <h2>Lista de Animales</h2>
-            <ul>
-                ${animalArray.map(animal => `
-                    <li>ID: ${animal.id}, Nombre: ${animal.nombre}, Description: ${animal.description}</li>
-                `).join('')}
-                //todo: agregarle mas mistica para que quede mas fachero
-            </ul>
-        `;
-    });
-}
 
 
 
