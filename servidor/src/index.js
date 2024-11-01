@@ -111,7 +111,7 @@ const server = http.createServer((req, res) => {
                 req.on('end', () => {
                     const parsedBody = JSON.parse(body);
                     if(!parametros[1] || !parsedBody.name || !parsedBody.description){ //Entra por aca si falta algun dato
-                        res.writeHead(400, {'message':'No hay datos suficientes'})
+                        res.writeHead(400, {'message':'No se pudo modificar al animal debido a la falta de datos'})
                         res.end()
                         return;
                     }else{
@@ -157,10 +157,15 @@ const server = http.createServer((req, res) => {
                 req.on('end', () => {
                     const parsedBody = JSON.parse(body);
                     //Habria que aplicar un chequeo de datos(no lo hice porque ni idea que nombres tendran las variables)
-
-                    metodosPuntosControl.postPuntoControl(parsedBody,res)
-                    res.writeHead(200,{'message':'Se agrego el punto de control'})
-                    res.end()
+                    if(!parsedBody.id || !parsedBody.lat || !parsedBody.long || !parsedBody.description){ //Entra por aca si falta algun dato
+                        res.writeHead(400, {'message':'No se pudo agregar al punto de control debido a la falta de datos'})
+                        res.end()
+                        return;
+                    }else{
+                        metodosPuntosControl.postPuntoControl(parsedBody,res)
+                        res.writeHead(200,{'message':'Se agrego el punto de control'})
+                        res.end()
+                    }
                 })
             }catch (e){
                 console.log('Error', e)
@@ -184,16 +189,21 @@ const server = http.createServer((req, res) => {
                 });
                 req.on('end', () => {
                     const parsedBody = JSON.parse(body);
-                    //Habria que aplicar un chequeo de datos(no lo hice porque ni idea que nombres tendran las variables)
-                    const newCheckpoint = {
-                        id: parametros[1],
-                        lat: parsedBody.lat,
-                        long: parsedBody.long,
-                        description: parsedBody.description
+                    if(!parametros[1] || !parsedBody.lat || !parsedBody.long || !parsedBody.description){ //Entra por aca si falta algun dato
+                        res.writeHead(400, {'message':'No se pudo modificar el punto de control debido a la falta de datos'})
+                        res.end()
+                        return;
+                    }else{
+                        const newCheckpoint = {
+                            id: parametros[1],
+                            lat: parsedBody.lat,
+                            long: parsedBody.long,
+                            description: parsedBody.description
+                        }
+                        metodosPuntosControl.patchCheckpoint(newCheckpoint,res)
+                        res.writeHead({'message':'El punto de control ha sido modificado'})
+                        res.end()
                     }
-                    metodosPuntosControl.patchCheckpoint(newCheckpoint,res)
-                    res.writeHead({'message':'El punto de control ha sido modificado'})
-                    res.end()
                 })
             } catch (e) {
                 console.log('Error', e)
@@ -206,7 +216,30 @@ const server = http.createServer((req, res) => {
         }
     }else if(req.url.startsWith(rutaLogin)){
         //ACA HABRIA QUE DESARROLLAR EL TEMA DEL LOGIN
-
+        try{
+            let body = '';
+            req.on('data', (chunk) => {
+                body = body + chunk;
+            });
+            req.on('end', () => {
+                const parsedBody = JSON.parse(body);
+                //Habria que aplicar un chequeo de datos(no lo hice porque ni idea que nombres tendran las variables)
+                if(!parsedBody.username || !parsedBody.password){
+                    res.writeHead(400, {'message':'No se pudo verificar al usuario debido a la ausencia de datos'})
+                    res.end()
+                    return;
+                }else{
+                    const passwordCodif = "" //?Habria que realizar la codificación de la contraseña para compararla con la del txt
+                    //*Habria que agarrar la info del json y compararla con la del parsedBody
+                    res.writeHead(200,{'message':'Usuario logueado'})
+                    res.end()
+                }
+            })
+        }catch (e){
+            console.log('Error', e)
+            res.writeHead(500, {'message':'Error inesperado'}) //? CHUSMEAR PORQUE SE LLEGARÍA A ESTA LINEA DE CODIGO
+            res.end()
+        }
     }else if(req.url.startsWith(rutaRefresh)){
         //ACA HABRIA QUE DESARROLLAR EL TEMA DEL REFRESH
     }else { //Caso se confundio de calle
