@@ -75,9 +75,14 @@ const server = http.createServer((req, res) => {
                 });
                 req.on('end', () => {
                     const parsedBody = JSON.parse(body);
-                    //Habria que aplicar un chequeo de datos(no lo hice porque ni idea que nombres tendran las variables)
-                    console.log(parsedBody.id)
-                    metodosAnimales.postAnimal(parsedBody,res)
+                    if(!parsedBody.id || !parsedBody.name || !parsedBody.description){ //Entra por aca si falta algun dato
+                        res.writeHead(400, 'Invalid request!!!!!')
+                        res.end()
+                        return;
+                    }else{
+                        console.log(parsedBody.id)
+                        metodosAnimales.postAnimal(parsedBody,res)
+                    }
                 })
 
             }catch (e){
@@ -101,14 +106,19 @@ const server = http.createServer((req, res) => {
                 });
                 req.on('end', () => {
                     const parsedBody = JSON.parse(body);
-                    //Habria que aplicar un chequeo de datos(no lo hice porque ni idea que nombres tendran las variables)
-                    const newAnimal = {
-                        id: parametros[1],
-                        name: parsedBody.name,
-                        description: parsedBody.description
+                    if(!parametros[1] || !parsedBody.name || !parsedBody.description){ //Entra por aca si falta algun dato
+                        res.writeHead(400, 'Invalid request!!!!!')
+                        res.end()
+                        return;
+                    }else{
+                        const newAnimal = {
+                            id: parametros[1],
+                            name: parsedBody.name,
+                            description: parsedBody.description
+                        }
+                        metodosAnimales.patchAnimal(newAnimal,res)
+                        res.end()
                     }
-                    metodosAnimales.patchAnimal(newAnimal,res)
-                    res.end()
                 })
             } catch (e) {
                 console.log('Error', e)
@@ -123,10 +133,10 @@ const server = http.createServer((req, res) => {
         parametros = req.url.split("/")
         parametros = parametros.filter(el => el != '')   //filtro los vacios
         if(req.method === 'GET'){
-            if(parametros.length == 2){
+            if(parametros.length == 1){
                 const checkpoints = metodosPuntosControl.getPuntosControl(req,res)
-            }else if(parametros.length == 3){
-                const checkpoint = metodosPuntosControl.getPuntoControl(parametros[2],res)
+            }else if(parametros.length == 2){
+                const checkpoint = metodosPuntosControl.getPuntoControl(parametros[1],res)
             }
             //HAY QUE VER COMO SE ENVIA LA RESPUESTA AL FRONT
             res.end()
@@ -148,10 +158,10 @@ const server = http.createServer((req, res) => {
                 res.end()
             }
         }else if(req.method === 'DELETE'){
-            if(parametros.length == 2){
+            if(parametros.length == 1){
                 metodosPuntosControl.deletePuntosControl(req,res)
-            }else if(parametros.length == 3){
-                metodosPuntosControl.deletePuntoControl(parametros[2],res)
+            }else if(parametros.length == 2){
+                metodosPuntosControl.deletePuntoControl(parametros[1],res)
             }
         }else if(req.method === 'PATCH'){
             try {
