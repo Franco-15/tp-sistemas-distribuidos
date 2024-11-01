@@ -21,11 +21,10 @@ export const getAnimales = (req, res) => {
             data: result
         }
         return JSON.stringify(response)
-        res.end(JSON.stringify(response))
     }catch (e) {
         console.log(e)
-        res.writeHead(500)
-        res.end('Error')
+        res.writeHead(500, {'message':'Error inesperado'}) //? CHUSMEAR PORQUE SE LLEGARÍA A ESTA LINEA DE CODIGO
+        res.end()
     }
 }
 
@@ -35,13 +34,10 @@ export const getAnimal = (idAnimal,res) => {  //Entiendo que aca el req tendria 
         return item.id === idAnimal
     })
     if (buscado < 0){
-        res.writeHead(404, 'El animal buscado no existe o no se encuentra registrado en el sistema');
+        res.writeHead(404, {'message':'El animal buscado no existe o no se encuentra registrado en el sistema'});
         res.end()
         return
     }else{
-        /*En este caso no se si deberiamos devolver algo a el front u otro lado, puse el res.end con
-            la info para comprobar que este todo en orden*/
-        //res.end(JSON.stringify(result[buscado]))
         return JSON.stringify(result[buscado])
     }
 }
@@ -51,19 +47,17 @@ export const postAnimal = (parsedBody,res) => {
 
     const exists = result.findIndex((animal) => animal.id === parsedBody.id);
     if (exists > -1) {
-        res.writeHead(400, 'El animal con este ID ya existe');
+        res.writeHead(400, {'message':'El animal con este ID ya existe'});
         res.end();
         return;
     }
     result.push(parsedBody);
     writeFileSync(FILE_PATH, JSON.stringify(result),'utf-8')
-    res.end();
 }
 
 export const deleteAnimales = (req,res) => {
     const result = getJson()
     writeFileSync(FILE_PATH,JSON.stringify([]),'utf-8')
-    res.end();
 }
 
 export const deleteAnimal = (idAnimal, res) => {
@@ -71,13 +65,12 @@ export const deleteAnimal = (idAnimal, res) => {
     const buscado = result.findIndex((item) => item.id === idAnimal);
 
     if (buscado < 0) {
-        res.writeHead(404, 'Animal no encontrado');
+        res.writeHead(404, {'message':'Animal no encontrado'});
         res.end();
         return;
     }else{      
         result.splice(buscado, 1); 
         writeFileSync(FILE_PATH, JSON.stringify(result),'utf-8')
-        res.end();
     }
     
 }
@@ -88,7 +81,7 @@ export const patchAnimal = (newAnimal,res) => {
         return item.id === newAnimal.id
     })
     if(buscado < 0){
-        res.writeHead(404, 'Ruta no encontrada');
+        res.writeHead(404, {'message':'Ruta no encontrada'});
         res.end()
         return
     }else{
