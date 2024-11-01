@@ -21,11 +21,10 @@ export const getPuntosControl = (req, res) => {
             data: result
         }
         return JSON.stringify(response)
-        res.end(JSON.stringify(response))
     }catch (e) {
         console.log(e)
-        res.writeHead(500)
-        res.end('Error')
+        res.writeHead(500,{'message':'Error inesperado'}) //? CHUSMEAR PORQUE SE LLEGARÍA A ESTA LINEA DE CODIGO
+        res.end()
     }
 }
 
@@ -35,7 +34,7 @@ export const getPuntoControl = (idPtoControl,res) => {  //Entiendo que aca el re
         return item.id === idPtoControl
     })
     if (buscado < 0){
-        res.writeHead(404, 'Ruta no encontrada');
+        res.writeHead(404, {'message':'Ruta no encontrada'});
         res.end()
         return
     }else{
@@ -48,19 +47,17 @@ export const postPuntoControl = (parsedBody,res) => {
 
     const exists = result.findIndex((ptoControl) => ptoControl.id === parsedBody.id);
     if (exists > -1) {
-        res.writeHead(400, 'El punto de control con este ID ya existe');
+        res.writeHead(400, {'message':'El punto de control con este ID ya existe'});
         res.end();
         return;
     }
     result.push(parsedBody);
     writeFileSync(FILE_PATH, JSON.stringify(result),'utf-8')
-    res.end();
 }
 
 export const deletePuntosControl  = (req,res) => {
     const result = getJson()
     writeFileSync(FILE_PATH,JSON.stringify({}),'utf-8')
-    res.end();
 }
 
 export const deletePuntoControl  = (idPtoControl, res) => {
@@ -68,13 +65,12 @@ export const deletePuntoControl  = (idPtoControl, res) => {
     const buscado = result.findIndex((item) => item.id === idPtoControl);
 
     if (buscado < 0) {
-        res.writeHead(404, 'Punto de control no encontrado');
+        res.writeHead(404,  {'message':'Punto de control no encontrado'});
         res.end();
         return;
     }else{      
         result.splice(buscado, 1); 
         writeFileSync(FILE_PATH, JSON.stringify(result),'utf-8')
-        res.end();
     }
     
 }
@@ -85,7 +81,7 @@ export const patchPuntosControl = (newCheckpoint,res) => {
         return item.id === newCheckpoint.id
     })
     if(buscado < 0){
-        res.writeHead(404, 'Ruta no encontrada');
+        res.writeHead(404, {'message':'Ruta no encontrada'});
         res.end()
         return
     }else{
