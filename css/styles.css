@@ -31,6 +31,10 @@ button {
     margin-top: 5px;
 }
 
+.login-container {
+    text-align: center;
+
+} 
 
 * {
     box-sizing: border-box;
@@ -63,7 +67,7 @@ button {
 .animal-table th, .animal-table td {
     border: 1px solid #ddd;
     padding: 10px;
-    text-align: left;
+    text-align: center;
 }
 
 .animal-table th {

@@ -1,6 +1,6 @@
 //todo: ver si no pasa a ser 'HomePage.js'
 
-import { getAnimals, PatchAnimal, PostAnimal , DeleteAnimal} from "../api.js";
+import { getAnimals, PatchAnimal, PostAnimal , DeleteAnimal} from "../api/apiAnimal.js";
 
 
 export function loadAnimalPage() {
@@ -20,7 +20,7 @@ export function loadAnimalPage() {
                         <tr>
                             <th>ID</th>
                             <th>Nombre</th>
-                            <th>Descripción</th>
+                            <th>Descripcion</th>
                         </tr>
                     </thead>
                     <tbody>

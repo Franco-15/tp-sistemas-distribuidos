@@ -1,8 +1,10 @@
 // router.js
 
 import { loadLoginView } from './pages/LoginPage.js';
-import { renderPtosCtrolArray } from './components/checkpoints.js';
-import { loadAnimalPage, renderAnimalsArray } from './pages/AnimalsPage.js';
+import { loadAnimalPage } from './pages/AnimalsPage.js';
+import { loadCheckpointPage } from './pages/CheckpointPage.js';
+import { loadLocacionPage } from './pages/LocacionPage.js';
+
 
 function router() {
     const app = document.getElementById('app');
@@ -26,10 +28,14 @@ function router() {
             break;
         case '#/puntos-de-control': 
             console.log("ptos de control") //!borrar 
-            renderPtosCtrolArray(); 
+            loadCheckpointPage(); 
+            break;
+        case '#/locacion': 
+            console.log('locacion')
+            loadLocacionPage();
             break;
         default:
-            app.innerHTML = `<h2>Vista no encontrada</h2>`;
+            app.innerHTML = `<h2>Proximamente...</h2>`;
     }
 }
 

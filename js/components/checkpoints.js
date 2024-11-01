@@ -1,4 +1,4 @@
-import { getPtosControl } from "../api.js";
+//import { getPtosControl } from "../api/apiCheckpoint.js";
 
 // Editar animal
 function patch(lat, long, description) {
@@ -17,7 +17,7 @@ function deleteC(id) {
     }
 }
 
-
+/*
 export function renderPtosCtrolArray() { //todo vendria siendo el get, cambiarlo
     // Llama a la función getAnimals (es la q esta en api.js) y espera su resultado
     getPtosControl().then(ptoCtrolArray => { //devuelve promesa
@@ -37,7 +37,7 @@ export function renderPtosCtrolArray() { //todo vendria siendo el get, cambiarlo
         `;
     });
 }
-
+*/
 //! no se si va esto aca
 function post(id, lat, long, description) {
     
