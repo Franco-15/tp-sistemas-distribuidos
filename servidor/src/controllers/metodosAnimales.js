@@ -1,6 +1,6 @@
 import { readFileSync, writeFileSync, existsSync } from 'fs';
 
-const FILE_PATH =  './servidor/src/data/animales.json'
+const FILE_PATH =  './data/animales.json'
 
 const getJson = () => {
     const fileExist = existsSync(FILE_PATH);
@@ -13,19 +13,13 @@ const getJson = () => {
     } 
 } 
 
-export const getAnimales = (req, res) => {
-    try{
+export const getAnimales = () => {
         const result = getJson()
-        res.setHeader('Content-Type', 'application/json')
         const response = {
             data: result
         }
         return JSON.stringify(response)
-    }catch (e) {
-        console.log(e)
-        res.writeHead(500, {'message':'Error inesperado'}) //? CHUSMEAR PORQUE SE LLEGARÍA A ESTA LINEA DE CODIGO
-        res.end()
-    }
+
 }
 
 export const getAnimal = (idAnimal,res) => {  //Entiendo que aca el req tendria la info sobre que animal se esta buscando

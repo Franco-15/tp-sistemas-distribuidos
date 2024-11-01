@@ -12,6 +12,8 @@ const rutaRefresh = "/refresh"
 
 
 let parametros
+const animals = metodosAnimales.getAnimales()
+const checkpoints = metodosPuntosControl.getPuntosControl()
 
 const server = http.createServer((req, res) => {
     if(req.url.startsWith(rutaAnimal)){
@@ -21,9 +23,13 @@ const server = http.createServer((req, res) => {
             console.log(parametros.length)
             if(parametros.length == 1){
                 //Metodo para obtener todas las vacas
-                const allAnimals = metodosAnimales.getAnimales(req,res)
-                res.writeHead(200,{'Content-Type': 'application/json', 'message': 'Se encontro el listado de animales'})
-                res.write(allAnimals)
+                try{
+                    res.writeHead(200,{'Content-Type': 'application/json', 'message': 'Se encontro el listado de animales'})
+                    res.write(Animals)
+                }catch(e){
+                    res.writeHead(500,{'message':'Falcaont'})  
+                    res.end()
+                }
             }else if(parametros.length == 2){
                 if(parametros[1] == "position"){
                     try {
@@ -35,22 +41,26 @@ const server = http.createServer((req, res) => {
                         req.on('end', () => {
                             const parsedBody = JSON.parse(body);
                             //Habria que verificar que el UUID del arduino concuerde con alguno del checkpoints.json
-                            const checkpointsJson = metodosPuntosControl.getJson()
-                            const externalId = parsedBody.checkpointID
-                            const exists = checkpoints.some(checkpoint => checkpoint.id === externalId);
+                            const checkpointsss = metodosPuntosControl.getJson()
+                            //console.log(checkpointsss)
+                            const externalId = parsedBody.checkpointId
+                            //console.log(externalId)
+                            const exists = checkpointsss.some(checkpoint => checkpoint.id === externalId);
                             if (exists) {    
-                                const allAnimals= metodosAnimales.getAnimales(req,res)
                                 //directamente dejo los animales que tengo registrados
-                                const filteredAnimals = checkpoint.animals.filter(animal => allAnimals.hasOwnProperty(animal.id));
-                                //Aca se mandarian los animales al front
-                                
+                                const recAnimals = parsedBody.animals
+                                const filteredAnimals = recAnimals.filter(animal => animals.hasOwnProperty(animal.id));
+
+                                //*FALTARIA VER COMO BRINDAR EL RESTO DE INFORMACION DE LOS ANIMALES
+                                //console.log(filteredAnimals)
+
+                                res.writeHead(200,{'Content-Type': 'application/json', 'message': 'Animales localizados'})
+                                res.write(JSON.stringify(filteredAnimals))
                             } 
                             else {
                                 res.writeHead(500,{'message':'ID desconocido'})
-                                res.end()
                             }
-                            res.writeHead(200,{'Content-Type': 'application/json', 'message': 'Animales localizados'})
-                            res.write(filteredAnimals)
+                            res.end()
                         })
                     } catch (e) {
                     res.writeHead(500,{'message':'Error inesperado'})  //? CHUSMEAR PORQUE SE LLEGARÍA A ESTA LINEA DE CODIGO
@@ -61,12 +71,9 @@ const server = http.createServer((req, res) => {
                     //Metodo para obtener una vaca especifica
                     const animalBuscado = metodosAnimales.getAnimal(parametros[1],res)
                     res.writeHead(200,{'Content-Type': 'application/json', 'message': 'Animal localizado'})
-                    res.write(filteredAnimals)
+                    res.write(JSON.stringify(filteredAnimals))
                 }
             }
-            //HAY QUE VER COMO SE ENVIA LA RESPUESTA AL FRONT
-
-            res.end()
         }else if(req.method === 'POST'){ 
             try{
                 let body = '';
@@ -139,7 +146,6 @@ const server = http.createServer((req, res) => {
         parametros = parametros.filter(el => el != '')   //filtro los vacios
         if(req.method === 'GET'){
             if(parametros.length == 1){
-                const checkpoints = metodosPuntosControl.getPuntosControl(req,res)
                 res.writeHead(200,{'Content-Type': 'application/json', 'message': 'Se encontro el listado de los checkpoints'})
                 res.write(checkpoints)
             }else if(parametros.length == 2){

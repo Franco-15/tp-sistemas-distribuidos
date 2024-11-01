@@ -1,10 +1,11 @@
 import { readFileSync, writeFileSync, existsSync } from 'fs';
 
-const FILE_PATH = "./servidor/src/data/checkpoints.json"
+const FILE_PATH = "./data/checkpoints.json"
 
 export const getJson = () => {
     const fileExist = existsSync(FILE_PATH);
     if (fileExist) {
+        console.log("ESTOY ACA DSJFGHASDJOGHAEIOUGVJNEARIOUGNIOWEHNFIOEWJFNOW")
         const file = readFileSync(FILE_PATH, 'utf-8');
         const parsedFile = JSON.parse(file);
         return parsedFile;
@@ -13,19 +14,12 @@ export const getJson = () => {
     } 
 } 
 
-export const getPuntosControl = (req, res) => {
-    try{
+export const getPuntosControl = () => {
         const result = getJson()
-        res.setHeader('Content-Type', 'application/json')
         const response = {
             data: result
         }
         return JSON.stringify(response)
-    }catch (e) {
-        console.log(e)
-        res.writeHead(500,{'message':'Error inesperado'}) //? CHUSMEAR PORQUE SE LLEGARÍA A ESTA LINEA DE CODIGO
-        res.end()
-    }
 }
 
 export const getPuntoControl = (idPtoControl,res) => {  //Entiendo que aca el req tendria la info sobre que animal se esta buscando
