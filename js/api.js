@@ -67,9 +67,10 @@ export function DeleteAnimal(id) {
 
 export function getPtosControl() { 
     const mockData = [
-        { id: 1, nombre: "pto 1", description: "agua" },
-        { id: 2, nombre: "pto 2", description: "comida" },
-        { id: 3, nombre: "pto 3", description: "lugar de fornicado" }
+        { id: 'cee1f9bf-6e42-4071-859a-82d71e231cc1', nombre: "pto 1", description: "agua" },
+        { id: '32c7e94b-2b08-4ff5-80e9-ecb0f7795425', nombre: "pto 2", description: "comida" },
+        { id: 'd5046589-a6be-4839-9454-f0ab184fa51a', nombre: "pto 3", description: "lugar de fornicado" },
+        { id: '16bc808b-eb20-4aa9-8b3d-048fbf4c3025', nombre: "pto 4", description: "matadero" }
     ];
 
     // Retorna los datos simulados como una promesa

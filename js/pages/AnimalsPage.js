@@ -1,6 +1,6 @@
 //todo: ver si no pasa a ser 'HomePage.js'
 
-import { getAnimals, PatchAnimal, PostAnimal } from "../api.js";
+import { getAnimals, PatchAnimal, PostAnimal , DeleteAnimal} from "../api.js";
 
 
 export function loadAnimalPage() {
@@ -12,16 +12,34 @@ export function loadAnimalPage() {
 
         //todo ver como centrar los input del popup
         app.innerHTML = `
-            <h2>Lista de Animales</h2>
-            <ul>
-                ${animalArray.map(animal => `
-                    <li>ID: ${animal.id}, Nombre: ${animal.nombre}, Descripción: ${animal.description}</li>
-                `).join('')}
-            </ul>
-            <button id="addAnimalButton">Agregar Animal</button>
-            <button id="editAnimalButton">Editar Animal</button>
-            <button id="deleteAnimalButton">Eliminar Animal</button>
-            
+                        
+            <div class="animal-container">
+                <h2 class="animal-title">Lista de Animales</h2>
+                <table class="animal-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Descripción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${animalArray.map(animal => `
+                            <tr>
+                                <td>${animal.id}</td>
+                                <td>${animal.nombre}</td>
+                                <td>${animal.description}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+                <div class="button-container">
+                    <button id="addAnimalButton" class="styled-button">Agregar Animal</button>
+                    <button id="editAnimalButton" class="styled-button">Editar Animal</button>
+                    <button id="deleteAnimalButton" class="styled-button">Eliminar Animal</button>
+                </div>
+            </div>
+
 
             <!--popup para agregar-->
             <div id="popupAddForm" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
@@ -228,7 +246,7 @@ export function loadAnimalPage() {
 
         DeleteAnimal(id);
 
-        popupEditForm.style.display = 'none';
+        popupDeleteForm.style.display = 'none';
         popupOverlay.style.display = 'none';
     });
 
