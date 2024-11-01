@@ -75,7 +75,7 @@ export function loadCheckpointPage() {
                     </select><br><br>
                     
                     <label for="ChkPtEditlat">lat</label>
-                    <input type="text" id="ChkPtEditlat" name="Lat" required><br><br>
+                    <input type="text" id="ChkPtEditlat" name="Lat" required ><br><br>
                     <label for="ChkPtEditlong">long</label>
                     <input type="text" id="ChkPtEditlong" name="Long" required><br><br>
                     <label for="ChkPtEditDescription">Descripción:</label>
@@ -99,9 +99,9 @@ export function loadCheckpointPage() {
                     </select><br><br>
                     
                     <label for="ChkPtDeletelat">lat</label>
-                    <input type="text" id="ChkPtDeletelat" name="Lat" required><br><br>
+                    <input type="text" id="ChkPtDeletelat" name="Lat" required readonly><br><br>
                     <label for="ChkPtDeletelonng">long</label>
-                    <input type="text" id="ChkPtDeletelong" name="Long" required><br><br>
+                    <input type="text" id="ChkPtDeletelong" name="Long" required readonly><br><br>
                     <label for="ChkPtDeleteDescription">Descripción:</label>
                     <input type="text" id="ChkPtDeleteDescription" name="description" required readonly><br><br>
                     <button type="submit" id = "submitDelete">Guardar</button>
