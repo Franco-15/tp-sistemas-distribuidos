@@ -1,12 +1,10 @@
-import { saveToDatabase } from '../repositories/couchdb.js'; //todo:chequear 
-import { sendSSE } from '../routes/sse/sse.controller.js'; //todo chequear 
-
 export function handleMessage(topic, message) {
-    if (topic === 'AAA') {
+    if (topic === 'checkpoint') {
         try {
             const data = JSON.parse(message.toString());
-            saveToDatabase(data);
-            sendSSE(data);
+            console.log(data);
+            //!   aca tendria q persistir la info de los mensajes?
+            //!   como toma el servidor la info q recibe del mqtt?
         } catch (error) {
             console.error('Error al procesar el mensaje:', error);
         }

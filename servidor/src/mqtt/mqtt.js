@@ -1,17 +1,18 @@
-//el nombre desp lo vemos 
-//todo: nombre del tema?
-
 import mqtt from 'mqtt';
+import dotenv from 'dotenv';
 
-const mqttClient = mqtt.connect(process?.env?.MQTT_BROKER_URL);
+dotenv.config(); // carga variables de entorno
+
+const mqttClient = mqtt.connect(process.env.MQTT_BROKER_URL); // Conectar al broker
+
 
 mqttClient.on('connect', () => {
     console.log('Conectado al broker MQTT');
-    mqttClient.subscribe('AAAA', (err) => {
+    mqttClient.subscribe('checkpoint', (err) => {
         if (err) {
             console.error('Error al suscribirse:', err);
         } else {
-            console.log('Suscrito al tema:AAAA ');
+            console.log('Suscrito al tema: checkpoint ');
         }
     });
 });
