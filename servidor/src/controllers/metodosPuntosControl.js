@@ -31,7 +31,11 @@ export const getPuntoControl = (idPtoControl,res) => {  //Entiendo que aca el re
         res.end()
         return
     }else{
-        return JSON.stringify(result[buscado])
+        const checkpoint = JSON.stringify(result[buscado])
+        res.writeHead(200,{'Content-Type': 'application/json', 'message': 'Se encontro el checkpoint'})
+        res.write(checkpoint)
+        res.end()
+        return
     }
 }
 

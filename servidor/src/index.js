@@ -150,12 +150,10 @@ const server = http.createServer((req, res) => {
                 checkpoints = metodosPuntosControl.getPuntosControl()
                 res.writeHead(200,{'Content-Type': 'application/json', 'message': 'Se encontro el listado de los checkpoints'})
                 res.write(checkpoints)
+                res.end()
             }else if(parametros.length == 2){
-                const checkpoint = metodosPuntosControl.getPuntoControl(parametros[1],res)
-                res.writeHead(200,{'Content-Type': 'application/json', 'message': 'Se encontro el checkpoint'})
-                res.write(checkpoint)
+                metodosPuntosControl.getPuntoControl(parametros[1],res)
             }
-            res.end()
         }else if(req.method === 'POST'){ 
             try{
                 let body = '';
@@ -208,8 +206,8 @@ const server = http.createServer((req, res) => {
                             long: parsedBody.long,
                             description: parsedBody.description
                         }
-                        metodosPuntosControl.patchCheckpoint(newCheckpoint,res)
-                        res.writeHead({'message':'El punto de control ha sido modificado'})
+                        metodosPuntosControl.patchPuntosControl(newCheckpoint,res)
+                        res.writeHead(200,{'message':'El punto de control ha sido modificado'})
                         res.end()
                     }
                 })
