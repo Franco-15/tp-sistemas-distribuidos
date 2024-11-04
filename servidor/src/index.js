@@ -12,8 +12,8 @@ const rutaRefresh = "/refresh"
 
 
 let parametros
-const animals = metodosAnimales.getAnimales()
-const checkpoints = metodosPuntosControl.getPuntosControl()
+let animals
+let checkpoints 
 
 const server = http.createServer((req, res) => {
     if(req.url.startsWith(rutaAnimal)){
@@ -24,8 +24,10 @@ const server = http.createServer((req, res) => {
             if(parametros.length == 1){
                 //Metodo para obtener todas las vacas
                 try{
+                    animals = metodosAnimales.getAnimales()
                     res.writeHead(200,{'Content-Type': 'application/json', 'message': 'Se encontro el listado de animales'})
-                    res.write(Animals)
+                    res.write(animals)
+                    res.end()
                 }catch(e){
                     res.writeHead(500,{'message':'Falcaont'})  
                     res.end()
@@ -41,19 +43,20 @@ const server = http.createServer((req, res) => {
                         req.on('end', () => {
                             const parsedBody = JSON.parse(body);
                             //Habria que verificar que el UUID del arduino concuerde con alguno del checkpoints.json
-                            const checkpointsss = metodosPuntosControl.getJson()
+                            checkpoints = metodosPuntosControl.getJson()
                             //console.log(checkpointsss)
                             const externalId = parsedBody.checkpointId
-                            //console.log(externalId)
-                            const exists = checkpointsss.some(checkpoint => checkpoint.id === externalId);
+                            console.log(externalId)
+                            const exists = checkpoints.some(checkpoint => checkpoint.id === externalId);
                             if (exists) {    
                                 //directamente dejo los animales que tengo registrados
                                 const recAnimals = parsedBody.animals
-                                const filteredAnimals = recAnimals.filter(animal => animals.hasOwnProperty(animal.id));
-
-                                //*FALTARIA VER COMO BRINDAR EL RESTO DE INFORMACION DE LOS ANIMALES
-                                //console.log(filteredAnimals)
-
+                                animals = metodosAnimales.getJson()
+                                console.log("animals")
+                                console.log(animals)
+                                console.log("recAnimals")
+                                console.log(recAnimals)
+                                const filteredAnimals = animals.filter(animal => recAnimals.some(recAnimal => animal.id === recAnimal.id));
                                 res.writeHead(200,{'Content-Type': 'application/json', 'message': 'Animales localizados'})
                                 res.write(JSON.stringify(filteredAnimals))
                             } 
@@ -69,9 +72,7 @@ const server = http.createServer((req, res) => {
                    
                 }else{
                     //Metodo para obtener una vaca especifica
-                    const animalBuscado = metodosAnimales.getAnimal(parametros[1],res)
-                    res.writeHead(200,{'Content-Type': 'application/json', 'message': 'Animal localizado'})
-                    res.write(JSON.stringify(filteredAnimals))
+                    metodosAnimales.getAnimal(parametros[1],res)
                 }
             }
         }else if(req.method === 'POST'){ 
@@ -146,6 +147,7 @@ const server = http.createServer((req, res) => {
         parametros = parametros.filter(el => el != '')   //filtro los vacios
         if(req.method === 'GET'){
             if(parametros.length == 1){
+                checkpoints = metodosPuntosControl.getPuntosControl()
                 res.writeHead(200,{'Content-Type': 'application/json', 'message': 'Se encontro el listado de los checkpoints'})
                 res.write(checkpoints)
             }else if(parametros.length == 2){

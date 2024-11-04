@@ -1,8 +1,8 @@
 import { readFileSync, writeFileSync, existsSync } from 'fs';
 
-const FILE_PATH =  './data/animales.json'
+const FILE_PATH =  './data/animales.json'  //!Ver bien como poner direcciones que se capten desde cualquier punto
 
-const getJson = () => {
+export const getJson = () => {
     const fileExist = existsSync(FILE_PATH);
     if (fileExist) {
         const file = readFileSync(FILE_PATH, 'utf-8');
@@ -32,7 +32,12 @@ export const getAnimal = (idAnimal,res) => {  //Entiendo que aca el req tendria 
         res.end()
         return
     }else{
-        return JSON.stringify(result[buscado])
+        let animalBuscado = JSON.stringify(result[buscado])
+        console.log(animalBuscado)
+        res.writeHead(200,{'Content-Type': 'application/json', 'message': 'Animal localizado'})
+        res.write(animalBuscado)
+        res.end()
+        return
     }
 }
 

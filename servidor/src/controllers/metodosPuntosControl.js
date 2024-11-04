@@ -1,11 +1,10 @@
 import { readFileSync, writeFileSync, existsSync } from 'fs';
 
-const FILE_PATH = "./data/checkpoints.json"
+const FILE_PATH = "./data/checkpoints.json" //!Ver bien como poner direcciones que se capten desde cualquier punto
 
 export const getJson = () => {
     const fileExist = existsSync(FILE_PATH);
     if (fileExist) {
-        console.log("ESTOY ACA DSJFGHASDJOGHAEIOUGVJNEARIOUGNIOWEHNFIOEWJFNOW")
         const file = readFileSync(FILE_PATH, 'utf-8');
         const parsedFile = JSON.parse(file);
         return parsedFile;
