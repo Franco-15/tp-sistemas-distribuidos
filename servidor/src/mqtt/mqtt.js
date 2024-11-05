@@ -7,7 +7,7 @@ const mqttClient = mqtt.connect(process.env.MQTT_BROKER_URL); // Conectar al bro
 
 
 mqttClient.on('connect', () => {
-    console.log('Conectado al broker MQTT');
+    console.log('Conectado al broker MQTT AAAAA');
     mqttClient.subscribe('checkpoint', (err) => {
         if (err) {
             console.error('Error al suscribirse:', err);
@@ -20,5 +20,7 @@ mqttClient.on('connect', () => {
 mqttClient.on('error', (err) => {
     console.error('Error en el cliente MQTT:', err);
 });
+
+
 
 export default mqttClient;
