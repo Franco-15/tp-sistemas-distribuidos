@@ -14,12 +14,15 @@ let animals
 let checkpoints 
 
 const server = http.createServer((req, res) => {
+    res.setHeader("Access-Control-Allow-Origin", "*"); // Permite todas las fuentes
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS"); // Métodos permitidos
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type"); // Encabezados permitidos
     if(req.url.startsWith(rutaAnimal)){
         parametros = req.url.split("/")
         parametros = parametros.filter(el => el != '')   //filtro los vacios
         if(req.method === 'GET'){
             console.log(parametros.length)
-            if(parametros.length == 1){
+            if(parametros.length == 2){
                 //Metodo para obtener todas las vacas
                 try{
                     animals = metodosAnimales.getAnimales()
@@ -30,8 +33,8 @@ const server = http.createServer((req, res) => {
                     res.writeHead(500,{'message':'Falcaont'})  
                     res.end()
                 }
-            }else if(parametros.length == 2){
-                if(parametros[1] == "position"){
+            }else if(parametros.length == 3){
+                if(parametros[2] == "position"){
                     try {
                         //Metodo para rescatar posiciones de todos los animales
                         let body = '';
@@ -70,7 +73,7 @@ const server = http.createServer((req, res) => {
                    
                 }else{
                     //Metodo para obtener una vaca especifica
-                    metodosAnimales.getAnimal(parametros[1],res)
+                    metodosAnimales.getAnimal(parametros[2],res)
                 }
             }
         }else if(req.method === 'POST'){ 

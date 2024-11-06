@@ -10,7 +10,9 @@ export function loadAnimalPage() {
         const app = document.getElementById('app');
 
 
-        //todo ver como centrar los input del popup
+        //todo solucionar que pasa si el array esta vacio
+
+
         app.innerHTML = `
                         
             <div class="animal-container">
