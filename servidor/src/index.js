@@ -1,14 +1,12 @@
 import http from 'http';
-import { v4 as uuidv4 } from 'uuid';
 import * as metodosAnimales from './controllers/metodosAnimales.js'
 import * as metodosPuntosControl from './controllers/metodosPuntosControl.js'
-import { parse } from 'path';
 
 const HTTP_PORT = 3000;  //Esto es placebo supongo (no se xd)
-const rutaAnimal = "/animals"
-const rutaPtoDeCtrl = "/checkpoints"
-const rutaLogin = "/login"
-const rutaRefresh = "/refresh"
+const rutaAnimal = "/api/animals"
+const rutaPtoDeCtrl = "/api/checkpoints"
+const rutaLogin = "/api/login"
+const rutaRefresh = "/api/refresh"
 
 
 let parametros

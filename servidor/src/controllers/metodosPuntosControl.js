@@ -1,6 +1,6 @@
 import { readFileSync, writeFileSync, existsSync } from 'fs';
 
-const FILE_PATH = "./data/checkpoints.json" //!Ver bien como poner direcciones que se capten desde cualquier punto
+const FILE_PATH = "./src/data/checkpoints.json" 
 
 export const getJson = () => {
     const fileExist = existsSync(FILE_PATH);
