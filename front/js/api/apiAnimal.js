@@ -1,24 +1,23 @@
-import { type } from "os";
 
 
 // obtener el array de animales desde el back
 export function getAnimals() {
 
-    axios.get('http://localhost:3000/api/animals')
+    return axios.get('http://localhost:3000/api/animals')
     .then(response => {
         console.log("llegue a la api papa") //!borra
 
-        const data = response.data; //obj .Json
+        const data = response.data.data; //obj .Json
 
-        //console.log(typeof(response)) //!borrar
+        console.log(data) //!borrar
 
-        const animals = data.content.map(animal => ({
+        const animals = data.map(animal => ({
             id: animal.id,
             name: animal.name,
             description: animal.description
         }));
 
-        console.log(animals) //!borrar
+        console.log(typeof(animals)) //!borrar
         return animals;
     })
     .catch(error => {
@@ -28,8 +27,18 @@ export function getAnimals() {
 
 }
 
-export function PostAnimal(id, nombre, description) {
+export function PostAnimal(id, name, description) {
     // axios.post('')
+    const data = {
+        id: id,
+        name: name,
+        description: description
+    }
+    console.log('data antes de mandar:', data);
+    axios.post('http://localhost:3000/api/animals', data)
+    .then((response) => {
+        console.log(response.status, response.data);
+    })
     //todo: enviar aca los datos del animal para el post y usar el res para determinar si llego bien o no
     //todo en el caso que llegue bien, disparar el get
 }

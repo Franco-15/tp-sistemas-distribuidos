@@ -3,5 +3,10 @@
         "id": "11:5e:e7:84:c4:f6",
         "name": "Grego",
         "description": "Mandarina"
+    },
+    {
+        "id": "11:5e:e7:83:c4:f6",
+        "name": "Fran",
+        "description": "Goat"
     }
 ]

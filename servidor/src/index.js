@@ -1,3 +1,5 @@
+import express from 'express'; 
+import cors from 'cors';
 import http from 'http';
 import * as metodosAnimales from './controllers/metodosAnimales.js'
 import * as metodosPuntosControl from './controllers/metodosPuntosControl.js'
@@ -8,15 +10,20 @@ const rutaPtoDeCtrl = "/api/checkpoints"
 const rutaLogin = "/api/login"
 const rutaRefresh = "/api/refresh"
 
-
 let parametros
 let animals
 let checkpoints 
 
+// usamos express y cors para poder comunicar back/front
+const app = express();
+app.use(cors());
+
+
 const server = http.createServer((req, res) => {
     res.setHeader("Access-Control-Allow-Origin", "*"); // Permite todas las fuentes
-    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS"); // Métodos permitidos
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PATCH, OPTIONS"); // Metodos permitidos
     res.setHeader("Access-Control-Allow-Headers", "Content-Type"); // Encabezados permitidos
+
     if(req.url.startsWith(rutaAnimal)){
         parametros = req.url.split("/")
         parametros = parametros.filter(el => el != '')   //filtro los vacios
@@ -103,13 +110,13 @@ const server = http.createServer((req, res) => {
             }
         }else if(req.method === 'DELETE'){
             if(parametros.length == 1){
-                //Metodo para eliminar todos los animales
+                //Metodo para eliminar (matar) todos los animales
                 metodosAnimales.deleteAnimales(req,res)
             }else if(parametros.length == 2){
-                //Metodo para eliminar un animal especifico
+                //Metodo para eliminar (matar) un animal especifico
                 metodosAnimales.deleteAnimal(parametros[1],res)
             }
-            res.writeHead(200,{'message':'Eliminación Realizada'})
+            res.writeHead(200,{'message':'Eliminacion Realizada'})
             res.end()
         }else if(req.method === 'PATCH'){
             try {
@@ -136,7 +143,7 @@ const server = http.createServer((req, res) => {
                 })
             } catch (e) {
                 console.log('Error', e)
-                res.writeHead(500, {'message':'Error inesperado'}) //? CHUSMEAR PORQUE SE LLEGARÍA A ESTA LINEA DE CODIGO
+                res.writeHead(500, {'message':'Error inesperado'}) //? CHUSMEAR PORQUE SE LLEGARIA A ESTA LINEA DE CODIGO
                 res.end()
             }
         }else{ //Caso se confundio de calle
@@ -236,7 +243,7 @@ const server = http.createServer((req, res) => {
                     res.end()
                     return;
                 }else{
-                    const passwordCodif = "" //?Habria que realizar la codificación de la contraseña para compararla con la del txt
+                    const passwordCodif = "" //?Habria que realizar la codificacion de la contraseña para compararla con la del txt
                     //*Habria que agarrar la info del json y compararla con la del parsedBody
                     res.writeHead(200,{'message':'Usuario logueado'})
                     res.end()
