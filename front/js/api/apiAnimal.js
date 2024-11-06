@@ -3,6 +3,7 @@
 // obtener el array de animales desde el back
 export function getAnimals() {
 
+    /*
     //! funcion solo de testeo, borrar despues
     // Datos simulados de animales
     const mockData = [
@@ -11,36 +12,32 @@ export function getAnimals() {
         { id: 'c2:5a:3d:ae:10:28', nombre: "Tomi", description: "Gallina" }
     ];
 
-    
-    // Retorna los datos simulados como una promesa
+       // Retorna los datos simulados como una promesa
     return new Promise(resolve => {
         setTimeout(() => resolve(mockData), 500); // Simula una espera de 500ms (no se pq es esto pero chatgpt)
     });
+    */
     
 
-    
-    /*
-    return fetch('http://localhost:3000/animals')
-    //! USAR AXIOS
-        .then(response => {
-            if (!response.ok) {
-                throw new Error("Error al obtener los datos de los animales");
-            }
-            return response.json(); //? es necesario esto pq creo que ya viene en formato json?
-        })
-        .then(data => {
-            // Mapea solo los datos relevantes (id, nombre, descripción)
-            return data.map(animal => ({
-                id: animal.id,
-                nombre: animal.name,
-                description: animal.description
-            }));
-        })
-        .catch(error => {
-            console.error("Error en la solicitud:", error);
-            return [];
-        });
-        */
+    axios.get('http://localhost:3000/animals')
+    .then(response => {
+        
+        const data = response.data; //obj .Json
+        
+        const animals = data.map(animal => ({
+            id: animal.id,
+            nombre: animal.name,
+            description: animal.description
+        }));
+
+        return animals;
+    })
+    .catch(error => {
+        console.error("Error en la solicitud:", error);
+        return [];
+    });
+
+ 
 }
 
 export function PostAnimal(id, nombre, description) {
