@@ -52,10 +52,10 @@ const server = http.createServer((req, res) => {
                     setHeaders(res)
                     res.writeHead(200,{'Content-Type': 'application/json', 'message': 'Se encontro el listado de animales'})
                     res.write(animals)
-                    res.end()
+                    return res.end()
                 }catch(e){
                     res.writeHead(500,{'message':'Falcaont'})  
-                    res.end()
+                    return res.end()
                 }
             }else if(parametros.length == 3){
                 if(parametros[2] == "position"){
@@ -88,11 +88,11 @@ const server = http.createServer((req, res) => {
                             else {
                                 res.writeHead(500,{'message':'ID desconocido'})
                             }
-                            res.end()
+                            return res.end()
                         })
                     } catch (e) {
                     res.writeHead(500,{'message':'Error inesperado'})  //? CHUSMEAR PORQUE SE LLEGARÍA A ESTA LINEA DE CODIGO
-                    res.end()
+                    return res.end()
                 }
                    
                 }else{
@@ -125,7 +125,7 @@ const server = http.createServer((req, res) => {
             }catch (e){
                 console.log('Error', e)
                 res.writeHead(500, {'message':'Error inesperado'}) //? CHUSMEAR PORQUE SE LLEGARÍA A ESTA LINEA DE CODIGO
-                res.end()
+                return res.end()
             }
         }else if(req.method === 'DELETE'){
             setHeaders (res) ;
@@ -138,7 +138,7 @@ const server = http.createServer((req, res) => {
                 metodosAnimales.deleteAnimal(parametros[2],res)
             }
             res.writeHead(200,{'message':'Eliminacion Realizada'})
-            res.end()
+            return res.end()
         }else if(req.method === 'PATCH'){
             try {
                 setHeaders(res);
@@ -150,39 +150,38 @@ const server = http.createServer((req, res) => {
                     const parsedBody = JSON.parse(body);
                     if(!parametros[1] || !parsedBody.name || !parsedBody.description){ //Entra por aca si falta algun dato
                         res.writeHead(400, {'message':'No se pudo modificar al animal debido a la falta de datos'})
-                        res.end()
-                        return;
+                        return res.end()
                     }else{
                         const newAnimal = {
-                            id: parametros[1],
+                            id: parametros[2],
                             name: parsedBody.name,
                             description: parsedBody.description
                         }
                         metodosAnimales.patchAnimal(newAnimal,res)
                         res.writeHead(200,{'message':'Se modifico correctamente al animal'})
-                        res.end()
+                        return res.end()
                     }
                 })
             } catch (e) {
                 console.log('Error', e)
                 res.writeHead(500, {'message':'Error inesperado'}) //? CHUSMEAR PORQUE SE LLEGARIA A ESTA LINEA DE CODIGO
-                res.end()
+                return res.end()
             }
         }else{ //Caso se confundio de calle
             res.writeHead(404,  {'message':'Ruta no encontrada'});
-            res.end() 
+            return res.end() 
         }
     } else if (req.url.startsWith(rutaPtoDeCtrl)){
         parametros = req.url.split("/")
         parametros = parametros.filter(el => el != '')   //filtro los vacios
         if(req.method === 'GET'){
-            if(parametros.length == 1){
+            if(parametros.length == 2){
                 checkpoints = metodosPuntosControl.getPuntosControl()
                 res.writeHead(200,{'Content-Type': 'application/json', 'message': 'Se encontro el listado de los checkpoints'})
                 res.write(checkpoints)
-                res.end()
-            }else if(parametros.length == 2){
-                metodosPuntosControl.getPuntoControl(parametros[1],res)
+                return res.end()
+            }else if(parametros.length == 3){
+                metodosPuntosControl.getPuntoControl(parametros[2],res)
             }
         }else if(req.method === 'POST'){ 
             try{
@@ -200,23 +199,23 @@ const server = http.createServer((req, res) => {
                     }else{
                         metodosPuntosControl.postPuntoControl(parsedBody,res)
                         res.writeHead(200,{'message':'Se agrego el punto de control'})
-                        res.end()
+                        return res.end()
                     }
                 })
             }catch (e){
                 console.log('Error', e)
                 res.writeHead(500, {'message':'Error inesperado'}) //? CHUSMEAR PORQUE SE LLEGARÍA A ESTA LINEA DE CODIGO
-                res.end()
+                return res.end()
             }
         }else if(req.method === 'DELETE'){
-            if(parametros.length == 1){
+            if(parametros.length == 2){
                 metodosPuntosControl.deletePuntosControl(req,res)
                 res.writeHead(200,{'message':'Se eliminaron los punto de control'})
-            }else if(parametros.length == 2){
-                metodosPuntosControl.deletePuntoControl(parametros[1],res)
+            }else if(parametros.length == 3){
+                metodosPuntosControl.deletePuntoControl(parametros[2],res)
                 res.writeHead(200,{'message':'Se elimino el punto de control'})
             }
-            res.end()
+            return res.end()
         }else if(req.method === 'PATCH'){
             try {
                 let body = '';
@@ -227,28 +226,27 @@ const server = http.createServer((req, res) => {
                     const parsedBody = JSON.parse(body);
                     if(!parametros[1] || !parsedBody.lat || !parsedBody.long || !parsedBody.description){ //Entra por aca si falta algun dato
                         res.writeHead(400, {'message':'No se pudo modificar el punto de control debido a la falta de datos'})
-                        res.end()
-                        return;
+                        return res.end()
                     }else{
                         const newCheckpoint = {
-                            id: parametros[1],
+                            id: parametros[2],
                             lat: parsedBody.lat,
                             long: parsedBody.long,
                             description: parsedBody.description
                         }
                         metodosPuntosControl.patchPuntosControl(newCheckpoint,res)
                         res.writeHead(200,{'message':'El punto de control ha sido modificado'})
-                        res.end()
+                        return res.end()
                     }
                 })
             } catch (e) {
                 console.log('Error', e)
                 res.writeHead(500,  {'message':'Error inesperado'}) //? CHUSMEAR PORQUE SE LLEGARÍA A ESTA LINEA DE CODIGO
-                res.end()
+                return res.end()
             }
         }else{ //Caso se confundio de calle
             res.writeHead(404, {'message':'Ruta no encontrada'})
-            res.end() 
+            return res.end() 
         }
     }else if(req.url.startsWith(rutaLogin)){
         //ACA HABRIA QUE DESARROLLAR EL TEMA DEL LOGIN
@@ -268,19 +266,19 @@ const server = http.createServer((req, res) => {
                     const passwordCodif = "" //?Habria que realizar la codificacion de la contraseña para compararla con la del txt
                     //*Habria que agarrar la info del json y compararla con la del parsedBody
                     res.writeHead(200,{'message':'Usuario logueado'})
-                    res.end()
+                    return res.end()
                 }
             })
         }catch (e){
             console.log('Error', e)
             res.writeHead(500, {'message':'Error inesperado'}) //? CHUSMEAR PORQUE SE LLEGARÍA A ESTA LINEA DE CODIGO
-            res.end()
+            return res.end()
         }
     }else if(req.url.startsWith(rutaRefresh)){
         //ACA HABRIA QUE DESARROLLAR EL TEMA DEL REFRESH
     }else { //Caso se confundio de calle
         res.writeHead(404, {'message':'Ruta no encontrada'})
-        res.end() 
+        return res.end() 
     }
 })
 
