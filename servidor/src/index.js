@@ -175,6 +175,7 @@ const server = http.createServer((req, res) => {
         parametros = req.url.split("/")
         parametros = parametros.filter(el => el != '')   //filtro los vacios
         if(req.method === 'GET'){
+            setHeaders(res);
             if(parametros.length == 2){
                 checkpoints = metodosPuntosControl.getPuntosControl()
                 res.writeHead(200,{'Content-Type': 'application/json', 'message': 'Se encontro el listado de los checkpoints'})
@@ -185,6 +186,7 @@ const server = http.createServer((req, res) => {
             }
         }else if(req.method === 'POST'){ 
             try{
+                setHeaders(res);
                 let body = '';
                 req.on('data', (chunk) => {
                     body = body + chunk;
@@ -208,6 +210,7 @@ const server = http.createServer((req, res) => {
                 return res.end()
             }
         }else if(req.method === 'DELETE'){
+            setHeaders(res);
             if(parametros.length == 2){
                 metodosPuntosControl.deletePuntosControl(req,res)
                 res.writeHead(200,{'message':'Se eliminaron los punto de control'})
@@ -218,6 +221,7 @@ const server = http.createServer((req, res) => {
             return res.end()
         }else if(req.method === 'PATCH'){
             try {
+                setHeaders(res);
                 let body = '';
                 req.on('data', (chunk) => {
                     body = body + chunk;
@@ -251,6 +255,7 @@ const server = http.createServer((req, res) => {
     }else if(req.url.startsWith(rutaLogin)){
         //ACA HABRIA QUE DESARROLLAR EL TEMA DEL LOGIN
         try{
+            setHeaders(res);
             let body = '';
             req.on('data', (chunk) => {
                 body = body + chunk;
@@ -275,6 +280,7 @@ const server = http.createServer((req, res) => {
             return res.end()
         }
     }else if(req.url.startsWith(rutaRefresh)){
+        setHeaders(res);
         //ACA HABRIA QUE DESARROLLAR EL TEMA DEL REFRESH
     }else { //Caso se confundio de calle
         res.writeHead(404, {'message':'Ruta no encontrada'})
