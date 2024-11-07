@@ -3,6 +3,7 @@ import cors from 'cors';
 import http from 'http';
 import * as metodosAnimales from './controllers/metodosAnimales.js'
 import * as metodosPuntosControl from './controllers/metodosPuntosControl.js'
+import { validUser } from './controllers/metodosAdmin.js';
 
 const HTTP_PORT = 3000;  //Esto es placebo supongo (no se xd)
 const rutaAnimal = "/api/animals"
@@ -61,6 +62,7 @@ const server = http.createServer((req, res) => {
                 if(parametros[2] == "position"){
                     try {
                         //Metodo para rescatar posiciones de todos los animales
+                        setHeaders(res); 
                         let body = '';
                         req.on('data', (chunk) => {
                             body = body + chunk;
@@ -72,8 +74,9 @@ const server = http.createServer((req, res) => {
                             //console.log(checkpointsss)
                             const externalId = parsedBody.checkpointId
                             console.log(externalId)
-                            const exists = checkpoints.some(checkpoint => checkpoint.id === externalId);
-                            if (exists) {    
+                            const exists = checkpoints.findIndex(checkpoint => checkpoint.id === externalId);
+                            if (exists>-1) {
+                                const dataCheckpoint = checkpoints[exists]
                                 //directamente dejo los animales que tengo registrados
                                 const recAnimals = parsedBody.animals
                                 animals = metodosAnimales.getJson()
@@ -82,8 +85,17 @@ const server = http.createServer((req, res) => {
                                 console.log("recAnimals")
                                 console.log(recAnimals)
                                 const filteredAnimals = animals.filter(animal => recAnimals.some(recAnimal => animal.id === recAnimal.id));
+                                const result = {
+                                    id: dataCheckpoint.id,
+                                    lat: dataCheckpoint.lat,
+                                    long: dataCheckpoint.long,
+                                    description: dataCheckpoint.description,
+                                    animals: filteredAnimals    
+                                }
+
+
                                 res.writeHead(200,{'Content-Type': 'application/json', 'message': 'Animales localizados'})
-                                res.write(JSON.stringify(filteredAnimals))
+                                res.write(JSON.stringify(result))
                             } 
                             else {
                                 res.writeHead(500,{'message':'ID desconocido'})
@@ -253,32 +265,8 @@ const server = http.createServer((req, res) => {
             return res.end() 
         }
     }else if(req.url.startsWith(rutaLogin)){
-        //ACA HABRIA QUE DESARROLLAR EL TEMA DEL LOGIN
-        try{
-            setHeaders(res);
-            let body = '';
-            req.on('data', (chunk) => {
-                body = body + chunk;
-            });
-            req.on('end', () => {
-                const parsedBody = JSON.parse(body);
-                //Habria que aplicar un chequeo de datos(no lo hice porque ni idea que nombres tendran las variables)
-                if(!parsedBody.username || !parsedBody.password){
-                    res.writeHead(400, {'message':'No se pudo verificar al usuario debido a la ausencia de datos'})
-                    res.end()
-                    return;
-                }else{
-                    const passwordCodif = "" //?Habria que realizar la codificacion de la contraseña para compararla con la del txt
-                    //*Habria que agarrar la info del json y compararla con la del parsedBody
-                    res.writeHead(200,{'message':'Usuario logueado'})
-                    return res.end()
-                }
-            })
-        }catch (e){
-            console.log('Error', e)
-            res.writeHead(500, {'message':'Error inesperado'}) //? CHUSMEAR PORQUE SE LLEGARÍA A ESTA LINEA DE CODIGO
-            return res.end()
-        }
+        setHeaders(res);
+        validUser(req,res)
     }else if(req.url.startsWith(rutaRefresh)){
         setHeaders(res);
         //ACA HABRIA QUE DESARROLLAR EL TEMA DEL REFRESH
