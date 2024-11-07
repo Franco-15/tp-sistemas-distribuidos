@@ -35,10 +35,16 @@ export function PostAnimal(id, name, description) {
         description: description
     }
     console.log('data antes de mandar:', data);
-    axios.post('http://localhost:3000/api/animals', data)
+    axios.post('http://localhost:3000/api/animals', JSON.stringify(data), {
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
     .then((response) => {
         console.log(response.status, response.data);
-    })
+    }).catch(error => {
+        console.error(error);
+    });
     //todo: enviar aca los datos del animal para el post y usar el res para determinar si llego bien o no
     //todo en el caso que llegue bien, disparar el get
 }

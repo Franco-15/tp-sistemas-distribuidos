@@ -14,15 +14,28 @@ let parametros
 let animals
 let checkpoints 
 
+
+//!capaz que hay que agregar un if para el option, hay que ver como funciona 
+
+
 // usamos express y cors para poder comunicar back/front
 const app = express();
-app.use(cors());
+
+app.options('*', cors()); // Permite todas las solicitudes de preflight OPTIONS
+
+app.use(cors({
+    origin: 'http://localhost:3000', // Cambia al origen correcto
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Metodos permitidos
+    allowedHeaders: ['Content-Type', 'Authorization'], // Encabezados permitidos
+    //credentials: true
+}));
 
 
 const server = http.createServer((req, res) => {
     res.setHeader("Access-Control-Allow-Origin", "*"); // Permite todas las fuentes
-    res.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PATCH, OPTIONS"); // Metodos permitidos
-    res.setHeader("Access-Control-Allow-Headers", "Content-Type"); // Encabezados permitidos
+    /*res.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PATCH, OPTIONS"); // Metodos permitidos
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With"); // Encabezados permitidos */
+
 
     if(req.url.startsWith(rutaAnimal)){
         parametros = req.url.split("/")
