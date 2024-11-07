@@ -32,11 +32,14 @@ app.use(cors({
 
 
 const server = http.createServer((req, res) => {
-    res.setHeader("Access-Control-Allow-Origin", "*"); // Permite todas las fuentes
-    /*res.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PATCH, OPTIONS"); // Metodos permitidos
-    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With"); // Encabezados permitidos */
 
+    if ((req.method) == 'OPTIONS') {
+        setHeaders(res); 
+        res.writeHead(204); 
+        return res.end();
+    } 
 
+    console.log(req.method)
     if(req.url.startsWith(rutaAnimal)){
         parametros = req.url.split("/")
         parametros = parametros.filter(el => el != '')   //filtro los vacios
@@ -46,6 +49,7 @@ const server = http.createServer((req, res) => {
                 //Metodo para obtener todas las vacas
                 try{
                     animals = metodosAnimales.getAnimales()
+                    setHeaders(res)
                     res.writeHead(200,{'Content-Type': 'application/json', 'message': 'Se encontro el listado de animales'})
                     res.write(animals)
                     res.end()
@@ -98,6 +102,7 @@ const server = http.createServer((req, res) => {
             }
         }else if(req.method === 'POST'){ 
             try{
+                setHeaders(res)
                 let body = '';
                 req.on('data', (chunk) => {
                     body = body + chunk;
@@ -110,6 +115,7 @@ const server = http.createServer((req, res) => {
                         return;
                     }else{
                         console.log(parsedBody.id)
+                        
                         metodosAnimales.postAnimal(parsedBody,res)
                         res.writeHead(200,{'Content-Type': 'application/json', 'message': 'Vaca-yendo gente al baile'})
                         res.end()
@@ -122,17 +128,20 @@ const server = http.createServer((req, res) => {
                 res.end()
             }
         }else if(req.method === 'DELETE'){
-            if(parametros.length == 1){
+            setHeaders (res) ;
+            if(parametros.length == 2){
+                
                 //Metodo para eliminar (matar) todos los animales
                 metodosAnimales.deleteAnimales(req,res)
-            }else if(parametros.length == 2){
+            }else if(parametros.length == 3){
                 //Metodo para eliminar (matar) un animal especifico
-                metodosAnimales.deleteAnimal(parametros[1],res)
+                metodosAnimales.deleteAnimal(parametros[2],res)
             }
             res.writeHead(200,{'message':'Eliminacion Realizada'})
             res.end()
         }else if(req.method === 'PATCH'){
             try {
+                setHeaders(res);
                 let body = '';
                 req.on('data', (chunk) => {
                     body = body + chunk;
@@ -274,6 +283,12 @@ const server = http.createServer((req, res) => {
         res.end() 
     }
 })
+
+const setHeaders= (res) => {
+    res.setHeader("Access-Control-Allow-Origin", "*"); // Permite todas las fuentes
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PATCH, OPTIONS"); // Metodos permitidos
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With"); // Encabezados permitidos 
+}
 
 server.listen(HTTP_PORT, () => {
     console.log(`Servidor escuchando en puerto ${HTTP_PORT}`)

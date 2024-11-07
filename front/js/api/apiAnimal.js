@@ -34,7 +34,7 @@ export function PostAnimal(id, name, description) {
         name: name,
         description: description
     }
-    console.log('data antes de mandar:', data);
+
     axios.post('http://localhost:3000/api/animals', JSON.stringify(data), {
         headers: {
             'Content-Type': 'application/json',
@@ -45,8 +45,10 @@ export function PostAnimal(id, name, description) {
     }).catch(error => {
         console.error(error);
     });
+
     //todo: enviar aca los datos del animal para el post y usar el res para determinar si llego bien o no
     //todo en el caso que llegue bien, disparar el get
+
 }
 
 export function PatchAnimal(id, nombre, description) {
@@ -57,6 +59,18 @@ export function PatchAnimal(id, nombre, description) {
 
 export function DeleteAnimal(id) {
     // axios.post('') en la ruta tiene que ir el id
+
+    axios.delete('http://localhost:3000/api/animals/'+id, {
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+    .then((response) => {
+        console.log(response.status, response.data);
+    }).catch(error => {
+        console.error(error);
+    });
+
     //todo: enviar aca los datos del animal para el post y usar el res para determinar si llego bien o no
     
     //todo en el caso que llegue bien, disparar el get
