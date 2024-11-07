@@ -14,14 +14,3 @@ export function getLoc() {
         setTimeout(() => resolve(mockData), 500); // Simula una espera de 500ms (no se pq es esto pero chatgpt)
     });
 }
-
-
-export function PatchLoc() { 
-
-}
-export function PostLoc() { 
-
-}
-export function DeleteLoc() { 
-
-}

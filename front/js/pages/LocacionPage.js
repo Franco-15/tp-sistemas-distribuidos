@@ -1,6 +1,6 @@
 //todo: ver si no pasa a ser 'HomePage.js'
 
-import { getLoc, PatchLoc, PostLoc , DeleteLoc} from "../api/apiLocacion.js";
+import { getLoc} from "../api/apiLocacionHelper.js";
 
 
 export function loadLocacionPage() {
