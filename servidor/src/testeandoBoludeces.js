@@ -1,5 +1,31 @@
 
-    const animals = { // lo que me llega de mqtt
+import bcrypt from 'bcrypt';
+
+const password = "1234566798"
+const saltRounds = 10
+bcrypt.hash(password, saltRounds)
+    .then(hash => {
+        console.log("Hash generado:", hash);
+        const hashedPassword = hash
+        bcrypt.compare("password", hashedPassword)
+          .then(isMatch => {
+              if (isMatch) {
+                  console.log("La contraseña es correcta.");
+              } else {
+                  console.log("La contraseña es incorrecta.");
+              }
+          })
+          .catch(error => {
+              console.error("Error al comparar la contraseña:", error);
+          });
+    })
+    .catch(error => {
+        console.error("Error al generar el hash:", error);
+    });
+
+
+
+/*const animals = { // lo que me llega de mqtt
     checkpointID: "12345-abcde",
     animals: [
       { id: '11:5e:e7:84:c4:f6', rssi: -50 },
@@ -24,4 +50,7 @@
       } else {
         console.log(`Animal ID ${animal.id} no encontrado en allAnimals`);
       }
-    });
+    });*/
+
+
+    
