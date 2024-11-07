@@ -28,14 +28,14 @@ export const getPuntoControl = (idPtoControl,res) => {  //Entiendo que aca el re
     })
     if (buscado < 0){
         res.writeHead(404, {'message':'Ruta no encontrada'});
-        res.end()
-        return
+        return res.end()
+        
     }else{
         const checkpoint = JSON.stringify(result[buscado])
         res.writeHead(200,{'Content-Type': 'application/json', 'message': 'Se encontro el checkpoint'})
         res.write(checkpoint)
-        res.end()
-        return
+        return res.end()
+        
     }
 }
 
@@ -45,8 +45,8 @@ export const postPuntoControl = (parsedBody,res) => {
     const exists = result.findIndex((ptoControl) => ptoControl.id === parsedBody.id);
     if (exists > -1) {
         res.writeHead(400, {'message':'El punto de control con este ID ya existe'});
-        res.end();
-        return;
+        return res.end();
+        
     }
     result.push(parsedBody);
     writeFileSync(FILE_PATH, JSON.stringify(result),'utf-8')
@@ -63,8 +63,8 @@ export const deletePuntoControl  = (idPtoControl, res) => {
 
     if (buscado < 0) {
         res.writeHead(404,  {'message':'Punto de control no encontrado'});
-        res.end();
-        return;
+        return res.end();
+        
     }else{      
         result.splice(buscado, 1); 
         writeFileSync(FILE_PATH, JSON.stringify(result),'utf-8')
@@ -79,8 +79,8 @@ export const patchPuntosControl = (newCheckpoint,res) => {
     })
     if(buscado < 0){
         res.writeHead(404, {'message':'Ruta no encontrada'});
-        res.end()
-        return
+        return res.end()
+        
     }else{
         const oldCheckpoint = result[buscado];
         result[buscado] = {

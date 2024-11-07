@@ -1,7 +1,17 @@
-
 import bcrypt from 'bcrypt';
-import {writeFileSync} from 'fs';
+import {existsSync,writeFileSync,readFileSync} from 'fs';
 
+const FILE_PATH =  './src/data/admin.json' 
+
+
+const fileExist = existsSync(FILE_PATH);
+if (fileExist) {
+    const file = readFileSync(FILE_PATH, 'utf-8');
+    const parsedFile = JSON.parse(file);
+    console.log(parsedFile[0]['password'])
+}
+
+/*
 const password = "1234566798"
 const saltRounds = 10
 bcrypt.hash(password, saltRounds)
@@ -24,7 +34,7 @@ bcrypt.hash(password, saltRounds)
     .catch(error => {
         console.error("Error al generar el hash:", error);
     });
-
+*/
 
 
 /*const animals = { // lo que me llega de mqtt
