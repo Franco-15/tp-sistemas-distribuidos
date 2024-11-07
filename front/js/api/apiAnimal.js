@@ -5,11 +5,8 @@ export function getAnimals() {
 
     return axios.get('http://localhost:3000/api/animals')
     .then(response => {
-        console.log("llegue a la api papa") //!borra
 
         const data = response.data.data; //obj .Json
-
-        console.log(data) //!borrar
 
         const animals = data.map(animal => ({
             id: animal.id,
@@ -17,7 +14,6 @@ export function getAnimals() {
             description: animal.description
         }));
 
-        console.log(typeof(animals)) //!borrar
         return animals;
     })
     .catch(error => {
@@ -46,19 +42,28 @@ export function PostAnimal(id, name, description) {
         console.error(error);
     });
 
-    //todo: enviar aca los datos del animal para el post y usar el res para determinar si llego bien o no
-    //todo en el caso que llegue bien, disparar el get
-
 }
 
-export function PatchAnimal(id, nombre, description) {
-    // axios.post('') en la ruta tiene que ir el id
-    //todo: enviar aca los datos del animal para el post y usar el res para determinar si llego bien o no
-    //todo en el caso que llegue bien, disparar el get
-}
+export function PatchAnimal(id, name, description) {
+    
+    const data = {
+        name: name,
+        description: description
+    }
 
+    axios.patch('http://localhost:3000/api/animals/'+id, JSON.stringify(data), {
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+    .then((response) => {
+        console.log(response.status, response.data);
+    }).catch(error => {
+        console.error(error);
+    });   
+}
 export function DeleteAnimal(id) {
-    // axios.post('') en la ruta tiene que ir el id
+
 
     axios.delete('http://localhost:3000/api/animals/'+id, {
         headers: {
@@ -71,7 +76,4 @@ export function DeleteAnimal(id) {
         console.error(error);
     });
 
-    //todo: enviar aca los datos del animal para el post y usar el res para determinar si llego bien o no
-    
-    //todo en el caso que llegue bien, disparar el get
 }
