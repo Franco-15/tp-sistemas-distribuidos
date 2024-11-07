@@ -1,5 +1,6 @@
 
 import bcrypt from 'bcrypt';
+import {writeFileSync} from 'fs';
 
 const password = "1234566798"
 const saltRounds = 10
@@ -7,10 +8,11 @@ bcrypt.hash(password, saltRounds)
     .then(hash => {
         console.log("Hash generado:", hash);
         const hashedPassword = hash
-        bcrypt.compare("password", hashedPassword)
+        bcrypt.compare(password, hashedPassword)
           .then(isMatch => {
               if (isMatch) {
                   console.log("La contraseña es correcta.");
+                  writeFileSync('./src/data/admin.json', JSON.stringify({"id":"idadmin","username":"admin","password":"admin"}),'utf-8')
               } else {
                   console.log("La contraseña es incorrecta.");
               }
