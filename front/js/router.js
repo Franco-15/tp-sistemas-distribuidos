@@ -32,7 +32,7 @@ function router() {
             break;
         case '#/locacion': 
             console.log('locacion')
-            loadLocacionPage();
+            loadLocacionPage(hash);
             break;
         default:
             app.innerHTML = `<h2>Proximamente...</h2>`;

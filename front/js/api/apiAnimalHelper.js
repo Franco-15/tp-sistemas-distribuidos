@@ -23,6 +23,8 @@ export function getAnimals() {
 
 }
 
+//!funcion que solicite los animales no reigstrados
+
 export function PostAnimal(id, name, description) {
     // axios.post('')
     const data = {
