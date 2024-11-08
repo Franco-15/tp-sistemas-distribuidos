@@ -37,11 +37,8 @@ export const receiveFromCheckPoint = () => {
                 if (checkMessageFormat(data)) {
                     let filteredData = filterDataByRSSI(data);
 
-                    console.log('Animales cercanos al checkpoint:', filteredData);
                     const validData = validateData(filteredData);
-                    console.log('Datos validados:', validData);
                     const packetToSend = getPacketToSend(validData);
-                    console.log('Paquete a enviar:', packetToSend);
                     sendSSE(JSON.stringify(packetToSend));
 
                 } else

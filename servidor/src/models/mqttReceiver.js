@@ -9,9 +9,6 @@ const __dirname = path.dirname(__filename);
 const animalsFilePath = path.join(__dirname, '../data/animals.json');
 const checkpointsFilePath = path.join(__dirname, '../data/checkpoints.json');
 
-console.log(animalsFilePath);
-console.log(checkpointsFilePath);
-
 let animalsData = [];
 let checkpointsData = [];
 
