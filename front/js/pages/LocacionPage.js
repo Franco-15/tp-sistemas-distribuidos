@@ -35,8 +35,7 @@ export function loadLocacionPage() {
                                     <ul>
                                         ${(Array.isArray(loc.animal) ? loc.animal.map(animal => `
                                             <li>
-                                                <strong>ID:</strong> ${animal.id}<br>
-                                            
+                                                <strong>Nombre:</strong> ${animal.name}<br>
                                             </li>
                                         `).join('') : 'No hay animales asociados')}
                                     </ul>
