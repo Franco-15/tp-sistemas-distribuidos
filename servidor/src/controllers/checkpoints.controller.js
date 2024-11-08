@@ -21,13 +21,13 @@ export const getPuntosControl = () => {
         return JSON.stringify(response)
 }
 
-export const getPuntoControl = (idPtoControl,res) => {  //Entiendo que aca el req tendria la info sobre que animal se esta buscando
+export const getPuntoControl = (idPtoControl,res) => { 
     const result = getJson()
     const buscado = result.findIndex((item) => {
         return item.id === idPtoControl
     })
     if (buscado < 0){
-        res.writeHead(404, {'message':'Ruta no encontrada'});
+        res.writeHead(404, {'message':'El checkpoint buscado no existe o no se encuentra registrado en el sistema'});
         return res.end()
         
     }else{
@@ -44,7 +44,7 @@ export const postPuntoControl = (parsedBody,res) => {
 
     const exists = result.findIndex((ptoControl) => ptoControl.id === parsedBody.id);
     if (exists > -1) {
-        res.writeHead(400, {'message':'El punto de control con este ID ya existe'});
+        res.writeHead(400, {'message':'El checkpoint ya existe'});
         return res.end();
         
     }
@@ -62,7 +62,7 @@ export const deletePuntoControl  = (idPtoControl, res) => {
     const buscado = result.findIndex((item) => item.id === idPtoControl);
 
     if (buscado < 0) {
-        res.writeHead(404,  {'message':'Punto de control no encontrado'});
+        res.writeHead(404,  {'message':'El checkpoint buscado no existe o no se encuentra registrado en el sistema'});
         return res.end();
         
     }else{      
@@ -78,7 +78,7 @@ export const patchPuntosControl = (newCheckpoint,res) => {
         return item.id === newCheckpoint.id
     })
     if(buscado < 0){
-        res.writeHead(404, {'message':'Ruta no encontrada'});
+        res.writeHead(404, {'message':'El checkpoint buscado no existe o no se encuentra registrado en el sistema'});
         return res.end()
         
     }else{

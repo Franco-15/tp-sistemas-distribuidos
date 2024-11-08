@@ -33,19 +33,19 @@ export const validUser = (req,res) =>{
                             res.writeHead(200,{'message':'Usuario logueado'})
                             return res.end()
                         } else {
-                            res.writeHead(400,{'message':'Password invalido'}) //!No se si el numero es el correcto
+                            res.writeHead(400,{'message':'Password invalido'}) 
                             return res.end()
                         }
                     })
                     .catch(error => {
-                        res.writeHead(400,{'message':'Error al comparar la contraseña'}) //!No se si el numero es el correcto
+                        res.writeHead(400,{'message':'Error al comparar la contraseña'}) 
                         return res.end()
                     });
             }
         })
     }catch (e){
         console.log('Error', e)
-        res.writeHead(500, {'message':'Error inesperado'}) //? CHUSMEAR PORQUE SE LLEGARÍA A ESTA LINEA DE CODIGO
+        res.writeHead(500, {'message':'Error del servidor al intentar verificar la identidad del usuario'})
         return res.end()
     }
 }

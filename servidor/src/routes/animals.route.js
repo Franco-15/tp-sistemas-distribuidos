@@ -8,8 +8,8 @@ export const animalsRoute = (req, res) => {
         parametros = parametros.filter(el => el != '')   //filtro los vacios
         if(req.method === 'GET'){
             console.log(parametros.length)
-            if(parametros.length == 2){
-                //Entra en este if para para obtener todas las vacas
+            if(parametros.length == 2){ //Entra en este if para para obtener todos los animales
+
                 try{
                     animals = animalsMethods.getAnimales()
                     //setHeaders(res)
@@ -21,9 +21,9 @@ export const animalsRoute = (req, res) => {
                     return res.end()
                 }
             }else if(parametros.length == 3){
-                if(parametros[2] == "position"){
+                if(parametros[2] == "position"){ //Entra en este if para para rescatar posiciones de todos los animales
+                    //Esto tal vez debamos borrarlo
                     try {
-                        //Entra en este if para para rescatar posiciones de todos los animales
                         //setHeaders(res); 
                         let body = '';
                         req.on('data', (chunk) => {
@@ -31,13 +31,11 @@ export const animalsRoute = (req, res) => {
                         });
                         req.on('end', () => {
                             const parsedBody = JSON.parse(body);
-                            //Habria que verificar que el UUID del arduino concuerde con alguno del checkpoints.json
                             checkpoints = metodosPuntosControl.getJson()
                             const externalId = parsedBody.checkpointId
                             const exists = checkpoints.findIndex(checkpoint => checkpoint.id === externalId);
                             if (exists>-1) {
                                 const dataCheckpoint = checkpoints[exists]
-                                //directamente dejo los animales que tengo registrados
                                 const recAnimals = parsedBody.animals
                                 animals = animalsMethods.getJson()
                                 const filteredAnimals = animals.filter(animal => recAnimals.some(recAnimal => animal.id === recAnimal.id));
@@ -52,23 +50,21 @@ export const animalsRoute = (req, res) => {
                                 res.writeHead(200,{'Content-Type': 'application/json', 'message': 'Animales localizados'})
                                 res.write(JSON.stringify(result))
                             } 
-                            else {
+                            else { //ID no identificado en el archivo checkpoints.json
                                 res.writeHead(500,{'message':'ID desconocido'})
                             }
                             return res.end()
                         })
                     } catch (e) {
-                    res.writeHead(500,{'message':'Error inesperado'})  //! CHUSMEAR PORQUE SE LLEGARÍA A ESTA LINEA DE CODIGO
+                    res.writeHead(500,{'message':'Error del servidor al intentar posicionar los animales'}) 
                     return res.end()
                 }
                    
-                }else{
-                    //Entra en este if para para obtener un animal especifico
+                }else{ //Obtiene un animal especifico
                     animalsMethods.getAnimal(parametros[2],res)
                 }
             }
-        }else if(req.method === 'POST'){ 
-            //Entra en este if para agregar un animal
+        }else if(req.method === 'POST'){ //Agrega un animal
             try{
                 //setHeaders(res)
                 let body = '';
@@ -90,25 +86,23 @@ export const animalsRoute = (req, res) => {
                     }
                 })
 
-            }catch (e){
+            }catch (e){ //Fallo el intento
                 console.log('Error', e)
-                res.writeHead(500, {'message':'Error inesperado'}) //? CHUSMEAR PORQUE SE LLEGARÍA A ESTA LINEA DE CODIGO
+                res.writeHead(500, {'message':'Error del servidor al intentar agregar al animal'})
                 return res.end()
             }
-        }else if(req.method === 'DELETE'){
+        }else if(req.method === 'DELETE'){ //Elimina uno o multiples animales
             //
             //setHeaders (res) ;
-            if(parametros.length == 2){
+            if(parametros.length == 2){ //Eliminamos todos los animales
                 
-                //Metodo para eliminar (matar) todos los animales
                 animalsMethods.deleteAnimales(req,res)
-            }else if(parametros.length == 3){
-                //Metodo para eliminar (matar) un animal especifico
+            }else if(parametros.length == 3){ //Eliminamos un animal
                 animalsMethods.deleteAnimal(parametros[2],res)
             }
-            res.writeHead(200,{'message':'Eliminacion Realizada'})
+            res.writeHead(200,{'message':'Animal dado de baja del sistema'})
             return res.end()
-        }else if(req.method === 'PATCH'){
+        }else if(req.method === 'PATCH'){ //Se modifica la data de algun animal
             try {
                 //setHeaders(res);
                 let body = '';
@@ -118,7 +112,7 @@ export const animalsRoute = (req, res) => {
                 req.on('end', () => {
                     const parsedBody = JSON.parse(body);
                     if(!parametros[1] || !parsedBody.name || !parsedBody.description){ //Entra por aca si falta algun dato
-                        res.writeHead(400, {'message':'No se pudo modificar al animal debido a la falta de datos'})
+                        res.writeHead(400, {'message':'Informacion incompleta para modificar el animal'})
                         return res.end()
                     }else{
                         const newAnimal = {
@@ -131,9 +125,9 @@ export const animalsRoute = (req, res) => {
                         return res.end()
                     }
                 })
-            } catch (e) {
+            } catch (e) { //Problema del servidor al intentar realizar modificacion
                 console.log('Error', e)
-                res.writeHead(500, {'message':'Error inesperado'}) //? CHUSMEAR PORQUE SE LLEGARIA A ESTA LINEA DE CODIGO
+                res.writeHead(500, {'message':'Error del servidor al intentar modificar un animal'}) 
                 return res.end()
             }
         }else{ //Caso se confundio de calle
