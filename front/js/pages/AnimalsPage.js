@@ -1,5 +1,5 @@
 
-import { getAnimals, PatchAnimal, PostAnimal , DeleteAnimal} from "../api/apiAnimal.js";
+import { getAnimals, PatchAnimal, PostAnimal , DeleteAnimal} from "../api/apiAnimalHelper.js";
 
 
 export function loadAnimalPage() {

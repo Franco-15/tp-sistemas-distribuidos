@@ -1,12 +1,1 @@
-[
-    {
-        "id": "11:5e:e7:84:c4:f6",
-        "name": "Grego",
-        "description": "Mandarina"
-    },
-    {
-        "id": "11:5e:e7:83:c4:f6",
-        "name": "Fran",
-        "description": "Goat"
-    }
-]
+[{"id":"11:5e:e7:84:c4:f6","name":"Juan","description":"Vaca lechera"},{"id":"7c:0a:3f:83:db:93","name":"Bruno","description":"Gallina"},{"id":"c2:5a:3d:ae:10:28","name":"Fran","description":"Cabra"},{"id":"c2:6a:33:af:16:29","name":"Grego","description":"Perro"},{"id":"c2:6a:33:af:16:30","name":"Julieta","description":"Pinguino"}]

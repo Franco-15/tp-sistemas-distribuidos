@@ -1,5 +1,43 @@
+import bcrypt from 'bcrypt';
+import {existsSync,writeFileSync,readFileSync} from 'fs';
 
-    const animals = { // lo que me llega de mqtt
+const FILE_PATH =  './src/data/admin.json' 
+
+
+const fileExist = existsSync(FILE_PATH);
+if (fileExist) {
+    const file = readFileSync(FILE_PATH, 'utf-8');
+    const parsedFile = JSON.parse(file);
+    console.log(parsedFile[0]['password'])
+}
+
+/*
+const password = "1234566798"
+const saltRounds = 10
+bcrypt.hash(password, saltRounds)
+    .then(hash => {
+        console.log("Hash generado:", hash);
+        const hashedPassword = hash
+        bcrypt.compare(password, hashedPassword)
+          .then(isMatch => {
+              if (isMatch) {
+                  console.log("La contraseña es correcta.");
+                  writeFileSync('./src/data/admin.json', JSON.stringify({"id":"idadmin","username":"admin","password":"admin"}),'utf-8')
+              } else {
+                  console.log("La contraseña es incorrecta.");
+              }
+          })
+          .catch(error => {
+              console.error("Error al comparar la contraseña:", error);
+          });
+    })
+    .catch(error => {
+        console.error("Error al generar el hash:", error);
+    });
+*/
+
+
+/*const animals = { // lo que me llega de mqtt
     checkpointID: "12345-abcde",
     animals: [
       { id: '11:5e:e7:84:c4:f6', rssi: -50 },
@@ -24,4 +62,7 @@
       } else {
         console.log(`Animal ID ${animal.id} no encontrado en allAnimals`);
       }
-    });
+    });*/
+
+
+    
