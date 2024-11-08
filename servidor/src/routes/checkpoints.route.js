@@ -1,4 +1,4 @@
-import * as metodosPuntosControl from '../controllers/metodosPuntosControl.js'
+import * as checkpointMethods from '../controllers/checkpoints.controller.js'
 
 let parametros
 let checkpoints 
@@ -9,12 +9,12 @@ export const checkpointsRoute = (req, res) => {
     if(req.method === 'GET'){
         setHeaders(res);
         if(parametros.length == 2){
-            checkpoints = metodosPuntosControl.getPuntosControl()
+            checkpoints = checkpointMethods.getPuntosControl()
             res.writeHead(200,{'Content-Type': 'application/json', 'message': 'Se encontro el listado de los checkpoints'})
             res.write(checkpoints)
             return res.end()
         }else if(parametros.length == 3){
-            metodosPuntosControl.getPuntoControl(parametros[2],res)
+            checkpointMethods.getPuntoControl(parametros[2],res)
         }
     }else if(req.method === 'POST'){ 
         try{
@@ -31,7 +31,7 @@ export const checkpointsRoute = (req, res) => {
                     res.end()
                     return;
                 }else{
-                    metodosPuntosControl.postPuntoControl(parsedBody,res)
+                    checkpointMethods.postPuntoControl(parsedBody,res)
                     res.writeHead(200,{'message':'Se agrego el punto de control'})
                     return res.end()
                 }
@@ -44,10 +44,10 @@ export const checkpointsRoute = (req, res) => {
     }else if(req.method === 'DELETE'){
         setHeaders(res);
         if(parametros.length == 2){
-            metodosPuntosControl.deletePuntosControl(req,res)
+            checkpointMethods.deletePuntosControl(req,res)
             res.writeHead(200,{'message':'Se eliminaron los punto de control'})
         }else if(parametros.length == 3){
-            metodosPuntosControl.deletePuntoControl(parametros[2],res)
+            checkpointMethods.deletePuntoControl(parametros[2],res)
             res.writeHead(200,{'message':'Se elimino el punto de control'})
         }
         return res.end()
@@ -70,7 +70,7 @@ export const checkpointsRoute = (req, res) => {
                         long: parsedBody.long,
                         description: parsedBody.description
                     }
-                    metodosPuntosControl.patchPuntosControl(newCheckpoint,res)
+                    checkpointMethods.patchPuntosControl(newCheckpoint,res)
                     res.writeHead(200,{'message':'El punto de control ha sido modificado'})
                     return res.end()
                 }

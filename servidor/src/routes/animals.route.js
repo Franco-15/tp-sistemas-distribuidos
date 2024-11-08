@@ -1,4 +1,4 @@
-import * as metodosAnimales from '../controllers/metodosAnimales.js'
+import * as animalsMethods from '../controllers/animals.controller.js'
 
 let animals
 let parametros
@@ -11,7 +11,7 @@ export const animalsRoute = (req, res) => {
             if(parametros.length == 2){
                 //Entra en este if para para obtener todas las vacas
                 try{
-                    animals = metodosAnimales.getAnimales()
+                    animals = animalsMethods.getAnimales()
                     //setHeaders(res)
                     res.writeHead(200,{'Content-Type': 'application/json', 'message': 'Se encontro el listado de animales'})
                     res.write(animals)
@@ -39,7 +39,7 @@ export const animalsRoute = (req, res) => {
                                 const dataCheckpoint = checkpoints[exists]
                                 //directamente dejo los animales que tengo registrados
                                 const recAnimals = parsedBody.animals
-                                animals = metodosAnimales.getJson()
+                                animals = animalsMethods.getJson()
                                 const filteredAnimals = animals.filter(animal => recAnimals.some(recAnimal => animal.id === recAnimal.id));
                                 const result = {
                                     id: dataCheckpoint.id,
@@ -64,7 +64,7 @@ export const animalsRoute = (req, res) => {
                    
                 }else{
                     //Entra en este if para para obtener un animal especifico
-                    metodosAnimales.getAnimal(parametros[2],res)
+                    animalsMethods.getAnimal(parametros[2],res)
                 }
             }
         }else if(req.method === 'POST'){ 
@@ -84,7 +84,7 @@ export const animalsRoute = (req, res) => {
                     }else{
                         console.log(parsedBody.id)
                         
-                        metodosAnimales.postAnimal(parsedBody,res)
+                        animalsMethods.postAnimal(parsedBody,res)
                         res.writeHead(200,{'Content-Type': 'application/json', 'message': 'El animal fue agregado exitosamente'})
                         res.end()
                     }
@@ -101,10 +101,10 @@ export const animalsRoute = (req, res) => {
             if(parametros.length == 2){
                 
                 //Metodo para eliminar (matar) todos los animales
-                metodosAnimales.deleteAnimales(req,res)
+                animalsMethods.deleteAnimales(req,res)
             }else if(parametros.length == 3){
                 //Metodo para eliminar (matar) un animal especifico
-                metodosAnimales.deleteAnimal(parametros[2],res)
+                animalsMethods.deleteAnimal(parametros[2],res)
             }
             res.writeHead(200,{'message':'Eliminacion Realizada'})
             return res.end()
@@ -126,7 +126,7 @@ export const animalsRoute = (req, res) => {
                             name: parsedBody.name,
                             description: parsedBody.description
                         }
-                        metodosAnimales.patchAnimal(newAnimal,res)
+                        animalsMethods.patchAnimal(newAnimal,res)
                         res.writeHead(200,{'message':'Se modifico correctamente al animal'})
                         return res.end()
                     }
