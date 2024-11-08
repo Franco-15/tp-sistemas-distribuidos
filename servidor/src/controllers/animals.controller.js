@@ -1,6 +1,6 @@
 import { readFileSync, writeFileSync, existsSync } from 'fs';
 
-const FILE_PATH =  './src/data/animales.json' 
+const FILE_PATH =  './src/data/animals.json' 
 
 export const getJson = () => {
     const fileExist = existsSync(FILE_PATH);
@@ -22,7 +22,7 @@ export const getAnimales = () => {
 
 }
 
-export const getAnimal = (idAnimal,res) => {  //Entiendo que aca el req tendria la info sobre que animal se esta buscando
+export const getAnimal = (idAnimal,res) => { 
     const result = getJson()
     const buscado = result.findIndex((item) => {
         return item.id === idAnimal
@@ -64,7 +64,7 @@ export const deleteAnimal = (idAnimal, res) => {
     const buscado = result.findIndex((item) => item.id === idAnimal);
 
     if (buscado < 0) {
-        res.writeHead(404, {'message':'Animal no encontrado'});
+        res.writeHead(404, {'message':'El checkpoint buscado no existe o no se encuentra registrado en el sistema'});
         return res.end()
     }else{      
         result.splice(buscado, 1); 
@@ -79,7 +79,7 @@ export const patchAnimal = (newAnimal,res) => {
         return item.id === newAnimal.id
     })
     if(buscado < 0){
-        res.writeHead(404, {'message':'Ruta no encontrada'});
+        res.writeHead(404, {'message':'El checkpoint buscado no existe o no se encuentra registrado en el sistema'});
         return res.end()
         
     }else{
