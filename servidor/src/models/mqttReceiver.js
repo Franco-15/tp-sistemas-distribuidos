@@ -59,3 +59,14 @@ export const validateData = (data) => {
     });
     return { ...data, animals: validData };
 };
+
+export const getPacketToSend = (data) => {
+    const checkpoint = checkpointsData.find(checkpoint => checkpoint.id === data.checkpointID);
+    const animals = data.animals.map(animal => animalsData.find(storedAnimal => storedAnimal.id === animal.id));
+    const packet = {
+        ...checkpoint,
+        animals: animals
+    };
+    
+    return packet;
+};

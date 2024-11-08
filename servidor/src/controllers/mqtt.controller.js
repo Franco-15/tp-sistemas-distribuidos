@@ -1,7 +1,7 @@
 import mqtt from 'mqtt';
 import dotenv from 'dotenv';
-import { checkMessageFormat, filterDataByRSSI, validateData } from '../models/mqttReceiver.js';
-import { sendSSE } from '../routes/events.js';
+import { checkMessageFormat, filterDataByRSSI, validateData, getPacketToSend} from '../models/mqttReceiver.js';
+import { sendSSE } from '../routes/events.route.js';
 
 dotenv.config(); // carga variables de entorno
 
@@ -40,7 +40,9 @@ export const receiveFromCheckPoint = () => {
                     console.log('Animales cercanos al checkpoint:', filteredData);
                     const validData = validateData(filteredData);
                     console.log('Datos validados:', validData);
-                    sendSSE(validData);
+                    const packetToSend = getPacketToSend(validData);
+                    console.log('Paquete a enviar:', packetToSend);
+                    sendSSE(JSON.stringify(packetToSend));
 
                 } else
                     console.error('Mensaje en formato incorrecto:', data);
