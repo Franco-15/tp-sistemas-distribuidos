@@ -3,6 +3,8 @@ import cors from 'cors';
 import http from 'http';
 import * as metodosAnimales from './controllers/metodosAnimales.js'
 import * as metodosPuntosControl from './controllers/metodosPuntosControl.js'
+import {receiveFromCheckPoint} from './controllers/mqtt.controller.js'
+import {eventsRoute} from './routes/events.js';
 
 const HTTP_PORT = 3000;  //Esto es placebo supongo (no se xd)
 const rutaAnimal = "/api/animals"
@@ -13,6 +15,8 @@ const rutaRefresh = "/api/refresh"
 let parametros
 let animals
 let checkpoints 
+
+receiveFromCheckPoint();
 
 // usamos express y cors para poder comunicar back/front
 const app = express();
@@ -256,6 +260,8 @@ const server = http.createServer((req, res) => {
         }
     }else if(req.url.startsWith(rutaRefresh)){
         //ACA HABRIA QUE DESARROLLAR EL TEMA DEL REFRESH
+    }else if(req.url == "/events"){
+        eventsRoute(req, res);
     }else { //Caso se confundio de calle
         res.writeHead(404, {'message':'Ruta no encontrada'})
         res.end() 
