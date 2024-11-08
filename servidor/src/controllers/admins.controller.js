@@ -26,7 +26,8 @@ export const validUser = (req,res) =>{
                 return res.end()
             }else{
                 const admin = getJson()
-                const hashedPassword = parsedFile[0]['password']
+                console.log(admin[0])
+                const hashedPassword = admin[0]["password"]
                 bcrypt.compare(parsedBody.password, hashedPassword)
                     .then(isMatch => {
                         if (isMatch) {
