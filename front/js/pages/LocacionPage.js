@@ -2,8 +2,6 @@
 
 import { getLoc, getLocFirst} from "../api/apiLocacionHelper.js";
 
-
-
 export function loadLocacionPage(flag) {
     console.log('entra') //!sacar
     
@@ -44,7 +42,7 @@ export function renderLocArray() { //todo vendria siendo el get, cambiarlo
 
 export function renderTable(flag) {
     let locations;
-    if (flag = '#/location') { 
+    if (flag = '#/locacion') { 
         locations = getLocFirst(); //retorna array con loc 
     } else {
         locations = getLoc();

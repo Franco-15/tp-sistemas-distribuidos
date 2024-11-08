@@ -15,14 +15,14 @@ export function getLoc() {
 
     eventSource.onmessage = function(event) {
         const data = JSON.parse(event.data);
-        lstDataLoc = data; 
-        
+        //todo agregar al array
     };
 
     eventSource.onerror = function() {
         console.error('Error in connection, reconnecting...');
     };
 
+}
     /*return axios.get('http://localhost:3000/api/position')
     .then(response => {
 
@@ -55,4 +55,4 @@ export function getLoc() {
     return new Promise(resolve => {
         setTimeout(() => resolve(mockData), 500); // Simula una espera de 500ms (no se pq es esto pero chatgpt)
     });*/
-}
+

@@ -31,8 +31,12 @@ function router() {
             loadCheckpointPage(); 
             break;
         case '#/locacion': 
-            console.log('locacion')
+            console.log('locacion');
             loadLocacionPage(hash);
+            break;
+        case '#/map': 
+            console.log('mapa'); 
+            loadMapPage();
             break;
         default:
             app.innerHTML = `<h2>Proximamente...</h2>`;
