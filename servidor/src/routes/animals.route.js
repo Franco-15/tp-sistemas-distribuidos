@@ -1,137 +1,115 @@
-import * as animalsMethods from '../controllers/animals.controller.js'
+import express from 'express';
+import * as animalsMethods from '../controllers/animals.controller.js';
 
-let animals
-let parametros
+const router = express.Router();
 
-export const animalsRoute = (req, res) => {
-    parametros = req.url.split("/")
-        parametros = parametros.filter(el => el != '')   //filtro los vacios
-        if(req.method === 'GET'){
-            console.log(parametros.length)
-            if(parametros.length == 2){ //Entra en este if para para obtener todos los animales
+let animals;
 
-                try{
-                    animals = animalsMethods.getAnimales()
-                    //setHeaders(res)
-                    res.writeHead(200,{'Content-Type': 'application/json', 'message': 'Se encontro el listado de animales'})
-                    res.write(animals)
-                    return res.end()
-                }catch(e){
-                    res.writeHead(500,{'message':'Falcaont'})  
-                    return res.end()
-                }
-            }else if(parametros.length == 3){
-                if(parametros[2] == "position"){ //Entra en este if para para rescatar posiciones de todos los animales
-                    //Esto tal vez debamos borrarlo
-                    try {
-                        //setHeaders(res); 
-                        let body = '';
-                        req.on('data', (chunk) => {
-                            body = body + chunk;
-                        });
-                        req.on('end', () => {
-                            const parsedBody = JSON.parse(body);
-                            checkpoints = metodosPuntosControl.getJson()
-                            const externalId = parsedBody.checkpointId
-                            const exists = checkpoints.findIndex(checkpoint => checkpoint.id === externalId);
-                            if (exists>-1) {
-                                const dataCheckpoint = checkpoints[exists]
-                                const recAnimals = parsedBody.animals
-                                animals = animalsMethods.getJson()
-                                const filteredAnimals = animals.filter(animal => recAnimals.some(recAnimal => animal.id === recAnimal.id));
-                                const result = {
-                                    id: dataCheckpoint.id,
-                                    lat: dataCheckpoint.lat,
-                                    long: dataCheckpoint.long,
-                                    description: dataCheckpoint.description,
-                                    animals: filteredAnimals    
-                                }
+// GET /api/animals - Obtener todos los animales
+router.get('/', async (req, res) => {
+    try {
+        animals = await animalsMethods.getAnimales();
+        res.status(200).json({
+            message: 'Se encontró el listado de animales',
+            data: animals
+        });
+    } catch (error) {
+        res.status(500).json({ message: 'Error al obtener el listado de animales' });
+    }
+});
 
-                                res.writeHead(200,{'Content-Type': 'application/json', 'message': 'Animales localizados'})
-                                res.write(JSON.stringify(result))
-                            } 
-                            else { //ID no identificado en el archivo checkpoints.json
-                                res.writeHead(500,{'message':'ID desconocido'})
-                            }
-                            return res.end()
-                        })
-                    } catch (e) {
-                    res.writeHead(500,{'message':'Error del servidor al intentar posicionar los animales'}) 
-                    return res.end()
-                }
-                   
-                }else{ //Obtiene un animal especifico
-                    animalsMethods.getAnimal(parametros[2],res)
-                }
-            }
-        }else if(req.method === 'POST'){ //Agrega un animal
-            try{
-                //setHeaders(res)
-                let body = '';
-                req.on('data', (chunk) => {
-                    body = body + chunk;
-                });
-                req.on('end', () => {
-                    const parsedBody = JSON.parse(body);
-                    if(!parsedBody.id || !parsedBody.name || !parsedBody.description){ //Entra por aca si falta algun dato
-                        res.writeHead(400, {'message':'No se pudo agregar al animal debido a la falta de datos'})
-                        res.end()
-                        return;
-                    }else{
-                        console.log(parsedBody.id)
-                        
-                        animalsMethods.postAnimal(parsedBody,res)
-                        res.writeHead(200,{'Content-Type': 'application/json', 'message': 'El animal fue agregado exitosamente'})
-                        res.end()
-                    }
-                })
+// GET /api/animals/position - Obtener posiciones de todos los animales
+router.get('/position', async (req, res) => {
+    try {
+        const { checkpointId, animals: recAnimals } = req.body;
+        const checkpoints = await metodosPuntosControl.getJson();
+        const checkpoint = checkpoints.find(c => c.id === checkpointId);
 
-            }catch (e){ //Fallo el intento
-                console.log('Error', e)
-                res.writeHead(500, {'message':'Error del servidor al intentar agregar al animal'})
-                return res.end()
-            }
-        }else if(req.method === 'DELETE'){ //Elimina uno o multiples animales
-            //
-            //setHeaders (res) ;
-            if(parametros.length == 2){ //Eliminamos todos los animales
-                
-                animalsMethods.deleteAnimales(req,res)
-            }else if(parametros.length == 3){ //Eliminamos un animal
-                animalsMethods.deleteAnimal(parametros[2],res)
-            }
-            res.writeHead(200,{'message':'Animal dado de baja del sistema'})
-            return res.end()
-        }else if(req.method === 'PATCH'){ //Se modifica la data de algun animal
-            try {
-                //setHeaders(res);
-                let body = '';
-                req.on('data', (chunk) => {
-                    body = body + chunk;
-                });
-                req.on('end', () => {
-                    const parsedBody = JSON.parse(body);
-                    if(!parametros[1] || !parsedBody.name || !parsedBody.description){ //Entra por aca si falta algun dato
-                        res.writeHead(400, {'message':'Informacion incompleta para modificar el animal'})
-                        return res.end()
-                    }else{
-                        const newAnimal = {
-                            id: parametros[2],
-                            name: parsedBody.name,
-                            description: parsedBody.description
-                        }
-                        animalsMethods.patchAnimal(newAnimal,res)
-                        res.writeHead(200,{'message':'Se modifico correctamente al animal'})
-                        return res.end()
-                    }
-                })
-            } catch (e) { //Problema del servidor al intentar realizar modificacion
-                console.log('Error', e)
-                res.writeHead(500, {'message':'Error del servidor al intentar modificar un animal'}) 
-                return res.end()
-            }
-        }else{ //Caso se confundio de calle
-            res.writeHead(404,  {'message':'Ruta no encontrada'});
-            return res.end() 
+        if (!checkpoint) {
+            return res.status(500).json({ message: 'ID desconocido' });
         }
-};
+
+        animals = await animalsMethods.getJson();
+        const filteredAnimals = animals.filter(animal => recAnimals.some(recAnimal => animal.id === recAnimal.id));
+        const result = {
+            id: checkpoint.id,
+            lat: checkpoint.lat,
+            long: checkpoint.long,
+            description: checkpoint.description,
+            animals: filteredAnimals
+        };
+
+        res.status(200).json({
+            message: 'Animales localizados',
+            data: result
+        });
+    } catch (error) {
+        res.status(500).json({ message: 'Error del servidor al intentar posicionar los animales' });
+    }
+});
+
+// GET /api/animals/:id - Obtener un animal específico
+router.get('/:id', async (req, res) => {
+    try {
+        const animal = await animalsMethods.getAnimal(req.params.id);
+        res.status(200).json(animal);
+    } catch (error) {
+        res.status(500).json({ message: 'Error al obtener el animal' });
+    }
+});
+
+// POST /api/animals - Agregar un animal
+router.post('/', async (req, res) => {
+    const { id, name, description } = req.body;
+
+    if (!id || !name || !description) {
+        return res.status(400).json({ message: 'No se pudo agregar al animal debido a la falta de datos' });
+    }
+
+    try {
+        await animalsMethods.postAnimal(req.body);
+        res.status(200).json({ message: 'El animal fue agregado exitosamente' });
+    } catch (error) {
+        res.status(500).json({ message: 'Error del servidor al intentar agregar al animal' });
+    }
+});
+
+// DELETE /api/animals - Eliminar todos los animales
+router.delete('/', async (req, res) => {
+    try {
+        await animalsMethods.deleteAnimales();
+        res.status(200).json({ message: 'Todos los animales han sido eliminados' });
+    } catch (error) {
+        res.status(500).json({ message: 'Error al eliminar los animales' });
+    }
+});
+
+// DELETE /api/animals/:id - Eliminar un animal específico
+router.delete('/:id', async (req, res) => {
+    try {
+        await animalsMethods.deleteAnimal(req.params.id);
+        res.status(200).json({ message: 'Animal dado de baja del sistema' });
+    } catch (error) {
+        res.status(500).json({ message: 'Error al eliminar el animal' });
+    }
+});
+
+// PATCH /api/animals/:id - Modificar un animal
+router.patch('/:id', async (req, res) => {
+    const { name, description } = req.body;
+    const { id } = req.params;
+
+    if (!name || !description) {
+        return res.status(400).json({ message: 'Información incompleta para modificar el animal' });
+    }
+
+    try {
+        const newAnimal = { id, name, description };
+        await animalsMethods.patchAnimal(newAnimal);
+        res.status(200).json({ message: 'Se modificó correctamente al animal' });
+    } catch (error) {
+        res.status(500).json({ message: 'Error al intentar modificar el animal' });
+    }
+});
+
+export default router;
