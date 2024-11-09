@@ -1,5 +1,5 @@
 //import { getChkPt } from "../api/apiCheckpointHelper";
-
+import { getChkPt, PatchChkPt, PostChkPt , DeleteChkPt} from "../api/apiCheckpointHelper.js";
 
 
 export function loadMapPage() {
@@ -15,28 +15,39 @@ export function loadMapPage() {
         </div>
     `;
 
-
-
-    var map = L.map('map').setView(calculaPos(), 13);
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    }).addTo(map);
     
+    calculaPos().then(pos => {
+        console.log(pos)
+        var map = L.map('map').setView([-38.00413285734509,	-57.55136976361025], 18);
 
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+        var marker = L.marker([-38.00413285734509,-57.55136976361025]).addTo(map);
+        marker.bindPopup("<b>Casa de Grego</b>").openPopup();
+    })   
 }
 
 
 function calculaPos() { 
-    const ptos = getChkPt(); 
+    return getChkPt().then(ptos => {
 
-    // promedio de lat
-    const promedioLat = ptos.reduce((acc, item) => acc + item.lat, 0) / ptos.length;
+        const sumaLat = ptos.reduce((acc, pto) => acc + parseFloat(pto.lat), 0);
+        const sumaLong = ptos.reduce((acc, pto) => acc + parseFloat(pto.long), 0);
+        const promedioLat = sumaLat / ptos.length;
+        const promedioLong = sumaLong / ptos.length;
 
-    // promedio de long
-    const promedioLong = ptos.reduce((acc, item) => acc + item.long, 0) / ptos.length;
-
-    return [promedioLat, promedioLong];
-
+        return [promedioLat, promedioLong];
+    });
 }
+
+/*function addChkPt() { 
+    getChkPt().then(ptos => {
+        var marker = L.marker([-38.00413285734509,-57.55136976361025]).addTo(map);
+    })
+}*/
+    
+
+
 
