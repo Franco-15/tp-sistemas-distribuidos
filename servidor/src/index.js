@@ -51,3 +51,9 @@ app.use((req, res) => {
 app.listen(HTTP_PORT, () => {
     console.log(`Servidor escuchando en puerto ${HTTP_PORT}`);
 });
+
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send({ message: 'Ocurrió un error en el servidor' });
+});
+
