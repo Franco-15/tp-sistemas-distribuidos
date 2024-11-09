@@ -1,9 +1,12 @@
 
+
+
 import { getChkPt } from "./apiCheckpointHelper";
 
 
+
 export function getLocFirst() { 
-    const chkPts = getChkPt(); 
+    const chkPts = getChkPt; 
     return {...chkPts,animals:[]}
 }
 

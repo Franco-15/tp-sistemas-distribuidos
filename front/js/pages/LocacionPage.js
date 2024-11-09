@@ -1,6 +1,6 @@
 //todo: ver si no pasa a ser 'HomePage.js'
 
-import { getLoc, getLocFirst} from "../api/apiLocacionHelper.js";
+//import { getLoc, getLocFirst} from "../api/apiLocacionHelper.js";
 
 export function loadLocacionPage(flag) {
     console.log('entra') //!sacar
@@ -22,14 +22,14 @@ export function loadLocacionPage(flag) {
                     </tr>
                 </thead>
                 <tbody>
-                    ${renderItem(flag)}
+                    ${renderTable(flag)}                    
                 </tbody>
             </table>
         </div>
     `;
     
 }
-
+/*
 export function renderLocArray() { //todo vendria siendo el get, cambiarlo
     // Llama a la función getLocs (es la q esta en api.js) y espera su resultado
     return getLoc().then(LocArray => { //devuelve promesa
@@ -39,8 +39,11 @@ export function renderLocArray() { //todo vendria siendo el get, cambiarlo
 
     });
 }
+*/
 
 export function renderTable(flag) {
+    return null
+    /*
     let locations;
     if (flag = '#/locacion') { 
         locations = getLocFirst(); //retorna array con loc 
@@ -64,4 +67,6 @@ export function renderTable(flag) {
             </td>
         </tr>
     `).join('')
+    */
 }
+    
