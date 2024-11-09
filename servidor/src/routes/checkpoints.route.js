@@ -3,11 +3,21 @@ import * as checkpointMethods from '../controllers/checkpoints.controller.js'
 let parametros
 let checkpoints 
  
+const setHeaders= (res) => {
+    res.setHeader("Access-Control-Allow-Origin", "*"); // Permite todas las fuentes
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PATCH, OPTIONS"); // Metodos permitidos
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With"); // Encabezados permitidos 
+}
+
 export const checkpointsRoute = (req, res) => {
+
+
+
+
     parametros = req.url.split("/") 
     parametros = parametros.filter(el => el != '')   //filtro los vacios
     if(req.method === 'GET'){ 
-        //setHeaders(res);
+        setHeaders(res);
         if(parametros.length == 2){ //Entra en este if para obtener todos los checkpoints
             checkpoints = checkpointMethods.getPuntosControl()
             res.writeHead(200,{'Content-Type': 'application/json', 'message': 'Se encontro el listado de los checkpoints'})
@@ -18,7 +28,7 @@ export const checkpointsRoute = (req, res) => {
         }
     }else if(req.method === 'POST'){  //Entra en este if para agregar un checkpoint
         try{
-            //setHeaders(res);
+            setHeaders(res);
             let body = '';
             req.on('data', (chunk) => {
                 body = body + chunk;
@@ -41,7 +51,7 @@ export const checkpointsRoute = (req, res) => {
             return res.end()
         }
     }else if(req.method === 'DELETE'){ 
-        //setHeaders(res);
+        setHeaders(res);
         if(parametros.length == 2){ //Entra en este if para eliminar todos los checkpoints
             checkpointMethods.deletePuntosControl(req,res)
             res.writeHead(200,{'message':'Se eliminaron los punto de control'})
@@ -87,6 +97,8 @@ export const checkpointsRoute = (req, res) => {
         res.writeHead(404, {'message':'Ruta no encontrada'})
         return res.end() 
     }
+
+    
 }
     
 

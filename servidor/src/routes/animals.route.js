@@ -3,6 +3,14 @@ import * as animalsMethods from '../controllers/animals.controller.js'
 let animals
 let parametros
 
+
+
+const setHeaders= (res) => {
+    res.setHeader("Access-Control-Allow-Origin", "*"); // Permite todas las fuentes
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PATCH, OPTIONS"); // Metodos permitidos
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With"); // Encabezados permitidos 
+}
+
 export const animalsRoute = (req, res) => {
     parametros = req.url.split("/")
         parametros = parametros.filter(el => el != '')   //filtro los vacios
@@ -12,7 +20,7 @@ export const animalsRoute = (req, res) => {
 
                 try{
                     animals = animalsMethods.getAnimales()
-                    //setHeaders(res)
+                    setHeaders(res)
                     res.writeHead(200,{'Content-Type': 'application/json', 'message': 'Se encontro el listado de animales'})
                     res.write(animals)
                     return res.end()
@@ -24,7 +32,7 @@ export const animalsRoute = (req, res) => {
                 if(parametros[2] == "position"){ //Entra en este if para para rescatar posiciones de todos los animales
                     //Esto tal vez debamos borrarlo
                     try {
-                        //setHeaders(res); 
+                        setHeaders(res); 
                         let body = '';
                         req.on('data', (chunk) => {
                             body = body + chunk;
@@ -66,7 +74,7 @@ export const animalsRoute = (req, res) => {
             }
         }else if(req.method === 'POST'){ //Agrega un animal
             try{
-                //setHeaders(res)
+                setHeaders(res)
                 let body = '';
                 req.on('data', (chunk) => {
                     body = body + chunk;
@@ -92,8 +100,8 @@ export const animalsRoute = (req, res) => {
                 return res.end()
             }
         }else if(req.method === 'DELETE'){ //Elimina uno o multiples animales
-            //
-            //setHeaders (res) ;
+            
+            setHeaders (res) ;
             if(parametros.length == 2){ //Eliminamos todos los animales
                 
                 animalsMethods.deleteAnimales(req,res)
@@ -104,7 +112,7 @@ export const animalsRoute = (req, res) => {
             return res.end()
         }else if(req.method === 'PATCH'){ //Se modifica la data de algun animal
             try {
-                //setHeaders(res);
+                setHeaders(res);
                 let body = '';
                 req.on('data', (chunk) => {
                     body = body + chunk;
@@ -134,4 +142,6 @@ export const animalsRoute = (req, res) => {
             res.writeHead(404,  {'message':'Ruta no encontrada'});
             return res.end() 
         }
+
+      
 };

@@ -33,11 +33,7 @@ app.use(cors({
     //credentials: true
 }));
 
-const setHeaders= (res) => {
-    res.setHeader("Access-Control-Allow-Origin", "*"); // Permite todas las fuentes
-    res.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PATCH, OPTIONS"); // Metodos permitidos
-    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With"); // Encabezados permitidos 
-}
+
 
 const server = http.createServer((req, res) => {
 
@@ -51,16 +47,16 @@ const server = http.createServer((req, res) => {
     if(req.url == rutaPositions){ //Ruta para iniciar conexion entre front y mqtt
         eventsRoute(req, res);
     }else if(req.url.startsWith(rutaAnimal)){ //Ruta que redirige a los metodos de los animales
-        setHeaders(res); 
+        //setHeaders(res); 
         animalsRoute(req, res);
     }else if (req.url.startsWith(rutaCheckpoint)){ //Ruta que redirige a los metodos de los checkpoints
-        setHeaders(res);
+        //setHeaders(res);
         checkpointsRoute(req, res);
     }else if(req.url.startsWith(rutaLogin)){ //Ruta para llevar a cabo el logueo inicial
-        setHeaders(res);
+        //setHeaders(res);
         loginRoute(req,res)
     }else if(req.url.startsWith(rutaRefresh)){ //Ruta para ir refrescando la sesion de usuario (desarrollado en promocion)
-        setHeaders(res);
+        //setHeaders(res);
         //ACA HABRIA QUE DESARROLLAR EL TEMA DEL REFRESH
     }else if(req.url.startsWith(rutaDevices)){ // Ruta de los dispositivos no identificados 
         devicesRoute(req,res)
@@ -73,3 +69,9 @@ const server = http.createServer((req, res) => {
 server.listen(HTTP_PORT, () => {
     console.log(`Servidor escuchando en puerto ${HTTP_PORT}`)
 })
+
+const setHeaders= (res) => {
+    res.setHeader("Access-Control-Allow-Origin", "*"); // Permite todas las fuentes
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PATCH, OPTIONS"); // Metodos permitidos
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With"); // Encabezados permitidos 
+}

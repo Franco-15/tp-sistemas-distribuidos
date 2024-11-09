@@ -119,7 +119,7 @@ button {
     background-color: #0056b3;
 }
 
-.map-container {
-    background-color: #0056b3;
+.map {
+    height: 500px;
 }
 
