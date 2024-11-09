@@ -3,9 +3,15 @@ import * as checkpointMethods from '../controllers/checkpoints.controller.js';
 
 const router = express.Router();
 
+const getAllCheckpoints = '/';
+const getCheckpoint = '/:id';
+const postCheckpoint = '/';
+const deleteAllCheckpoints = '/';
+const deleteCheckpoint = '/:id';
+const patchCheckpoint = '/:id';
 
 // GET todos los checkpoints
-router.get('/', (req, res) => {
+router.get(getAllCheckpoints, (req, res) => {
     try {
         const checkpoints = checkpointMethods.getPuntosControl();
         res.status(200).json({
@@ -18,7 +24,7 @@ router.get('/', (req, res) => {
 });
 
 // GET checkpoint específico
-router.get('/:id', (req, res) => {
+router.get(getCheckpoint, (req, res) => {
     try {
         const checkpoint = checkpointMethods.getPuntoControl(req.params.id);
         if (!checkpoint) {
@@ -31,7 +37,7 @@ router.get('/:id', (req, res) => {
 });
 
 // POST  Agregar un checkpoint
-router.post('/', (req, res) => {
+router.post(postCheckpoint, (req, res) => {
     const { id, lat, long, description } = req.body;
 
     if (!id || !lat || !long || !description) {
@@ -47,7 +53,7 @@ router.post('/', (req, res) => {
 });
 
 // DELETE  Eliminar todos los checkpoints
-router.delete('/', (req, res) => {
+router.delete(deleteAllCheckpoints, (req, res) => {
     try {
         checkpointMethods.deletePuntosControl();
         res.status(200).json({ message: 'Se eliminaron los puntos de control' });
@@ -57,7 +63,7 @@ router.delete('/', (req, res) => {
 });
 
 // DELETE  Eliminar un checkpoint específico
-router.delete('/:id', (req, res) => {
+router.delete(deleteCheckpoint, (req, res) => {
     try {
         checkpointMethods.deletePuntoControl(req.params.id);
         res.status(200).json({ message: 'Checkpoint eliminado exitosamente' });
@@ -66,8 +72,8 @@ router.delete('/:id', (req, res) => {
     }
 });
 
-// PATCH /api/checkpoints/:id - Modificar un checkpoint
-router.patch('/:id', (req, res) => {
+// PATCH Modificar un checkpoint
+router.patch(patchCheckpoint, (req, res) => {
     const { lat, long, description } = req.body;
     const { id } = req.params;
 

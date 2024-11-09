@@ -3,7 +3,7 @@ import cors from 'cors';
 import http from 'http';
 import {receiveFromCheckPoint} from './controllers/mqtt.controller.js'
 import {eventsRoute} from './routes/events.route.js';
-import animalsRoute from './routes/animals.route.js';
+import {animalsRoute} from './routes/animals.route.js';
 import {checkpointsRoute} from './routes/checkpoints.route.js';
 import {loginRoute} from './routes/login.route.js';
 import {devicesRoute} from './routes/devices.route.js';
