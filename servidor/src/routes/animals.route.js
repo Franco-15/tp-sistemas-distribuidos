@@ -25,52 +25,11 @@ export const animalsRoute = (req, res) => {
                     res.write(animals)
                     return res.end()
                 }catch(e){
-                    res.writeHead(500,{'message':'Falcaont'})  
+                    res.writeHead(500,{'message':'No se encontro e'})  
                     return res.end()
                 }
             }else if(parametros.length == 3){
-                if(parametros[2] == "position"){ //Entra en este if para para rescatar posiciones de todos los animales
-                    //Esto tal vez debamos borrarlo
-                    try {
-                        setHeaders(res); 
-                        let body = '';
-                        req.on('data', (chunk) => {
-                            body = body + chunk;
-                        });
-                        req.on('end', () => {
-                            const parsedBody = JSON.parse(body);
-                            checkpoints = metodosPuntosControl.getJson()
-                            const externalId = parsedBody.checkpointId
-                            const exists = checkpoints.findIndex(checkpoint => checkpoint.id === externalId);
-                            if (exists>-1) {
-                                const dataCheckpoint = checkpoints[exists]
-                                const recAnimals = parsedBody.animals
-                                animals = animalsMethods.getJson()
-                                const filteredAnimals = animals.filter(animal => recAnimals.some(recAnimal => animal.id === recAnimal.id));
-                                const result = {
-                                    id: dataCheckpoint.id,
-                                    lat: dataCheckpoint.lat,
-                                    long: dataCheckpoint.long,
-                                    description: dataCheckpoint.description,
-                                    animals: filteredAnimals    
-                                }
-
-                                res.writeHead(200,{'Content-Type': 'application/json', 'message': 'Animales localizados'})
-                                res.write(JSON.stringify(result))
-                            } 
-                            else { //ID no identificado en el archivo checkpoints.json
-                                res.writeHead(500,{'message':'ID desconocido'})
-                            }
-                            return res.end()
-                        })
-                    } catch (e) {
-                    res.writeHead(500,{'message':'Error del servidor al intentar posicionar los animales'}) 
-                    return res.end()
-                }
-                   
-                }else{ //Obtiene un animal especifico
                     animalsMethods.getAnimal(parametros[2],res)
-                }
             }
         }else if(req.method === 'POST'){ //Agrega un animal
             try{
@@ -88,9 +47,12 @@ export const animalsRoute = (req, res) => {
                     }else{
                         console.log(parsedBody.id)
                         
-                        animalsMethods.postAnimal(parsedBody,res)
-                        res.writeHead(200,{'Content-Type': 'application/json', 'message': 'El animal fue agregado exitosamente'})
-                        res.end()
+                        if(animalsMethods.postAnimal(parsedBody)){
+                            res.writeHead(200,{'Content-Type': 'application/json', 'message': 'El animal fue agregado exitosamente'})
+                        }else{
+                            res.writeHead(400, {'message':'El animal con este ID ya existe'});
+                        }
+                        return res.end()
                     }
                 })
 
@@ -105,10 +67,16 @@ export const animalsRoute = (req, res) => {
             if(parametros.length == 2){ //Eliminamos todos los animales
                 
                 animalsMethods.deleteAnimales(req,res)
+                res.writeHead(200, {'message':'Todos los animales han sido eliminados'})
+                return res.end()
             }else if(parametros.length == 3){ //Eliminamos un animal
-                animalsMethods.deleteAnimal(parametros[2],res)
+                if(animalsMethods.deleteAnimal(parametros[2])){
+                    res.writeHead(200,{'message': 'El animal fue eliminado exitosamente'})
+                }else{
+                    res.writeHead(400, {'message':'El animal buscado no existe o no se encuentra registrado en el sistema'});
+                }
+                return res.end()
             }
-            res.writeHead(200,{'message':'Animal dado de baja del sistema'})
             return res.end()
         }else if(req.method === 'PATCH'){ //Se modifica la data de algun animal
             try {
@@ -128,8 +96,11 @@ export const animalsRoute = (req, res) => {
                             name: parsedBody.name,
                             description: parsedBody.description
                         }
-                        animalsMethods.patchAnimal(newAnimal,res)
-                        res.writeHead(200,{'message':'Se modifico correctamente al animal'})
+                        if(animalsMethods.patchAnimal(newAnimal)){
+                            res.writeHead(200, {'message':'Se modificó correctamente al animal'});
+                        }else{
+                            res.writeHead(404, {'message':'El animal buscado no existe o no se encuentra registrado en el sistema'});
+                        }
                         return res.end()
                     }
                 })
