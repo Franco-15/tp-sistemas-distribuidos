@@ -1,5 +1,5 @@
 //import { getChkPt } from "../api/apiCheckpointHelper";
-import { getChkPt, PatchChkPt, PostChkPt , DeleteChkPt} from "../api/apiCheckpointHelper.js";
+import {getChkPt} from "../api/apiCheckpointHelper.js";
 
 
 export function loadMapPage() {
