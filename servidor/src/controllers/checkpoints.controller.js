@@ -39,7 +39,7 @@ export const getPuntoControl = (idPtoControl,res) => {
     }
 }
 
-export const postPuntoControl = (parsedBody,res) => {
+export const postPuntoControl = (parsedBody) => {
     const result = getJson();
 
     const exists = result.findIndex((ptoControl) => ptoControl.id === parsedBody.id);
@@ -52,7 +52,7 @@ export const postPuntoControl = (parsedBody,res) => {
     return true
 }
 
-export const deletePuntosControl  = (req,res) => {
+export const deletePuntosControl  = () => {
     const result = getJson()
     writeFileSync(FILE_PATH,JSON.stringify({}),'utf-8')
 }

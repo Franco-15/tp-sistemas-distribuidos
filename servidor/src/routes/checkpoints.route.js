@@ -2,187 +2,102 @@ import express from 'express';
 import * as checkpointMethods from '../controllers/checkpoints.controller.js';
 
 const router = express.Router();
+let checkpoints;
+let id;
 
-const getAllCheckpoints = '/';
-const getCheckpoint = '/:id';
-const postCheckpoint = '/';
-const deleteAllCheckpoints = '/';
-const deleteCheckpoint = '/:id';
-const patchCheckpoint = '/:id';
-
-// GET todos los checkpoints
-router.get(getAllCheckpoints, (req, res) => {
+// GET /api/checkpoints - Obtener todos los checkpoints
+router.get('/', (req, res) => {
     try {
-        const checkpoints = checkpointMethods.getPuntosControl();
-        res.status(200).json({
-            message: 'Se encontró el listado de los checkpoints',
-            data: JSON.parse(checkpoints).data
-        });
+        checkpoints = checkpointMethods.getPuntosControl();
+        res.writeHead(200, { 'Content-Type': 'application/json', 'message': 'Se encontró el listado de los checkpoints' });
+        res.write(JSON.stringify(checkpoints));
+        return res.end();
     } catch (error) {
-        res.status(500).json({ message: 'Error al obtener el listado de checkpoints' });
+        res.writeHead(500, { 'message': 'Error al obtener el listado de checkpoints' });
+        return res.end();
     }
 });
 
-// GET checkpoint específico
-router.get(getCheckpoint, (req, res) => {
-    try {
-        const checkpoint = checkpointMethods.getPuntoControl(req.params.id);
-        if (!checkpoint) {
-            return res.status(404).json({ message: 'El checkpoint no existe' });
-        }
-        res.status(200).json(checkpoint);
-    } catch (error) {
-        res.status(500).json({ message: 'Error al obtener el checkpoint' });
-    }
+// GET /api/checkpoints/:id - Obtener un checkpoint específico
+router.get('/:id', (req, res) => {
+    id = req.url.split("/")
+    checkpointMethods.getPuntoControl(id[1], res);
 });
 
-// POST  Agregar un checkpoint
-router.post(postCheckpoint, (req, res) => {
+// POST /api/checkpoints - Agregar un checkpoint
+router.post('/', (req, res) => {
     const { id, lat, long, description } = req.body;
 
     if (!id || !lat || !long || !description) {
-        return res.status(400).json({ message: 'No se pudo agregar el checkpoint debido a la falta de datos' });
+        res.writeHead(400, { 'message': 'No se pudo agregar el checkpoint debido a la falta de datos' });
+        return res.end();
     }
 
     try {
-        checkpointMethods.postPuntoControl(req.body);
-        res.status(200).json({ message: 'Checkpoint agregado exitosamente' });
+        if (checkpointMethods.postPuntoControl(req.body)) {
+            res.writeHead(200, { 'message': 'Checkpoint agregado exitosamente' });
+        } else {
+            res.writeHead(400, { 'message': 'El checkpoint con este ID ya existe' });
+        }
+        return res.end();
     } catch (error) {
-        res.status(500).json({ message: 'Error del servidor, no se pudo agregar el checkpoint' });
+        res.writeHead(500, { 'message': 'Error del servidor, no se pudo agregar el checkpoint' });
+        return res.end();
     }
 });
 
-// DELETE  Eliminar todos los checkpoints
-router.delete(deleteAllCheckpoints, (req, res) => {
+// DELETE /api/checkpoints - Eliminar todos los checkpoints
+router.delete('/', (req, res) => {
     try {
         checkpointMethods.deletePuntosControl();
-        res.status(200).json({ message: 'Se eliminaron los puntos de control' });
+        res.writeHead(200, { 'message': 'Se eliminaron todos los puntos de control' });
+        return res.end();
     } catch (error) {
-        res.status(500).json({ message: 'Error al eliminar los puntos de control' });
+        res.writeHead(500, { 'message': 'Error al eliminar los puntos de control' });
+        return res.end();
     }
 });
 
-// DELETE  Eliminar un checkpoint específico
-router.delete(deleteCheckpoint, (req, res) => {
+// DELETE /api/checkpoints/:id - Eliminar un checkpoint específico
+router.delete('/:id', (req, res) => {
     try {
-        checkpointMethods.deletePuntoControl(req.params.id);
-        res.status(200).json({ message: 'Checkpoint eliminado exitosamente' });
+        id = req.url.split("/")
+        if (checkpointMethods.deletePuntoControl(id[1])) {
+            res.writeHead(200, { 'message': 'Checkpoint eliminado exitosamente' });
+        } else {
+            res.writeHead(400, { 'message': 'El checkpoint buscado no existe o no se encuentra registrado en el sistema' });
+        }
+        return res.end();
     } catch (error) {
-        res.status(500).json({ message: 'Error al eliminar el checkpoint' });
+        res.writeHead(500, { 'message': 'Error al eliminar el checkpoint' });
+        return res.end();
     }
 });
 
-// PATCH Modificar un checkpoint
-router.patch(patchCheckpoint, (req, res) => {
+// PATCH /api/checkpoints/:id - Modificar un checkpoint
+router.patch('/:id', (req, res) => {
+    id = req.url.split("/")
     const { lat, long, description } = req.body;
-    const { id } = req.params;
 
-    if (!lat && !long && !description) {
-        return res.status(400).json({ message: 'No se pudo modificar el checkpoint debido a la falta de datos' });
+    if (!lat || !long || !description) {
+        res.writeHead(400, { 'message': 'No se pudo modificar el checkpoint debido a la falta de datos' });
+        return res.end();
     }
 
-    const newCheckpoint = { id, lat, long, description };
-
     try {
-        checkpointMethods.patchPuntosControl(newCheckpoint);
-        res.status(200).json({ message: 'Checkpoint modificado exitosamente' });
+        const newCheckpoint = { id: id[1], lat: lat, long: long, description: description };
+        if (checkpointMethods.patchPuntoControl(newCheckpoint)) {
+            res.writeHead(200, { 'message': 'Checkpoint modificado exitosamente' });
+        } else {
+            res.writeHead(404, { 'message': 'El checkpoint buscado no existe o no se encuentra registrado en el sistema' });
+        }
+        return res.end();
     } catch (error) {
-        res.status(500).json({ message: 'Error al modificar el checkpoint' });
+        res.writeHead(500, { 'message': 'Error al modificar el checkpoint' });
+        return res.end();
     }
 });
 
 export default router;
 
 
-/*import * as checkpointMethods from '../controllers/checkpoints.controller.js'
-
-let parametros
-let checkpoints 
- 
-export const checkpointsRoute = (req, res) => {
-    parametros = req.url.split("/") 
-    parametros = parametros.filter(el => el != '')   //filtro los vacios
-    if(req.method === 'GET'){ 
-        //setHeaders(res);
-        if(parametros.length == 2){ //Entra en este if para obtener todos los checkpoints
-            checkpoints = checkpointMethods.getPuntosControl()
-            res.writeHead(200,{'Content-Type': 'application/json', 'message': 'Se encontro el listado de los checkpoints'})
-            res.write(checkpoints)
-            return res.end()
-        }else if(parametros.length == 3){ //Entra en este if para obtener un checkpoint
-            checkpointMethods.getPuntoControl(parametros[2],res)
-        }
-    }else if(req.method === 'POST'){  //Entra en este if para agregar un checkpoint
-        try{
-            //setHeaders(res);
-            let body = '';
-            req.on('data', (chunk) => {
-                body = body + chunk;
-            });
-            req.on('end', () => {
-                const parsedBody = JSON.parse(body);
-                if(!parsedBody.id || !parsedBody.lat || !parsedBody.long || !parsedBody.description){ //Entra por aca si falta algun dato
-                    res.writeHead(400, {'message':'No se pudo agregar al checkpoint debido a la falta de datos'})
-                    res.end()
-                    return;
-                }else{
-                    checkpointMethods.postPuntoControl(parsedBody,res)
-                    res.writeHead(200,{'message':'Se agrego el checkpoint'})
-                    return res.end()
-                }
-            })
-        }catch (e){
-            console.log('Error', e)
-            res.writeHead(500, {'message':'Error del servidor, no se pudo agregar el checkpoint'})
-            return res.end()
-        }
-    }else if(req.method === 'DELETE'){ 
-        //setHeaders(res);
-        if(parametros.length == 2){ //Entra en este if para eliminar todos los checkpoints
-            checkpointMethods.deletePuntosControl(req,res)
-            res.writeHead(200,{'message':'Se eliminaron los punto de control'})
-        }else if(parametros.length == 3){ //Entra en este if para eliminar un checkpoint
-            checkpointMethods.deletePuntoControl(parametros[2],res)
-            res.writeHead(200,{'message':'Se elimino el punto de control'})
-        }
-        return res.end()
-    }else if(req.method === 'PATCH'){ //Entra en este if para modificar un checkpoints
-        try {
-            setHeaders(res);
-            let body = '';
-            req.on('data', (chunk) => {
-                body = body + chunk;
-            });
-            req.on('end', () => {
-                const parsedBody = JSON.parse(body);
-                if(!parametros[1] || !parsedBody.lat || !parsedBody.long || !parsedBody.description){ //Entra por aca si falta algun dato
-                    res.writeHead(400, {'message':'No se pudo modificar el punto de control debido a la falta de datos'})
-                    return res.end()
-                }else{
-                    const newCheckpoint = {
-                        id: parametros[2],
-                        lat: parsedBody.lat,
-                        long: parsedBody.long,
-                        description: parsedBody.description
-                    }
-                    checkpointMethods.patchPuntosControl(newCheckpoint,res)
-                    res.writeHead(200,{'message':'El checkpoint ha sido modificado'})
-                    return res.end()
-                }
-            })
-            
-        }
-        catch (e) {
-            console.log('Error', e)
-            res.writeHead(500,  {'message':'Error en el servidor, el checkpoint no ha sido modificado'}) 
-            return res.end()
-            }
-    
-    }  
-    else{ //Ruta invalida
-        res.writeHead(404, {'message':'Ruta no encontrada'})
-        return res.end() 
-    }
-}
-    
-*/

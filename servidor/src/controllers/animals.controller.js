@@ -55,7 +55,6 @@ export const postAnimal = (parsedBody) => {
 }
 
 export const deleteAnimales = () => {
-    const result = getJson()
     writeFileSync(FILE_PATH,JSON.stringify([]),'utf-8')
 }
 
