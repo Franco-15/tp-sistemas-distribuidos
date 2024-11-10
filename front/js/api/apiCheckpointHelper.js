@@ -3,7 +3,7 @@
 
 export function getChkPt() { 
 
-    return axios.get('http://localhost:3000/api/checkpoints')
+    return axios.get('http://localhost:3005/api/checkpoints')
     .then(response => {
 
         const data = response.data.data; //obj .Json
@@ -45,7 +45,7 @@ export function PostChkPt(id, lat, long, description) {
         description: description,
     }
 
-    axios.post('http://localhost:3000/api/checkpoints', JSON.stringify(data), {
+    axios.post('http://localhost:3005/api/checkpoints', JSON.stringify(data), {
         headers: {
             'Content-Type': 'application/json',
         }
@@ -65,7 +65,7 @@ export function PatchChkPt(id, lat, long, description) {
         description: description,
     }
 
-    axios.patch('http://localhost:3000/api/checkpoints/'+id, JSON.stringify(data), {
+    axios.patch('http://localhost:3005/api/checkpoints/'+id, JSON.stringify(data), {
         headers: {
             'Content-Type': 'application/json',
         }
@@ -79,7 +79,7 @@ export function PatchChkPt(id, lat, long, description) {
 }
 
 export function DeleteChkPt(id) { 
-    axios.delete('http://localhost:3000/api/checkpoints/'+id, {
+    axios.delete('http://localhost:3005/api/checkpoints/'+id, {
         headers: {
             'Content-Type': 'application/json',
         }

@@ -35,10 +35,10 @@ function router() {
             console.log('locacion');
             loadLocacionPage(hash);
             break;
-        /*case '#/map': 
+        case '#/map': 
             console.log('mapa'); 
             loadMapPage();
-            break;*/
+            break;
         default:
             app.innerHTML = `<h2>Proximamente...</h2>`;
     }
