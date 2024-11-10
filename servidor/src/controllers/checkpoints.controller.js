@@ -44,12 +44,12 @@ export const postPuntoControl = (parsedBody,res) => {
 
     const exists = result.findIndex((ptoControl) => ptoControl.id === parsedBody.id);
     if (exists > -1) {
-        res.writeHead(400, {'message':'El checkpoint ya existe'});
-        return res.end();
+        return false
         
     }
     result.push(parsedBody);
     writeFileSync(FILE_PATH, JSON.stringify(result),'utf-8')
+    return true
 }
 
 export const deletePuntosControl  = (req,res) => {
@@ -62,12 +62,12 @@ export const deletePuntoControl  = (idPtoControl, res) => {
     const buscado = result.findIndex((item) => item.id === idPtoControl);
 
     if (buscado < 0) {
-        res.writeHead(404,  {'message':'El checkpoint buscado no existe o no se encuentra registrado en el sistema'});
-        return res.end();
+        return false
         
     }else{      
         result.splice(buscado, 1); 
         writeFileSync(FILE_PATH, JSON.stringify(result),'utf-8')
+        return true
     }
     
 }
@@ -78,8 +78,7 @@ export const patchPuntosControl = (newCheckpoint,res) => {
         return item.id === newCheckpoint.id
     })
     if(buscado < 0){
-        res.writeHead(404, {'message':'El checkpoint buscado no existe o no se encuentra registrado en el sistema'});
-        return res.end()
+        return false
         
     }else{
         const oldCheckpoint = result[buscado];
@@ -90,5 +89,6 @@ export const patchPuntosControl = (newCheckpoint,res) => {
             description: newCheckpoint.description || oldCheckpoint.description
         }
         writeFileSync(FILE_PATH, JSON.stringify(result),'utf-8')
+        return true
     }
 }
