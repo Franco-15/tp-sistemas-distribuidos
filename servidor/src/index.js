@@ -7,6 +7,7 @@ import animalsRoute from './routes/animals.route.js';
 import checkpointsRoute from './routes/checkpoints.route.js';
 import loginRoute from './routes/login.route.js';
 import devicesRoute from './routes/devices.route.js';
+import {authenticateToken} from './middlewares/authenticateToken.js';
 
 const HTTP_PORT = 3000;
 const rutaAnimal = "/api/animals"
@@ -31,16 +32,15 @@ app.use(cors({
 app.use(express.json()); // Middleware para analizar JSON
 
 // Definición de rutas
-app.use(rutaPositions, eventsRoute);
-app.use(rutaAnimal, animalsRoute);
-app.use(rutaCheckpoint, checkpointsRoute);
+app.use(rutaPositions,authenticateToken, eventsRoute);
+app.use(rutaAnimal,authenticateToken, animalsRoute);
+app.use(rutaCheckpoint,authenticateToken, checkpointsRoute);
 app.use(rutaLogin, loginRoute);
-app.use(rutaDevices, devicesRoute);
-
-
+app.use(rutaDevices,authenticateToken, devicesRoute);
 app.get(rutaRefresh, (req, res) => {
     res.status(501).send({ message: 'Hay que desarrollar esto con JWT' });
 });
+
 
 // Manejo de rutas no encontradas
 app.use((req, res) => {
