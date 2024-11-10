@@ -34,12 +34,12 @@ export const validUser = (req,res) =>{
                             res.writeHead(200,{'message':'Usuario logueado'})
                             return res.end()
                         } else {
-                            res.writeHead(400,{'message':'Password invalido'}) 
+                            res.writeHead(401,{'message':'Password invalido'}) 
                             return res.end()
                         }
                     })
                     .catch(error => {
-                        res.writeHead(400,{'message':'Error al comparar la contraseña'}) 
+                        res.writeHead(500,{'message':'Error al comparar la contraseña'}) 
                         return res.end()
                     });
             }
