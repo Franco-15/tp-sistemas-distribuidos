@@ -41,20 +41,20 @@ export const getAnimal = (idAnimal,res) => {
     }
 }
 
-export const postAnimal = (parsedBody,res) => {
+export const postAnimal = (parsedBody) => {
     const result = getJson();
 
     const exists = result.findIndex((animal) => animal.id === parsedBody.id);
     if (exists > -1) {
-        res.writeHead(400, {'message':'El animal con este ID ya existe'});
-        return res.end();
+        return false
         
     }
     result.push(parsedBody);
     writeFileSync(FILE_PATH, JSON.stringify(result),'utf-8')
+    return true
 }
 
-export const deleteAnimales = (req,res) => {
+export const deleteAnimales = () => {
     const result = getJson()
     writeFileSync(FILE_PATH,JSON.stringify([]),'utf-8')
 }
@@ -64,24 +64,22 @@ export const deleteAnimal = (idAnimal, res) => {
     const buscado = result.findIndex((item) => item.id === idAnimal);
 
     if (buscado < 0) {
-        res.writeHead(404, {'message':'El checkpoint buscado no existe o no se encuentra registrado en el sistema'});
-        return res.end()
+        return false
     }else{      
         result.splice(buscado, 1); 
         writeFileSync(FILE_PATH, JSON.stringify(result),'utf-8')
+        return true
     }
     
 }
 
-export const patchAnimal = (newAnimal,res) => {
+export const patchAnimal = (newAnimal) => {
     const result = getJson();
     const buscado = result.findIndex((item) => {
         return item.id === newAnimal.id
     })
     if(buscado < 0){
-        res.writeHead(404, {'message':'El checkpoint buscado no existe o no se encuentra registrado en el sistema'});
-        return res.end()
-        
+        return false
     }else{
         const oldAnimal = result[buscado];
         result[buscado] = {
@@ -90,5 +88,6 @@ export const patchAnimal = (newAnimal,res) => {
             description: newAnimal.description || oldAnimal.description
         }
         writeFileSync(FILE_PATH, JSON.stringify(result),'utf-8')
+        return true
     }
 }

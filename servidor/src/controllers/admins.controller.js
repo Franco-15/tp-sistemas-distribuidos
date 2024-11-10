@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync, existsSync } from 'fs';
+import { readFileSync,  existsSync } from 'fs';
 import bcrypt from 'bcrypt';
 const FILE_PATH =  './src/data/admin.json' 
 

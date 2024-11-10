@@ -2,11 +2,11 @@ import express from 'express';
 import cors from 'cors';
 import http from 'http';
 import {receiveFromCheckPoint} from './controllers/mqtt.controller.js'
-import {eventsRoute} from './routes/events.route.js';
-import {animalsRoute} from './routes/animals.route.js';
-import {checkpointsRoute} from './routes/checkpoints.route.js';
-import {loginRoute} from './routes/login.route.js';
-import {devicesRoute} from './routes/devices.route.js';
+import eventsRoute from './routes/events.route.js';
+import animalsRoute from './routes/animals.route.js';
+import checkpointsRoute from './routes/checkpoints.route.js';
+import loginRoute from './routes/login.route.js';
+import devicesRoute from './routes/devices.route.js';
 
 const HTTP_PORT = 3000;
 const rutaAnimal = "/api/animals"
@@ -44,6 +44,7 @@ app.get('/api/refresh', (req, res) => {
 
 // Manejo de rutas no encontradas
 app.use((req, res) => {
+    console.log("Llege aca")
     res.status(404).send({ message: 'Ruta no encontrada' });
 });
 
