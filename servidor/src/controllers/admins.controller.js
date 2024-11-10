@@ -1,6 +1,9 @@
 import { readFileSync,  existsSync } from 'fs';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken'
+
 const FILE_PATH =  './src/data/admin.json' 
+
 
 export const getJson = () => {
     const fileExist = existsSync(FILE_PATH);
@@ -26,6 +29,9 @@ export const validUser = (req,res) =>{
                 .then(isMatch => {
                     if (isMatch) {
                         res.writeHead(200,{'message':'Usuario logueado'})
+                        const accessToken = jwt.sign({ id:username },process.env.ACCESS_TOKEN_SECRET ,{ expiresIn: '5m' });
+                        const refreshToken = jwt.sign({ id:username }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '60m' });
+                        res.write(JSON.stringify({accessToken:accessToken,refreshToken:refreshToken}))
                         return res.end()
                     } else {
                         res.writeHead(400,{'message':'Password invalido'}) 
