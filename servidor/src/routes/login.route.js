@@ -3,7 +3,7 @@ import { validUser } from '../controllers/admins.controller.js';
 
 const router = express.Router();
 
-// Ruta para el login, manejada por validUser
+// Ruta para el login
 router.post('/', (req, res) => { 
     validUser(req, res);
 });

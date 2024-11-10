@@ -67,7 +67,7 @@ router.delete('/:id', (req, res) => {
         if(animalsMethods.deleteAnimal(id[1])){
             res.writeHead(200,{'message': 'El animal fue eliminado exitosamente'})
         }else{
-            res.writeHead(400, {'message':'El animal buscado no existe o no se encuentra registrado en el sistema'});
+            res.writeHead(404, {'message':'El animal buscado no existe o no se encuentra registrado en el sistema'});
         }
         return res.end()
     } catch (error) {

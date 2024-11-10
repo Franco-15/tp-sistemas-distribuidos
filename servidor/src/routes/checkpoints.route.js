@@ -65,7 +65,7 @@ router.delete('/:id', (req, res) => {
         if (checkpointMethods.deletePuntoControl(id[1])) {
             res.writeHead(200, { 'message': 'Checkpoint eliminado exitosamente' });
         } else {
-            res.writeHead(400, { 'message': 'El checkpoint buscado no existe o no se encuentra registrado en el sistema' });
+            res.writeHead(404, { 'message': 'El checkpoint buscado no existe o no se encuentra registrado en el sistema' });
         }
         return res.end();
     } catch (error) {

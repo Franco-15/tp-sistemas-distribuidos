@@ -1,15 +1,20 @@
 import jwt from 'jsonwebtoken';
 
-const authenticateToken = (req, res, next) => {
+export const authenticateToken = (req, res, next) => {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1]; // El token suele ir después de "Bearer"
 
-    if (!token) return res.status(401).json({ message: 'Acceso denegado, falta el token' });
+    if (!token){
+        res.writeHead(401,{message: 'Acceso denegado, falta el token'})
+        res.end()
+    }
 
     // Verificar el token
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-        if (err) return res.status(403).json({ message: 'Token no válido' });
-
+        if (err){
+            res.writeHead(403,{message: 'Token inválido'})
+            return res.end()
+        }
         next();
     });
 };

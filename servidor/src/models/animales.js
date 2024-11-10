@@ -1,3 +1,0 @@
-/*
-Este archivo descibe las operaciones sobre el archivo que persiste los animales
-*/

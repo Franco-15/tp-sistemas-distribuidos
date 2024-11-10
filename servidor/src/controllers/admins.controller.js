@@ -35,12 +35,12 @@ export const validUser = (req,res) =>{
                         res.write(JSON.stringify({accessToken:accessToken,refreshToken:refreshToken,id:id}))
                         return res.end()
                     } else {
-                        res.writeHead(400,{'message':'Password invalido'}) 
+                        res.writeHead(401,{'message':'Password invalido'}) 
                         return res.end()
                     }
                 })
                 .catch(error => {
-                    res.writeHead(400,{'message':'Error al comparar la contraseña'}) 
+                    res.writeHead(500,{'message':'Error al comparar la contraseña'}) 
                     return res.end()
                 });
         }
@@ -50,4 +50,24 @@ export const validUser = (req,res) =>{
         res.writeHead(500, {'message':'Error del servidor al intentar verificar la identidad del usuario'})
         return res.end()
     }
+}
+
+export const refreshUser  = (req,res) =>{
+    const { token } = req.body;
+    if (!token){
+        res.writeHead(401,{'message':'No hay token'}) 
+        return res.end()
+    } 
+
+    jwt.verify(token, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
+        if (err){
+            res.writeHead(403,{'message':'Token invalido'}) 
+            return res.end()
+        } 
+
+        res.writeHead(200,{'Content-Type': 'application/json', 'message':'Nuevo token de acceso brindado'})
+        const accessToken = jwt.sign({ id:username },process.env.ACCESS_TOKEN_SECRET ,{ expiresIn: '5m' });
+        res.write(JSON.stringify({accessToken:accessToken,refreshToken:refreshToken}))
+        return res.end()
+    });
 }
