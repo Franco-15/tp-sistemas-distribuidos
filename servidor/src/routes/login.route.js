@@ -4,7 +4,7 @@ import { validUser } from '../controllers/admins.controller.js';
 const router = express.Router();
 
 // Ruta para el login, manejada por validUser
-router.post('/login', (req, res) => { //todo: chequear 
+router.get('/', (req, res) => { //todo: chequear 
     validUser(req, res);
 });
 
