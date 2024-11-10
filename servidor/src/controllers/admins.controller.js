@@ -28,7 +28,7 @@ export const validUser = (req,res) =>{
             bcrypt.compare(password, hashedPassword)
                 .then(isMatch => {
                     if (isMatch) {
-                        res.writeHead(200,{'message':'Usuario logueado'})
+                        res.writeHead(200,{'Content-Type': 'application/json', 'message':'Usuario logueado'})
                         const accessToken = jwt.sign({ id:username },process.env.ACCESS_TOKEN_SECRET ,{ expiresIn: '5m' });
                         const refreshToken = jwt.sign({ id:username }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '60m' });
                         res.write(JSON.stringify({accessToken:accessToken,refreshToken:refreshToken}))
