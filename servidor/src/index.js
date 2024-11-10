@@ -44,8 +44,8 @@ app.get('/api/refresh', (req, res) => {
 
 // Manejo de rutas no encontradas
 app.use((req, res) => {
-    console.log("Llege aca")
-    res.status(404).send({ message: 'Ruta no encontrada' });
+    res.writeHead(404,{'message':'Ruta no encontrada' })  
+    return res.end()
 });
 
 // Iniciar el servidor
@@ -54,7 +54,7 @@ app.listen(HTTP_PORT, () => {
 });
 
 app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send({ message: 'Ocurrió un error en el servidor' });
+    res.writeHead(500,{'message':'Ocurrió un error en el servidor'})  
+    return res.end()
 });
 
