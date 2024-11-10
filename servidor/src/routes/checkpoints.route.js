@@ -10,7 +10,7 @@ router.get('/', (req, res) => {
     try {
         checkpoints = checkpointMethods.getPuntosControl();
         res.writeHead(200, { 'Content-Type': 'application/json', 'message': 'Se encontró el listado de los checkpoints' });
-        res.write(JSON.stringify(checkpoints));
+        res.write(checkpoints);
         return res.end();
     } catch (error) {
         res.writeHead(500, { 'message': 'Error al obtener el listado de checkpoints' });
@@ -86,7 +86,7 @@ router.patch('/:id', (req, res) => {
 
     try {
         const newCheckpoint = { id: id[1], lat: lat, long: long, description: description };
-        if (checkpointMethods.patchPuntoControl(newCheckpoint)) {
+        if (checkpointMethods.patchPuntosControl(newCheckpoint)) {
             res.writeHead(200, { 'message': 'Checkpoint modificado exitosamente' });
         } else {
             res.writeHead(404, { 'message': 'El checkpoint buscado no existe o no se encuentra registrado en el sistema' });
