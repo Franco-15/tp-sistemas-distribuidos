@@ -19,9 +19,9 @@ const rutaPositions = "/api/animals/position"
 
 receiveFromCheckPoint();
 
-// Configuramos CORS globalmente para todas las rutas
 const app = express();
 
+// Configuramos CORS globalmente para todas las rutas
 app.use(cors({
     origin: 'http://localhost:3000', // Cambia al origen correcto
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -38,12 +38,13 @@ app.use(rutaLogin, loginRoute);
 app.use(rutaDevices, devicesRoute);
 
 
-app.get('/api/refresh', (req, res) => {
+app.get(rutaRefresh, (req, res) => {
     res.status(501).send({ message: 'Hay que desarrollar esto con JWT' });
 });
 
 // Manejo de rutas no encontradas
 app.use((req, res) => {
+    console.log("wdhjnkhjri")
     res.writeHead(404,{'message':'Ruta no encontrada' })  
     return res.end()
 });
