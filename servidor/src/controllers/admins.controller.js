@@ -28,10 +28,11 @@ export const validUser = (req,res) =>{
             bcrypt.compare(password, hashedPassword)
                 .then(isMatch => {
                     if (isMatch) {
-                        res.writeHead(200,{'message':'Usuario logueado'})
+                        const id = admin[0]["id"]
+                        res.writeHead(200,{'Content-Type': 'application/json', 'message':'Usuario logueado'})
                         const accessToken = jwt.sign({ id:username },process.env.ACCESS_TOKEN_SECRET ,{ expiresIn: '5m' });
                         const refreshToken = jwt.sign({ id:username }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '60m' });
-                        res.write(JSON.stringify({accessToken:accessToken,refreshToken:refreshToken}))
+                        res.write(JSON.stringify({accessToken:accessToken,refreshToken:refreshToken,id:id}))
                         return res.end()
                     } else {
                         res.writeHead(400,{'message':'Password invalido'}) 
