@@ -61,7 +61,6 @@ export const deletePuntosControl = () => {
 export const deletePuntoControl = (idPtoControl, res) => {
     const result = getJson()
     const buscado = result.findIndex((item) => item.id === idPtoControl);
-    res.writeHead(200, { 'message': 'oaaa' });
     if (buscado < 0) {
         return false
 
