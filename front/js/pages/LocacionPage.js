@@ -2,7 +2,6 @@
 import { getChkPt } from "../api/apiCheckpointHelper.js";
 
 export async function  loadLocacionPage() {
-    console.log('entra') //!sacar
     // Ejecutar funciones al cargar la página
     getInitialLocationData();
     startEventSource();
@@ -68,7 +67,6 @@ function startEventSource() {
     eventSource.onmessage = function(event) {
         const checkpointPositionData = JSON.parse(JSON.parse(event.data));
         const animalsCell = document.getElementById(`animals-${checkpointPositionData.id}`);
-        console.log('Data received:', checkpointPositionData.animals);
         if (animalsCell) {
             let animalsChain;
             checkpointPositionData.animals.forEach(animal => {
