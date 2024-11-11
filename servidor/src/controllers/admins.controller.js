@@ -60,7 +60,6 @@ export const refreshUser  = (req,res) =>{
         res.writeHead(401,{'message':'Acceso denegado, falta el token'}) 
         return res.end()
     } 
-    console.log("Paso primer chequeo")
     jwt.verify(token, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
         if (err){
             res.writeHead(403,{'message':'Token invalido'}) 
@@ -68,13 +67,9 @@ export const refreshUser  = (req,res) =>{
         } 
         const admin = getJson()
         const id = admin[0]["id"]
-        console.log("Paso segundo chequeo")
         res.writeHead(200,{'Content-Type': 'application/json', 'message':'Nuevo token de acceso brindado'})
-        console.log("Paso tercer chequeo")
         const accessToken = jwt.sign({ id:id },process.env.ACCESS_TOKEN_SECRET ,{ expiresIn: '5m' });
-        console.log("Paso cuarto chequeo")
         res.write(JSON.stringify({accessToken:accessToken,refreshToken:token}))
-        console.log("Paso quinto chequeo")
         return res.end()
     });
 }
