@@ -15,11 +15,15 @@ export function loadMapPage() {
         </div>
     `;
 
-    
-    calculaPos().then(pos => {
-        console.log(pos)
-        var map = L.map('map').setView([-38.00413285734509,	-57.55136976361025], 18);
+    const locAll = getLoc(); 
+    const posChkPt = locAll.map(item => [item.lat, item.long]); 
+    const posAnimales = locAll.map(item => item.animals); 
 
+
+    calculaPos(posChkPt).then(posMap => {
+        console.log(posMap)
+        var map = L.map('map').setView(posMap, 18); //todo: cambiar
+        
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
@@ -30,16 +34,17 @@ export function loadMapPage() {
 }
 
 
-function calculaPos() { 
-    return getChkPt().then(ptos => {
+function calculaPos(posChkPt) { 
+    const suma = posChkPt.reduce(
+        (acum, coord) => {
+            acum.lat += coord[0];
+            acum.long += coord[1];
+            return acum; 
+        },
+        {lat: 0, long: 0}
+    ); 
 
-        const sumaLat = ptos.reduce((acc, pto) => acc + parseFloat(pto.lat), 0);
-        const sumaLong = ptos.reduce((acc, pto) => acc + parseFloat(pto.long), 0);
-        const promedioLat = sumaLat / ptos.length;
-        const promedioLong = sumaLong / ptos.length;
-
-        return [promedioLat, promedioLong];
-    });
+    return [(suma.lat / posChkPt.lenght),(suma.long / posChkPt.lenght)];
 }
 
 /*function addChkPt() { 

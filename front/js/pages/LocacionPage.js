@@ -76,7 +76,9 @@ function startEventSource() {
                     animalsChain = animal.name;
                 }
             });
+            
             animalsCell.textContent =animalsChain
+
         } else {
             console.log(`No row found for ID ${checkpointPositionData.id}`);
         }

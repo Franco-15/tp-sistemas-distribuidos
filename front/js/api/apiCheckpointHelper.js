@@ -7,6 +7,7 @@ export function getChkPt() {
     .then(response => {
 
         const data = response.data.data; //obj .Json
+        console.log(data )
 
         const chkPts = data.map(chkPt => ({
             id: chkPt.id,

@@ -2,16 +2,26 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+    background: rgb(2,0,36);
+    background: linear-gradient(124deg, rgba(2,0,36,1) 0%, rgba(83,9,121,1) 26%, rgba(0,124,255,1) 100%);
 }
 
 header {
-    background-color: #1c7eda;
-    padding: 1rem;
+    backdrop-filter: blur(20px);
+    border: 2px solid rgba(0, 0, 0, 0.8);
+    /*background-color: #1c7eda;*/
+    padding: 1%;
     text-align: center;
+    
 }
 
+/*nav-bar {
+    backdrop-filter: blur(30px);
+    border: 2px solid rgba(0, 0, 0, 0.8);
+}*/
+
 header nav a {
-    color: white;
+    color: rgb(182, 17, 17);
     margin: 0 10px;
     text-decoration: none;
     transition: background-color 0.3s;
