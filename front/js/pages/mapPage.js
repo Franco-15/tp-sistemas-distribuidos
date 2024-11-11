@@ -10,7 +10,6 @@ export function loadMapPage() {
 
     app.innerHTML = `
             <div class="map-container">
-            <h2 class="map-title">Mapa</h2>
              <div class="map" id="map"></div>
         </div>
     `;
@@ -23,8 +22,9 @@ export function loadMapPage() {
     calculaPos(posChkPt).then(posMap => {
         console.log(posMap)
         var map = L.map('map').setView(posMap, 18); //todo: cambiar
-        
+
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+
             maxZoom: 19,
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         }).addTo(map);

@@ -2,26 +2,32 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background: rgb(2,0,36);
-    background: linear-gradient(124deg, rgba(2,0,36,1) 0%, rgba(83,9,121,1) 26%, rgba(0,124,255,1) 100%);
+    background-image: url(./items/bc.png);
+    background-color: #cccccc;
+    background-size: cover;
+    /*backdrop-filter: blur(10px);*/
+    /*background: linear-gradient(135deg, rgba(0,123,255,1) 0%, rgba(0,123,255,1) 77%, rgba(252,252,252,1) 100%);*/
 }
 
 header {
-    backdrop-filter: blur(20px);
-    border: 2px solid rgba(0, 0, 0, 0.8);
-    /*background-color: #1c7eda;*/
-    padding: 1%;
+    background: transparent;
+    backdrop-filter: blur(10px);
+    /*border: 0.5px solid rgba(0, 0, 0, 0.8);*/
+    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.8);
+    /*background-color: #007bff;*/
+    padding: 2%;
     text-align: center;
     
 }
 
 /*nav-bar {
+    color: red;
     backdrop-filter: blur(30px);
     border: 2px solid rgba(0, 0, 0, 0.8);
 }*/
 
 header nav a {
-    color: rgb(182, 17, 17);
+    /*color: rgb(182, 17, 17);*/
     margin: 0 10px;
     text-decoration: none;
     transition: background-color 0.3s;
@@ -52,7 +58,15 @@ button {
     padding: 0;
 }
 
+.box{
+    display: flex;
+    place-items: center;
+    justify-content: center;
+    padding-top: 5%;
+    
+}
 .animal-container {
+    backdrop-filter: blur(10px);
     max-width: fit-content;
     margin-left: auto;
     margin-right: auto;
@@ -62,7 +76,7 @@ button {
     background-color: #fff;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
 }
 
 .animal-title {
@@ -107,29 +121,122 @@ button {
     transition: background-color 0.3s;
 }
 
-.styled-button-header {
-    background-color: #1c7eda;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
 
-.styled-button-header:hover {
-    background-color: #0056b3;
-}
 
 .styled-button:hover {
-    background-color: #0056b3;
-}
-
-.map-title {
     background-color: #0056b3;
 }
 
 .map {
     height: 500px;
 }
+
+
+.styled-logout-header {
+    float: right;
+    margin-top: -10px;
+    position: relative;
+    padding: 10px;
+    transition: all .5s ease;
+    color: #fff;
+    border: 1px solid white;
+    font: 700 1.2rem 'Roboto Slab', sans-serif;
+    
+    text-align: center;
+    line-height: 1;
+    font-size: 17px;
+    background-color : transparent;
+    border-radius: 10px;
+    box-sizing: 10px;
+    
+}
+/*
+.styled-logout-header {
+    border: 0 solid;
+    box-shadow: inset 0 0 20px rgba(255, 255, 255, 0);
+    outline: 1px solid;
+    outline-color: rgba(255, 255, 255, 0.5);
+    outline-offset: 15px;
+    color: white;
+    
+    background: none;
+    border: none;    
+    border-radius: 5px;
+    cursor: pointer;
+    line-height: 1.5;
+    font: 700 1.2rem 'Roboto Slab', sans-serif;
+    position: relative;
+    letter-spacing: 0;
+    transition: letter-spacing 0.3s ease, color 0.3s ease;
+    text-align: center;
+    
+}*/
+
+
+
+.styled-logout-header:hover {
+    color: #001F3F;
+    background-color: #fff;
+}
+
+
+
+
+.button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around; /* Espacia los botones de manera uniforme */
+    align-items: center;
+    flex-wrap: wrap; /* Permite que los botones se ajusten en varias líneas en pantallas pequeñas */
+    gap: 10px; /* Espacio entre botones */
+}
+
+
+
+.styled-button-header {
+    background: none;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    line-height: 1.5;
+    font: 700 1.2rem 'Roboto Slab', sans-serif;
+    position: relative;
+    letter-spacing: 0;
+    transition: letter-spacing 0.3s ease, color 0.3s ease;
+    text-align: center;
+}
+
+.styled-button-header:hover,
+.styled-button-header:active {
+    letter-spacing: 5px; /* efecto de expansión del texto */
+}
+
+/* Estilos para las líneas animadas */
+.styled-button-header:before,
+.styled-button-header:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: white;
+    transition: width 0.35s ease-in-out;
+    width: 0;
+}
+
+.styled-button-header:before {
+    top: 0; /* Línea en la parte superior */
+}
+
+.styled-button-header:after {
+    bottom: 0; /* Línea en la parte inferior */
+}
+
+.styled-button-header:hover:before,
+.styled-button-header:hover:after {
+    width: 100%; /* Expande las líneas en hover */
+}
+
 
