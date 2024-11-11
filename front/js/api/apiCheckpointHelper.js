@@ -1,9 +1,6 @@
-<<<<<<< Updated upstream
-=======
 
 
 const port = 3000;
->>>>>>> Stashed changes
 export function getChkPt() { 
 
     return axios.get(`http://localhost:${port}/api/checkpoints`)
