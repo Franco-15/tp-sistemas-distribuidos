@@ -1,10 +1,10 @@
 //todo: ver si no pasa a ser 'HomePage.js'
+import { getChkPt } from "../api/apiCheckpointHelper.js";
 
-//import { getLoc, getLocFirst} from "../api/apiLocacionHelper.js";
-
-export function loadLocacionPage(flag) {
-    console.log('entra') //!sacar
-    
+export async function  loadLocacionPage() {
+    // Ejecutar funciones al cargar la página
+    getInitialLocationData();
+    startEventSource();
     const app = document.getElementById('app');
 
     //todo ver como centrar los input del popup
@@ -14,59 +14,76 @@ export function loadLocacionPage(flag) {
             <table class="animal-table">
                 <thead>
                     <tr>
-                        <th>ID</th>
+                        <th>Checkpoint ID</th>
                         <th>Lat</th>
                         <th>Long</th>
                         <th>Descripción</th>
                         <th>Animales</th>
                     </tr>
                 </thead>
-                <tbody>
-                    ${renderTable(flag)}                    
+                <tbody id="positionsBody">
                 </tbody>
             </table>
         </div>
     `;
     
 }
-/*
-export function renderLocArray() { //todo vendria siendo el get, cambiarlo
-    // Llama a la función getLocs (es la q esta en api.js) y espera su resultado
-    return getLoc().then(LocArray => { //devuelve promesa
-        
-        console.log("Array de checkpointss:", LocArray); // Muestra el array en la consola
-        return LocArray
 
-    });
+function renderRow(data) {
+    const positionsTableBody = document.getElementById('positionsBody');
+    const row = document.createElement('tr');
+    row.setAttribute('data-id', data.id);
+
+    row.innerHTML = `
+        <td>${data.id}</td>
+        <td>${data.lat}</td>
+        <td>${data.long}</td>
+        <td>${data.description}</td>
+        <td id="animals-${data.id}">${data.animals.join(', ') || 'No data'}</td>
+    `;
+    positionsTableBody.appendChild(row);
 }
-*/
 
-export function renderTable(flag) {
-    return null
-    /*
-    let locations;
-    if (flag = '#/locacion') { 
-        locations = getLocFirst(); //retorna array con loc 
-    } else {
-        locations = getLoc();
+// Obtener datos iniciales
+async function getInitialLocationData() {
+    try {
+        const checkpointsLoc = await getChkPt();
+        const locationData = checkpointsLoc.map(loc => ({
+            ...loc,
+            animals: [],
+        }));
+
+        locationData.forEach(renderRow);
+    } catch (error) {
+        console.error("Error fetching positions:", error);
     }
-    return locations.map(loc => `
-        <tr>
-            <td>${loc.id}</td>
-            <td>${loc.lat}</td>
-            <td>${loc.long}</td>
-            <td>${loc.description}</td>
-            <td>
-                <ul>
-                    ${[(Array.isArray(loc.animal) ? animal.map(animal => `
-                        <li>
-                            <strong>Nombre:</strong> ${animal.name}<br>
-                        </li>
-                    `).join('') : 'No hay animales asociados')]}
-                </ul>
-            </td>
-        </tr>
-    `).join('')
-    */
 }
-    
+
+
+// Escuchar actualizaciones de SSE
+function startEventSource() {
+    const eventSource = new EventSource('http://localhost:3000/api/animals/position');
+
+    eventSource.onmessage = function(event) {
+        const checkpointPositionData = JSON.parse(JSON.parse(event.data));
+        const animalsCell = document.getElementById(`animals-${checkpointPositionData.id}`);
+        if (animalsCell) {
+            let animalsChain;
+            checkpointPositionData.animals.forEach(animal => {
+                if (animalsChain) {
+                    animalsChain += `, ${animal.name}`;
+                } else {
+                    animalsChain = animal.name;
+                }
+            });
+            animalsCell.textContent =animalsChain
+        } else {
+            console.log(`No row found for ID ${checkpointPositionData.id}`);
+        }
+    };
+
+    eventSource.onerror = function(error) {
+        console.error("Error in SSE connection:", error);
+        eventSource.close();
+    };
+}

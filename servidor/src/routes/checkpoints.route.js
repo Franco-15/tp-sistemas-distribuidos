@@ -40,9 +40,12 @@ export const checkpointsRoute = (req, res) => {
                     res.end()
                     return;
                 }else{
-                    checkpointMethods.postPuntoControl(parsedBody,res)
-                    res.writeHead(200,{'message':'Se agrego el checkpoint'})
-                    return res.end()
+                    if (checkpointMethods.postPuntoControl(parsedBody)) {
+                        res.writeHead(200, { 'message': 'Checkpoint agregado exitosamente' });
+                    } else {
+                        res.writeHead(400, { 'message': 'El checkpoint con este ID ya existe' });
+                    }
+                    return res.end();
                 }
             })
         }catch (e){
@@ -55,11 +58,15 @@ export const checkpointsRoute = (req, res) => {
         if(parametros.length == 2){ //Entra en este if para eliminar todos los checkpoints
             checkpointMethods.deletePuntosControl(req,res)
             res.writeHead(200,{'message':'Se eliminaron los punto de control'})
+            return res.end()
         }else if(parametros.length == 3){ //Entra en este if para eliminar un checkpoint
-            checkpointMethods.deletePuntoControl(parametros[2],res)
-            res.writeHead(200,{'message':'Se elimino el punto de control'})
+            if (checkpointMethods.deletePuntoControl(parametros[2])) {
+                res.writeHead(200, { 'message': 'Checkpoint eliminado exitosamente' });
+            } else {
+                res.writeHead(404, { 'message': 'El checkpoint buscado no existe o no se encuentra registrado en el sistema' });
+            }
+            return res.end();
         }
-        return res.end()
     }else if(req.method === 'PATCH'){ //Entra en este if para modificar un checkpoints
         try {
             setHeaders(res);
@@ -79,9 +86,12 @@ export const checkpointsRoute = (req, res) => {
                         long: parsedBody.long,
                         description: parsedBody.description
                     }
-                    checkpointMethods.patchPuntosControl(newCheckpoint,res)
-                    res.writeHead(200,{'message':'El checkpoint ha sido modificado'})
-                    return res.end()
+                    if (checkpointMethods.patchPuntosControl(newCheckpoint)) {
+                        res.writeHead(200, { 'message': 'Checkpoint modificado exitosamente' });
+                    } else {
+                        res.writeHead(404, { 'message': 'El checkpoint buscado no existe o no se encuentra registrado en el sistema' });
+                    }
+                    return res.end();
                 }
             })
             

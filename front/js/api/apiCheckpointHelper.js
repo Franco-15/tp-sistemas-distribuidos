@@ -1,6 +1,3 @@
-
-
-
 export function getChkPt() { 
 
     return axios.get('http://localhost:3005/api/checkpoints')
@@ -18,7 +15,7 @@ export function getChkPt() {
         return chkPts;
     })
     .catch(error => {
-        console.error("Error en la solicitud:", error);
+        console.error("Error al obtener datos de checkpoints:", error);
         return [];
     });
 
