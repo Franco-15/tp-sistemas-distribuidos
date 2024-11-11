@@ -37,7 +37,7 @@ app.use(rutaAnimal,authenticateToken, animalsRoute);
 app.use(rutaCheckpoint,authenticateToken, checkpointsRoute);
 app.use(rutaLogin, loginRoute);
 app.use(rutaDevices,authenticateToken, devicesRoute);
-app.get(rutaRefresh, refreshRoute);
+app.use(rutaRefresh, refreshRoute);
 
 
 // Manejo de rutas no encontradas

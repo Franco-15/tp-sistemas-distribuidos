@@ -30,7 +30,7 @@ export const validUser = (req,res) =>{
                     if (isMatch) {
                         const id = admin[0]["id"]
                         res.writeHead(200,{'Content-Type': 'application/json', 'message':'Usuario logueado'})
-                        const accessToken = jwt.sign({ id:username },process.env.ACCESS_TOKEN_SECRET ,{ expiresIn: '5m' });
+                        const accessToken = jwt.sign({ id:username },process.env.ACCESS_TOKEN_SECRET ,{ expiresIn: '5m' }); //5 min
                         const refreshToken = jwt.sign({ id:username }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '60m' });
                         res.write(JSON.stringify({accessToken:accessToken,refreshToken:refreshToken,id:id}))
                         return res.end()
@@ -53,21 +53,28 @@ export const validUser = (req,res) =>{
 }
 
 export const refreshUser  = (req,res) =>{
-    const { token } = req.body;
+    //const { token } = req.body;
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1]; // El token suele ir después de "Bearer"
     if (!token){
-        res.writeHead(401,{'message':'No hay token'}) 
+        res.writeHead(401,{'message':'Acceso denegado, falta el token'}) 
         return res.end()
     } 
-
+    console.log("Paso primer chequeo")
     jwt.verify(token, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
         if (err){
             res.writeHead(403,{'message':'Token invalido'}) 
             return res.end()
         } 
-
+        const admin = getJson()
+        const id = admin[0]["id"]
+        console.log("Paso segundo chequeo")
         res.writeHead(200,{'Content-Type': 'application/json', 'message':'Nuevo token de acceso brindado'})
-        const accessToken = jwt.sign({ id:username },process.env.ACCESS_TOKEN_SECRET ,{ expiresIn: '5m' });
-        res.write(JSON.stringify({accessToken:accessToken,refreshToken:refreshToken}))
+        console.log("Paso tercer chequeo")
+        const accessToken = jwt.sign({ id:id },process.env.ACCESS_TOKEN_SECRET ,{ expiresIn: '5m' });
+        console.log("Paso cuarto chequeo")
+        res.write(JSON.stringify({accessToken:accessToken,refreshToken:token}))
+        console.log("Paso quinto chequeo")
         return res.end()
     });
 }
