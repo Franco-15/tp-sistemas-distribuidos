@@ -16,18 +16,23 @@ export const getJson = () => {
     } 
 } 
 
+//Metodo para loguear al usuario en el sistema
 export const validUser = (req,res) =>{
     try {
         
         const authHeader = req.headers['authorization'];
-        
-           if (!authHeader) {
+        const encoded = authHeader && authHeader.split(' ')[1];
+        const decoded = atob(encoded);
+        const decodedArray = decoded.split(':');
+        const username = decodedArray[0]; 
+        const password = decodedArray[1]; 
+
+        if (!authHeader) {
             res.writeHead(400, { 'message': 'No se pudo verificar al usuario debido a la ausencia del header de autorizacion' });
             return res.end();
         }
 
-        const { username, password } = JSON.parse(authHeader);
-            if (!username || !password) {
+        if (!username || !password) {
             res.writeHead(400, {'message':'No se pudo verificar al usuario debido a la ausencia de datos'})
             return res.end()
         }else{
@@ -60,10 +65,11 @@ export const validUser = (req,res) =>{
     }
 }
 
+
+//Metodo para refrescar el access token del usuario
 export const refreshUser  = (req,res) =>{
-    //const { token } = req.body;
     const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1]; // El token suele ir despues de "Bearer"
+    const token = authHeader && authHeader.split(' ')[1]; //Separamos el token del Bearer
     if (!token){
         res.writeHead(401,{'message':'Acceso denegado, falta el token'}) 
         return res.end()

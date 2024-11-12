@@ -1,11 +1,13 @@
 import { readFileSync, existsSync } from 'fs';
 import express from 'express'; 
 
+//Clase en la que se manejan todas las rutas finales asociadas a los dispositivos disponibles del sistema
+
 const FILE_PATH = './src/data/availableDevices.json';  
 
 const router = express.Router();  // Creamos un enrutador
 
-// Función para leer el archivo JSON
+//Función para leer el archivo JSON
 const getJson = () => {
     const fileExist = existsSync(FILE_PATH);  
     if (fileExist) {

@@ -9,7 +9,7 @@ import devicesRoute from './routes/devices.route.js';
 import refreshRoute from './routes/refresh.route.js';
 import {authenticateToken} from './middlewares/authenticateToken.js';
 
-const HTTP_PORT = 3000;
+const HTTP_PORT = 3000;  //Puerto desde el que se comunica el back
 const rutaAnimal = "/api/animals"
 const rutaCheckpoint = "/api/checkpoints"
 const rutaLogin = "/api/login"
@@ -51,8 +51,4 @@ app.listen(HTTP_PORT, () => {
     console.log(`Servidor escuchando en puerto ${HTTP_PORT}`);
 });
 
-app.use((err, req, res, next) => {
-    res.writeHead(500,{'message':'Ocurrió un error en el servidor'})  
-    return res.end()
-});
 

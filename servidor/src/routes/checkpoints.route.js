@@ -1,6 +1,8 @@
 import express from 'express';
 import * as checkpointMethods from '../controllers/checkpoints.controller.js';
 
+//Clase en la que se manejan todas las rutas finales asociadas a checkpoints
+
 const router = express.Router();
 let checkpoints;
 let id;

@@ -2,6 +2,8 @@ import { readFileSync, writeFileSync, existsSync } from 'fs';
 
 const FILE_PATH = "./src/data/checkpoints.json"
 
+//En esta clase se abarcan todos los metodos en respuesta a las solicitudes que pueden llegar del cliente en relación a los puntos de control
+
 export const getJson = () => {
     const fileExist = existsSync(FILE_PATH);
     if (fileExist) {

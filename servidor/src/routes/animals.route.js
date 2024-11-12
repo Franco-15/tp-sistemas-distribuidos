@@ -1,6 +1,8 @@
 import express from 'express';
 import * as animalsMethods from '../controllers/animals.controller.js';
 
+//Clase en la que se manejan todas las rutas finales asociadas a animales
+
 const router = express.Router();
 
 let animals
