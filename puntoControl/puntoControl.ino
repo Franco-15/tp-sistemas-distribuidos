@@ -4,10 +4,10 @@
 #include <ArduinoJson.h>
 
 //Configuracion de la red WiFi y MQTT
-const char* ssid = "";
-const char* password = "";
-const char* mqtt_server = ""; //Direccion broker MQTT
-const char* topic = "checkpoint"; //Topic MQTT
+const char* ssid = "Gonzalez wifi";
+const char* password = "2234213275";
+const char* mqtt_server = "192.168.1.39";      //Direccion broker MQTT
+const char* topic = "checkpoint";  //Topic MQTT
 const char* boardId = "cee1f9bf-6e42-4071-859a-82d71e231cc1";
 
 WiFiClient espClient;
@@ -70,9 +70,11 @@ JsonArray getScannedDevices(DynamicJsonDocument& doc) {
   int count = foundDevices.getCount();
   for (int i = 0; i < count; i++) {
     NimBLEAdvertisedDevice device = foundDevices.getDevice(i);
-    JsonObject dispositivo = animals.createNestedObject();
-    dispositivo["id"] = String(device.getAddress().toString().c_str());  // Dirección MAC
-    dispositivo["rssi"] = device.getRSSI();                              // Nivel de señal
+    if (device.getRSSI() >= -80) {
+      JsonObject dispositivo = animals.createNestedObject();
+      dispositivo["id"] = String(device.getAddress().toString().c_str());  // Dirección MAC
+      dispositivo["rssi"] = device.getRSSI();                              // Nivel de señal
+    }
   }
 
   return animals;
@@ -130,7 +132,7 @@ void loop() {
     mqttConnect();
   }
   client.loop();
-  
+
   //Obtener dispositivos detectados
   DynamicJsonDocument doc(1024);
   JsonArray animals = getScannedDevices(doc);  //Obtener dispositivos directamente
