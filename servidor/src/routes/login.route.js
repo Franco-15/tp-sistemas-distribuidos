@@ -5,7 +5,7 @@ import { validUser } from '../controllers/admins.controller.js';
 
 const router = express.Router();
 
-// Ruta para el login
+// POST /api/login - Le da acceso del sistema al usuario si los datos coinciden
 router.post('/', (req, res) => { 
     validUser(req, res);
 });

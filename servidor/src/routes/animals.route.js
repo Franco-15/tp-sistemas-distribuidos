@@ -21,7 +21,7 @@ router.get('/', (req, res) => {
     }
 });
 
-// GET /api/animals/:id - Obtener un animal específico
+// GET /api/animals/:id - Obtener un animal especifico
 router.get('/:id', (req, res) => {
     id = req.url.split("/")
     animalsMethods.getAnimal(id[1],res);
@@ -62,7 +62,7 @@ router.delete('/', (req, res) => {
     }
 });
 
-// DELETE /api/animals/:id - Eliminar un animal específico
+// DELETE /api/animals/:id - Eliminar un animal especifico
 router.delete('/:id', (req, res) => {
     try {
         id = req.url.split("/")

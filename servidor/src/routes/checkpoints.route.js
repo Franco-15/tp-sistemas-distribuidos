@@ -20,7 +20,7 @@ router.get('/', (req, res) => {
     }
 });
 
-// GET /api/checkpoints/:id - Obtener un checkpoint específico
+// GET /api/checkpoints/:id - Obtener un checkpoint especifico
 router.get('/:id', (req, res) => {
     id = req.url.split("/")
     checkpointMethods.getPuntoControl(id[1], res);
@@ -60,7 +60,7 @@ router.delete('/', (req, res) => {
     }
 });
 
-// DELETE /api/checkpoints/:id - Eliminar un checkpoint específico
+// DELETE /api/checkpoints/:id - Eliminar un checkpoint especifico
 router.delete('/:id', (req, res) => {
     try {
         id = req.url.split("/")

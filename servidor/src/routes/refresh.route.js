@@ -5,7 +5,7 @@ import { refreshUser } from '../controllers/admins.controller.js';
 
 const router = express.Router();
 
-// Ruta para llevar a cabo el refresh del token
+// POST /api/refresh - Refresca el token de acceso del usuario del sistema
 router.post('/', (req, res) => { 
     refreshUser(req, res);
 });
