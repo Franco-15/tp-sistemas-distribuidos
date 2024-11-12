@@ -47,10 +47,76 @@ button {
     margin-top: 5px;
 }
 
-.login-container {
-    text-align: center;
+.login-label {
+    padding-bottom: 60px;
+    margin-top: -50px;
+    font: 700 1.2rem 'Roboto Slab', sans-serif;
+}
 
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: #fff;
+    height: 450px;
+    width: 400px;
+    border-radius: 10px;
+    
+    backdrop-filter: blur(10px);
+    
+    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.8);
+    
 } 
+
+.input-field {
+    text-align: center;
+    margin: 20px;
+    position: relative;
+}
+
+.input-field label{ 
+    position:  absolute;
+    transform: translateY(-50%);
+    top: 50%;
+    left: 15px;
+    font-size: 15px; 
+    pointer-events: none;
+    color: rgb(112, 112, 112); 
+    padding: 0 5px;
+    transition: .5s;
+}
+
+.input-field input {
+    width: 350px;
+    height: 40px; 
+    color: #000000;
+    font-size: 16px;    
+    padding: 0 15px;
+    border: 1.2px solor rgb(220,223,223);
+    background: transparent;
+    outline: none;
+    border-radius: 5px;
+}
+
+.input-field input.focus~label,
+.input-field input:valid~label { 
+    top: 0; 
+    background: #fff;
+    font-size: 14px;
+}
+
+.login-btn {    
+    width: 200px;
+    padding: 10px;
+    border: 1px solid rgb(0, 0, 0);
+    font: 700 1.2rem 'Roboto Slab', sans-serif;    
+    text-align: center;    
+    font-size: 17px;    
+    border-radius: 10px;
+    box-sizing: 10px;
+    
+}
 
 * {
     box-sizing: border-box;
@@ -238,5 +304,4 @@ button {
 .styled-button-header:hover:after {
     width: 100%; /* Expande las líneas en hover */
 }
-
 
