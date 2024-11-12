@@ -18,8 +18,16 @@ export const getJson = () => {
 
 export const validUser = (req,res) =>{
     try {
-        const { username, password } = req.body;
-        if (!username || !password) {
+        
+        const authHeader = req.headers['authorization'];
+        
+           if (!authHeader) {
+            res.writeHead(400, { 'message': 'No se pudo verificar al usuario debido a la ausencia del header de autorizacion' });
+            return res.end();
+        }
+
+        const { username, password } = JSON.parse(authHeader);
+            if (!username || !password) {
             res.writeHead(400, {'message':'No se pudo verificar al usuario debido a la ausencia de datos'})
             return res.end()
         }else{
@@ -55,7 +63,7 @@ export const validUser = (req,res) =>{
 export const refreshUser  = (req,res) =>{
     //const { token } = req.body;
     const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1]; // El token suele ir después de "Bearer"
+    const token = authHeader && authHeader.split(' ')[1]; // El token suele ir despues de "Bearer"
     if (!token){
         res.writeHead(401,{'message':'Acceso denegado, falta el token'}) 
         return res.end()
