@@ -1,4 +1,6 @@
-//import { postCredentials } from "../api/apiLoginHelper";
+
+import { postCredentials } from "../api/apiLoginHelper.js";
+
 
 
 export function loadLoginView() {
@@ -27,8 +29,16 @@ export function loadLoginView() {
         const password = document.getElementById("password").value;
         console.log(username, password);
 
-        //postCredentials(username, password);
-        window.location.hash = '#/animals';
+        postCredentials(username, password).then(response  => {
+            console.log(response);
+            if (response == 200) {
+                window.location.hash = '#/animals';
+            } else {
+                //todo: ver como poner el acceso invalido (posiblemente cambiando los campos a rojo)
+            }
+        });
+
+    
     });
 }
 
