@@ -17,19 +17,32 @@ export const validUser = (req,res) =>{
     try {
         
         const authHeader = req.headers['authorization'];
+
+        const encodedWithPrefix = 'Basic YWRtaW46YWRtaW4=';
+        const encoded = authHeader && authHeader.split(' ')[1];
+        const decoded = atob(encoded);
+        const decodedArray = decoded.split(':');
+        const username = decodedArray[0]; 
+        const password = decodedArray[1]; 
+        console.log({username, password}); // Resultado: "admin:admin"
+
         
-           if (!authHeader) {
+
+        if (!authHeader) {
             res.writeHead(400, { 'message': 'No se pudo verificar al usuario debido a la ausencia del header de autorizacion' });
             return res.end();
         }
 
-        const { username, password } = JSON.parse(authHeader);
-            if (!username || !password) {
+        console.log(username);
+
+        
+        if (!username || !password) {
             res.writeHead(400, {'message':'No se pudo verificar al usuario debido a la ausencia de datos'})
             return res.end()
         }else{
             const admin = getJson()
             const hashedPassword = admin[0]["password"]
+            
             bcrypt.compare(password, hashedPassword)
                 .then(isMatch => {
                     if (isMatch) {

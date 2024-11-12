@@ -12,6 +12,7 @@ const setHeaders= (res) => {
 }
 
 export const animalsRoute = (req, res) => {
+    
     parametros = req.url.split("/")
         parametros = parametros.filter(el => el != '')   //filtro los vacios
         if(req.method === 'GET'){
@@ -34,6 +35,7 @@ export const animalsRoute = (req, res) => {
         }else if(req.method === 'POST'){ //Agrega un animal
             try{
                 setHeaders(res)
+            
                 let body = '';
                 req.on('data', (chunk) => {
                     body = body + chunk;

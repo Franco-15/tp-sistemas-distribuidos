@@ -25,7 +25,8 @@ export const receiveFromCheckPoint = () => {
     });
 
     mqttClient.on('error', (err) => {
-        console.error('Error en el cliente MQTT:', err.message);
+        //console.error('Error en el cliente MQTT:', err.message);  
+        //! agregarlo
     });
 
 

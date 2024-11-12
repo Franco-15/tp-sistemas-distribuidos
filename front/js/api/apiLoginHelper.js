@@ -8,14 +8,16 @@ export function postCredentials(username, password) {
         password: password
     };
 
-    return axios.post(`http://localhost:${port}/api/login`, JSON.stringify(credentials), {
+    
+
+    return axios.post(`http://localhost:${port}/api/login`, '',{
         headers: {
-            'Content-Type': 'application/json',
+            authorization: `Basic ${btoa(username + ":" + password)}`
         }
     })
     .then((response) => {
         
-        //console.log(response.status, response.data);
+        console.log(response.status, response.data);
         return response.status;
 
     }).catch(error => {
