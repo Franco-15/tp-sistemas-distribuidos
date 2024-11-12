@@ -8,7 +8,7 @@ import {checkpointsRoute} from './routes/checkpoints.route.js';
 import {loginRoute} from './routes/login.route.js';
 import {devicesRoute} from './routes/devices.route.js';
 
-const HTTP_PORT = 3000;
+const HTTP_PORT = 3000;  //Puerto desde el que se comunica el back
 const rutaAnimal = "/api/animals"
 const rutaCheckpoint = "/api/checkpoints"
 const rutaLogin = "/api/login"

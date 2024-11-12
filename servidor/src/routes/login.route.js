@@ -7,6 +7,7 @@ const setHeaders= (res) => {
     res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With"); // Encabezados permitidos 
 }
 
+// POST /api/login - Le da acceso del sistema al usuario si los datos coinciden
 export const loginRoute = (req, res) => {
     setHeaders(res);
     validUser(req,res);

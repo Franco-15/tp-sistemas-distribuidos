@@ -13,28 +13,22 @@ export const getJson = () => {
     } 
 } 
 
+//Metodo para loguear al usuario en el sistema
 export const validUser = (req,res) =>{
     try {
         
         const authHeader = req.headers['authorization'];
 
-        const encodedWithPrefix = 'Basic YWRtaW46YWRtaW4=';
         const encoded = authHeader && authHeader.split(' ')[1];
         const decoded = atob(encoded);
         const decodedArray = decoded.split(':');
         const username = decodedArray[0]; 
         const password = decodedArray[1]; 
-        console.log({username, password}); // Resultado: "admin:admin"
-
-        
 
         if (!authHeader) {
             res.writeHead(400, { 'message': 'No se pudo verificar al usuario debido a la ausencia del header de autorizacion' });
             return res.end();
         }
-
-        console.log(username);
-
         
         if (!username || !password) {
             res.writeHead(400, {'message':'No se pudo verificar al usuario debido a la ausencia de datos'})
@@ -61,7 +55,6 @@ export const validUser = (req,res) =>{
         }
         
     }catch (e){
-        console.log('Error', e)
         res.writeHead(500, {'message':'Error del servidor al intentar verificar la identidad del usuario'})
         return res.end()
     }

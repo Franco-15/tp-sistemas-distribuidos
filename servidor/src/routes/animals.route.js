@@ -1,9 +1,9 @@
 import * as animalsMethods from '../controllers/animals.controller.js'
 
+//Clase en la que se manejan todas las rutas finales asociadas a animales
+
 let animals
 let parametros
-
-
 
 const setHeaders= (res) => {
     res.setHeader("Access-Control-Allow-Origin", "*"); // Permite todas las fuentes
@@ -17,7 +17,7 @@ export const animalsRoute = (req, res) => {
         parametros = parametros.filter(el => el != '')   //filtro los vacios
         if(req.method === 'GET'){
             console.log(parametros.length)
-            if(parametros.length == 2){ //Entra en este if para para obtener todos los animales
+            if(parametros.length == 2){ // GET /api/animals - Obtener todos los animales
 
                 try{
                     animals = animalsMethods.getAnimales()
@@ -29,10 +29,10 @@ export const animalsRoute = (req, res) => {
                     res.writeHead(500,{'message':'No se encontro e'})  
                     return res.end()
                 }
-            }else if(parametros.length == 3){
+            }else if(parametros.length == 3){ // GET /api/animals/:id - Obtener un animal especifico
                     animalsMethods.getAnimal(parametros[2],res)
             }
-        }else if(req.method === 'POST'){ //Agrega un animal
+        }else if(req.method === 'POST'){ // POST /api/animals - Agregar un animal
             try{
                 setHeaders(res)
             
@@ -63,15 +63,13 @@ export const animalsRoute = (req, res) => {
                 res.writeHead(500, {'message':'Error del servidor al intentar agregar al animal'})
                 return res.end()
             }
-        }else if(req.method === 'DELETE'){ //Elimina uno o multiples animales
-            
+        }else if(req.method === 'DELETE'){  
             setHeaders (res) ;
-            if(parametros.length == 2){ //Eliminamos todos los animales
-                
+            if(parametros.length == 2){ // DELETE /api/animals - Eliminar todos los animales   
                 animalsMethods.deleteAnimales(req,res)
                 res.writeHead(200, {'message':'Todos los animales han sido eliminados'})
                 return res.end()
-            }else if(parametros.length == 3){ //Eliminamos un animal
+            }else if(parametros.length == 3){ // DELETE /api/animals/:id - Eliminar un animal especifico
                 if(animalsMethods.deleteAnimal(parametros[2])){
                     res.writeHead(200,{'message': 'El animal fue eliminado exitosamente'})
                 }else{
@@ -80,7 +78,7 @@ export const animalsRoute = (req, res) => {
                 return res.end()
             }
             return res.end()
-        }else if(req.method === 'PATCH'){ //Se modifica la data de algun animal
+        }else if(req.method === 'PATCH'){ // PATCH /api/animals/:id - Modificar un animal
             try {
                 setHeaders(res);
                 let body = '';
