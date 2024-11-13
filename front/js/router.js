@@ -35,10 +35,6 @@ function router() {
             console.log('locacion');
             loadLocacionPage(hash);
             break;
-        case '#/map': 
-            console.log('mapa'); 
-            loadMapPage();
-            break;
         default:
             app.innerHTML = `<h2>Proximamente...</h2>`;
     }
