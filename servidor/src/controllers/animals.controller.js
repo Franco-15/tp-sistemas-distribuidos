@@ -35,7 +35,6 @@ export const getAnimal = (idAnimal,res) => {
         
     }else{
         let animalBuscado = JSON.stringify(result[buscado])
-        console.log(animalBuscado)
         res.writeHead(200,{'Content-Type': 'application/json', 'message': 'Animal localizado'})
         res.write(animalBuscado)
         return res.end()

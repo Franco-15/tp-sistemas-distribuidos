@@ -59,7 +59,6 @@ export const validUser = (req,res) =>{
         }
         
     }catch (e){
-        console.log('Error', e)
         res.writeHead(500, {'message':'Error del servidor al intentar verificar la identidad del usuario'})
         return res.end()
     }
