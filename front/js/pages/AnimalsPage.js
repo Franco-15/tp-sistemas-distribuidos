@@ -3,15 +3,9 @@ import { getAnimals, PatchAnimal, PostAnimal , DeleteAnimal, getNewAnimals} from
 
 
 export function loadAnimalPage() {
-    console.log('entra') //!sacar
     
     renderAnimalsArray().then(animalArray => {
         const app = document.getElementById('app');
-
-
-        //todo solucionar que pasa si el array esta vacio
-
-
         app.innerHTML = `
         <body>             
             <div class="animal-container">
@@ -43,8 +37,7 @@ export function loadAnimalPage() {
 
 
             <!--popup para agregar-->
-            <div id="popupAddForm" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
-                background-color: white; padding: 20px; border: 1px solid #ccc; z-index: 1000;">
+            <div id="popupAddForm" class = "pop_up">
                 <h3>Agregar Nuevo Animal</h3>
                 <form id="animalAddForm">
                     <label for="animalAddId">ID:</label> 
@@ -55,7 +48,7 @@ export function loadAnimalPage() {
 
                     <label for="animalAddName">Nombre:</label>
                     <input type="text" id="animalAddName" name="nombre" required><br><br>
-                    <label for="animalAddDescription">Descripción:</label>
+                    <label for="animalAddDescription">Descripcion:</label>
                     <input type="text" id="animalAddDescription" name="description" required><br><br>
                     <button type="submit" id = "submitAdd">Guardar</button>
                     <button type="button" id="closeButton">Cerrar</button>
@@ -63,8 +56,7 @@ export function loadAnimalPage() {
             </div>
             
             <!--popup para editar-->
-            <div id="popupEditForm" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
-                background-color: white; padding: 20px; border: 1px solid #ccc; z-index: 1000;">
+            <div id="popupEditForm" class = "pop_up">
                 <h3>Editar animal</h3>
                 <form id="animalEditForm">
                     <label for="animalEditId">ID:</label> 
@@ -77,7 +69,7 @@ export function loadAnimalPage() {
                     
                     <label for="animalEditName">Nombre:</label>
                     <input type="text" id="animalEditName" name="nombre" required><br><br>
-                    <label for="animalEditDescription">Descripción:</label>
+                    <label for="animalEditDescription">Descripcion:</label>
                     <input type="text" id="animalEditDescription" name="description" required><br><br>
                     <button type="submit" id = "submitEdit">Guardar</button>
                     <button type="button" id="closeEditButton">Cerrar</button>
@@ -85,8 +77,7 @@ export function loadAnimalPage() {
             </div>
 
             <!--popup para eliminar-->
-            <div id="popupDeleteForm" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
-                background-color: white; padding: 20px; border: 1px solid #ccc; z-index: 1000;">
+            <div id="popupDeleteForm" class = "pop_up">
                 <h3>Eliminar animal</h3>
                 <form id="animalDeleteForm">
                     <label for="animalDeleteId">ID:</label> 
@@ -99,7 +90,7 @@ export function loadAnimalPage() {
                     
                     <label for="animalDeleteName">Nombre:</label>
                     <input type="text" id="animalDeleteName" name="nombre" required readonly><br><br>
-                    <label for="animalDeleteDescription">Descripción:</label>
+                    <label for="animalDeleteDescription">Descripcion:</label>
                     <input type="text" id="animalDeleteDescription" name="description" required readonly><br><br>
                     <button type="submit" id = "submitDelete">Guardar</button>
                     <button type="button" id="closeDeleteButton">Cerrar</button>
@@ -148,7 +139,6 @@ export function loadAnimalPage() {
         //esto rellena los valores para el editado
         animalSelectEdit.addEventListener('change', () => {
             const selectedAnimalId = animalSelectEdit.value;
-            console.log(selectedAnimalId)
             if (selectedAnimalId) {
                 const selectedAnimal = animalArray.find(animal => animal.id.toString() === selectedAnimalId);
                 if (selectedAnimal) {
@@ -169,14 +159,12 @@ export function loadAnimalPage() {
         //esto rellena los valores para borrar el animal
         animalSelectDelete.addEventListener('change', () => {
             const selectedAnimalId = animalSelectDelete.value;
-            console.log(selectedAnimalId)
             if (selectedAnimalId) {
                 const selectedAnimal = animalArray.find(animal => animal.id.toString() === selectedAnimalId);
                 if (selectedAnimal) {
                     console.log(selectedAnimal)
                     animalDeleteName.value = selectedAnimal.name;
                     animalDeleteDescription.value = selectedAnimal.description;
-                    
                 }
                 else {
                     console.log('no encontre')
@@ -213,15 +201,10 @@ export function loadAnimalPage() {
     //manejo de los datos al apretar submit del formulario agregar (pegaria a la API)
     animalAddForm.addEventListener('submit', (event) => {
         event.preventDefault(); // evita que se recarge la pagina
-        
         const id = animalAddId.value;
         const name = animalAddName.value;
         const description = animalAddDescription.value;
-
-        console.log("Datos del nuevo animal:", {id, name, description }); //para comprobar //!borrar
-
         PostAnimal(id, name, description);
-
         popupAddForm.style.display = 'none';
         popupOverlay.style.display = 'none';
     });
@@ -229,15 +212,10 @@ export function loadAnimalPage() {
     //manejo de los datos al apretar submit del formulario editar (pegaria a la API)
     animalEditForm.addEventListener('submit', (event) => {
         event.preventDefault(); // evita que se recarge la pagina
-        
         const id = animalSelectEdit.value;
         const name = animalEditName.value;
         const description = animalEditDescription.value;
-
-        console.log("Animal editado:", {id, name, description }); //para comprobar //!borrar
-
         PatchAnimal(id, name, description);
-
         popupEditForm.style.display = 'none';
         popupOverlay.style.display = 'none';
     });
@@ -245,15 +223,10 @@ export function loadAnimalPage() {
     //manejo de los datos al apretar submit del formulario delete (pegaria a la API)
     animalDeleteForm.addEventListener('submit', (event) => {
         event.preventDefault(); // evita que se recarge la pagina
-        
         const id = animalSelectDelete.value;
         const name = animalDeleteName.value;
         const description = animalDeleteDescription.value;
-
-        console.log("animal a eliminar:", {id, name, description }); //para comprobar //!borrar
-
         DeleteAnimal(id);
-
         popupDeleteForm.style.display = 'none';
         popupOverlay.style.display = 'none';
     });
@@ -262,10 +235,8 @@ export function loadAnimalPage() {
 }
 
 export function renderAnimalsArray() { //todo vendria siendo el get, cambiarlo
-    
     // Llama a la funcion getAnimals (es la q esta en api.js) y espera su resultado
     return getAnimals().then(animalArray => { //devuelve promesa
-    
         return animalArray
     })
     .catch(error => {
@@ -277,7 +248,6 @@ export function renderAnimalsArray() { //todo vendria siendo el get, cambiarlo
 
 export function renderNewAnimalsArray() { //para agarrar los nuevos id's
     return getNewAnimals().then(animalNewArray => { //devuelve promesa
-
         return animalNewArray
     })
     .catch(error => {

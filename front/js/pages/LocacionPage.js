@@ -1,5 +1,7 @@
-//todo: ver si no pasa a ser 'HomePage.js'
 import { getChkPt } from "../api/apiCheckpointHelper.js";
+
+
+//todo: corregir comentarios o console logs en ingles
 
 export async function  loadLocacionPage() {
     // Ejecutar funciones al cargar la página
@@ -14,10 +16,10 @@ export async function  loadLocacionPage() {
             <table class="animal-table">
                 <thead>
                     <tr>
-                        <th>Checkpoint ID</th>
+                        <th>ID punto de control</th>
                         <th>Lat</th>
                         <th>Long</th>
-                        <th>Descripción</th>
+                        <th>Descripcion</th>
                         <th>Animales</th>
                     </tr>
                 </thead>
@@ -26,14 +28,12 @@ export async function  loadLocacionPage() {
             </table>
         </div>
     `;
-    
 }
 
 function renderRow(data) {
     const positionsTableBody = document.getElementById('positionsBody');
     const row = document.createElement('tr');
     row.setAttribute('data-id', data.id);
-
     row.innerHTML = `
         <td>${data.id}</td>
         <td>${data.lat}</td>
@@ -52,7 +52,6 @@ async function getInitialLocationData() {
             ...loc,
             animals: [],
         }));
-
         locationData.forEach(renderRow);
     } catch (error) {
         console.error("Error fetching positions:", error);
@@ -63,7 +62,6 @@ async function getInitialLocationData() {
 // Escuchar actualizaciones de SSE
 function startEventSource() {
     const eventSource = new EventSource('http://localhost:3000/api/animals/position');
-
     eventSource.onmessage = function(event) {
         const checkpointPositionData = JSON.parse(JSON.parse(event.data));
         const animalsCell = document.getElementById(`animals-${checkpointPositionData.id}`);
@@ -76,9 +74,7 @@ function startEventSource() {
                     animalsChain = animal.name;
                 }
             });
-            
             animalsCell.textContent =animalsChain
-
         } else {
             console.log(`No row found for ID ${checkpointPositionData.id}`);
         }

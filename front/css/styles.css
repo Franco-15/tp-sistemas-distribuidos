@@ -20,6 +20,7 @@ header {
     
 }
 
+
 .map {
     height: 800px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
@@ -75,6 +76,8 @@ button {
     position: relative;
 }
 
+
+
 .input-field label{ 
     position:  absolute;
     transform: translateY(-50%);
@@ -90,10 +93,11 @@ button {
 .input-field input {
     width: 350px;
     height: 40px; 
-    color: #000000;
+    /*color: #000000;*/
     font-size: 16px;    
     padding: 0 15px;
     border: 1.2px solor rgb(220,223,223);
+    border-color: #0056b3;
     background: transparent;
     outline: none;
     border-radius: 5px;
@@ -175,6 +179,23 @@ button {
     justify-content: space-around;
     margin-top: 10px;
 }
+
+
+.pop_up {
+    display: none; 
+    position: fixed; 
+    top: 50%; left: 
+    50%; transform: 
+    translate(-50%, -50%); 
+    background-color: white; 
+    padding: 20px; 
+    border: 1px solid #ccc; 
+    z-index: 1000;
+    border-radius: 10px;
+    transition: background-color 0.3s;
+}
+
+
 
 .styled-button {
     background-color: #007bff;
@@ -278,3 +299,21 @@ button {
     width: 100%; 
 }
 
+
+
+.input-error {
+    border: 2px solid red;
+    border-radius: 10px;
+  }
+  
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+  }
+  
+  .shake {
+    animation: shake 0.5s ease;
+  }

@@ -1,7 +1,9 @@
-const port = 3000
 
+
+const port = 3000;
 
 export function postCredentials(username, password) {
+    const port = 3000;
     // axios.post('')
     const credentials = {
         username: username,
@@ -16,7 +18,6 @@ export function postCredentials(username, password) {
         }
     })
     .then((response) => {
-        
         console.log(response.status, response.data);
         localStorage.setItem("accessToken",response.data.accessToken)
         localStorage.setItem("refreshToken",response.data.refreshToken)
@@ -39,6 +40,8 @@ export function refresh(){
          localStorage.setItem("accessToken",response.data.accessToken)
          localStorage.setItem("refreshToken",response.data.refreshToken)
      }).catch(error => {
-         console.error(error);  //! ACA HABRIA QUE DESLOGUEAR AL USUARIO DEL SISTEMA
+        console.error(error);  //! ACA HABRIA QUE DESLOGUEAR AL USUARIO DEL SISTEMA
+        window.location.hash = '#/login';
      });
- }
+
+}
