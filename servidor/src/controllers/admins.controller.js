@@ -36,22 +36,26 @@ export const validUser = (req,res) =>{
         }else{
             const admin = getJson()
             const hashedPassword = admin[0]["password"]
-            
-            bcrypt.compare(password, hashedPassword)
-                .then(isMatch => {
-                    if (isMatch) {
-                        const id = admin[0]["id"]
-                        res.writeHead(200,{'message':'Usuario logueado'})
+            if(username == admin[0]["username"]){
+                bcrypt.compare(password, hashedPassword)
+                    .then(isMatch => {
+                        if (isMatch) {
+                            const id = admin[0]["id"]
+                            res.writeHead(200,{'message':'Usuario logueado'})
+                            return res.end()
+                        } else {
+                            res.writeHead(401,{'message':'Password invalido'}) 
+                            return res.end()
+                        }
+                    })
+                    .catch(error => {
+                        res.writeHead(500,{'message':'Error al comparar la contraseña'}) 
                         return res.end()
-                    } else {
-                        res.writeHead(401,{'message':'Password invalido'}) 
-                        return res.end()
-                    }
-                })
-                .catch(error => {
-                    res.writeHead(500,{'message':'Error al comparar la contraseña'}) 
-                    return res.end()
-                });
+                    });
+            }else{
+                res.writeHead(401,{'message':'Password invalido'}) 
+                return res.end() 
+            }
         }
         
     }catch (e){
