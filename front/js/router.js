@@ -4,6 +4,7 @@ import { loadLoginView } from './pages/LoginPage.js';
 import { loadAnimalPage } from './pages/AnimalsPage.js';
 import { loadCheckpointPage } from './pages/CheckpointPage.js';
 import { loadLocacionPage } from './pages/LocacionPage.js';
+import { loadMapPage } from './pages/mapPage.js';
 
 
 function router() {
@@ -31,8 +32,8 @@ function router() {
             loadCheckpointPage(); 
             break;
         case '#/locacion': 
-            console.log('locacion')
-            loadLocacionPage();
+            console.log('locacion');
+            loadLocacionPage(hash);
             break;
         default:
             app.innerHTML = `<h2>Proximamente...</h2>`;

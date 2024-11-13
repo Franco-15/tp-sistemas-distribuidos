@@ -1,6 +1,6 @@
 //todo: ver si no pasa a ser 'HomePage.js'
 
-import { getChkPt, PatchChkPt, PostChkPt , DeleteChkPt} from "../api/apiCheckpoint.js";
+import { getChkPt, PatchChkPt, PostChkPt , DeleteChkPt} from "../api/apiCheckpointHelper.js";
 
 
 export function loadCheckpointPage() {

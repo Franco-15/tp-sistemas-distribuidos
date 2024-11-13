@@ -1,6 +1,5 @@
-//todo: ver si no pasa a ser 'HomePage.js'
 
-import { getAnimals, PatchAnimal, PostAnimal , DeleteAnimal} from "../api/apiAnimal.js";
+import { getAnimals, PatchAnimal, PostAnimal , DeleteAnimal} from "../api/apiAnimalHelper.js";
 
 
 export function loadAnimalPage() {
@@ -10,9 +9,11 @@ export function loadAnimalPage() {
         const app = document.getElementById('app');
 
 
-        //todo ver como centrar los input del popup
+        //todo solucionar que pasa si el array esta vacio
+
+
         app.innerHTML = `
-                        
+        <body>             
             <div class="animal-container">
                 <h2 class="animal-title">Lista de Animales</h2>
                 <table class="animal-table">
@@ -27,7 +28,7 @@ export function loadAnimalPage() {
                         ${animalArray.map(animal => `
                             <tr>
                                 <td>${animal.id}</td>
-                                <td>${animal.nombre}</td>
+                                <td>${animal.name}</td>
                                 <td>${animal.description}</td>
                             </tr>
                         `).join('')}
@@ -105,6 +106,7 @@ export function loadAnimalPage() {
             <!--esto es para hacer el fondo mas oscuro-->
             <div id="popupOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
                 background-color: rgba(0, 0, 0, 0.5); z-index: 999;"></div>
+        </body>   
         `;
         
         // eventos
@@ -145,7 +147,7 @@ export function loadAnimalPage() {
                 const selectedAnimal = animalArray.find(animal => animal.id.toString() === selectedAnimalId);
                 if (selectedAnimal) {
                     console.log(selectedAnimal)
-                    animalEditName.value = selectedAnimal.nombre;
+                    animalEditName.value = selectedAnimal.name;
                     animalEditDescription.value = selectedAnimal.description;
                     
                 }
@@ -166,7 +168,7 @@ export function loadAnimalPage() {
                 const selectedAnimal = animalArray.find(animal => animal.id.toString() === selectedAnimalId);
                 if (selectedAnimal) {
                     console.log(selectedAnimal)
-                    animalDeleteName.value = selectedAnimal.nombre;
+                    animalDeleteName.value = selectedAnimal.name;
                     animalDeleteDescription.value = selectedAnimal.description;
                     
                 }
@@ -207,12 +209,12 @@ export function loadAnimalPage() {
         event.preventDefault(); // evita que se recarge la pagina
         
         const id = animalAddId.value;
-        const nombre = animalAddName.value;
+        const name = animalAddName.value;
         const description = animalAddDescription.value;
 
-        console.log("Datos del nuevo animal:", {id, nombre, description }); //para comprobar //!borrar
+        console.log("Datos del nuevo animal:", {id, name, description }); //para comprobar //!borrar
 
-        PostAnimal(id, nombre, description);
+        PostAnimal(id, name, description);
 
         popupAddForm.style.display = 'none';
         popupOverlay.style.display = 'none';
@@ -223,12 +225,12 @@ export function loadAnimalPage() {
         event.preventDefault(); // evita que se recarge la pagina
         
         const id = animalSelectEdit.value;
-        const nombre = animalEditName.value;
+        const name = animalEditName.value;
         const description = animalEditDescription.value;
 
-        console.log("Animal editado:", {id, nombre, description }); //para comprobar //!borrar
+        console.log("Animal editado:", {id, name, description }); //para comprobar //!borrar
 
-        PatchAnimal(id, nombre, description);
+        PatchAnimal(id, name, description);
 
         popupEditForm.style.display = 'none';
         popupOverlay.style.display = 'none';
@@ -239,10 +241,10 @@ export function loadAnimalPage() {
         event.preventDefault(); // evita que se recarge la pagina
         
         const id = animalSelectDelete.value;
-        const nombre = animalDeleteName.value;
+        const name = animalDeleteName.value;
         const description = animalDeleteDescription.value;
 
-        console.log("animal a eliminar:", {id, nombre, description }); //para comprobar //!borrar
+        console.log("animal a eliminar:", {id, name, description }); //para comprobar //!borrar
 
         DeleteAnimal(id);
 
@@ -254,10 +256,15 @@ export function loadAnimalPage() {
 }
 
 export function renderAnimalsArray() { //todo vendria siendo el get, cambiarlo
-    // Llama a la función getAnimals (es la q esta en api.js) y espera su resultado
+    
+    // Llama a la funcion getAnimals (es la q esta en api.js) y espera su resultado
     return getAnimals().then(animalArray => { //devuelve promesa
         
         console.log("Array de animales:", animalArray); // Muestra el array en la consola
         return animalArray
+    })
+    .catch(error => {
+        console.error("Error en la solicitud:", error);
+        return [];
     });
 }
