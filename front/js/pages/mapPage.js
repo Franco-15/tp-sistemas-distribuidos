@@ -12,58 +12,62 @@ export function loadMapPage() {
     </div>
     `;
 
-    /*const locAll = getLoc(); 
-    const posChkPt = locAll.map(item => [item.lat, item.long]); 
-    const posAnimales = locAll.map(item => item.animals); 
+    const locAll = getLoc(); 
+    const posChkPt = locAll.map(item => [item.lat, item.long, item.description]); 
+    const posAnimales = locAll.map(item => [item.lat, item.long, item.animals]); 
 
-    const posMap = calculaPos(posChkPt);*/
+    const posMap = calculaPos(posChkPt);
 
-    var map = L.map('map').setView([51.505, -0.09], 13);
+    var map = L.map('map').setView(posMap, 16);
+    var animalIcon = L.icon({
+        iconUrl: 'css/items/cow-icon.png',
+
+        iconSize:     [38, 38], // size of the icon
+        iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+        popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+    });
+
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         
     }).addTo(map);
+
+    posChkPt.forEach(([lat,long, description])=> { 
+        console.log(description);
+        var marker = L.marker([lat,long]).addTo(map); 
+        marker.bindPopup(description).openPopup();   
+    })
     
+    //console.log(posAnimales);
+
+    posAnimales.forEach(([lat, long, animal]) => animal.forEach(()=> {
+        const posAnimal = [lat + rnd(), long + rnd()];
+        L.marker(posAnimal, {icon: animalIcon}).addTo(map);
+        //marker.bindPopup(animal.description).openPopup(); 
+    }))
     
-    console.log("ayuda");
-    /*
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-
-        maxZoom: 19,
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    }).addTo(map);
-    var marker = L.marker([-38.00413285734509,-57.55136976361025]).addTo(map);
-    marker.bindPopup("<b>Casa de Grego</b>").openPopup();
-       
-
-    var animalIcon = L.icon({
-        iconUrl: 'leaf-green.png',
-        shadowUrl: 'leaf-shadow.png',
-
-        iconSize:     [38, 95], // size of the icon
-        shadowSize:   [50, 64], // size of the shadow
-        iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
-        shadowAnchor: [4, 62],  // the same for the shadow
-        popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
-    });
-    */
 }
 
-/*
-function calculaPos(posChkPt) { 
-    const suma = posChkPt.reduce(
-        (acum, coord) => {
-            acum.lat += coord[0];
-            acum.long += coord[1];
-            return acum; 
-        },
-        {lat: 0, long: 0}
-    ); 
 
-    return [(suma.lat / posChkPt.length),(suma.long / posChkPt.length)];
-}*/
+function calculaPos(posChkPt) { 
+    let sumaLat = 0;
+    let sumaLng = 0;
+
+    posChkPt.forEach(([lat, lng]) => {
+        sumaLat += lat;
+        sumaLng += lng;
+    });
+
+    const cantidad = posChkPt.length;
+    const puntoMedio = [
+        sumaLat / cantidad,
+        sumaLng / cantidad
+    ];
+
+    return puntoMedio;
+}
 
 /*function addChkPt() { 
     getChkPt().then(ptos => {
@@ -71,6 +75,13 @@ function calculaPos(posChkPt) {
     })
 }*/
     
+
+function rnd() {
+    const rango = 0.0005;
+    const min = -rango;
+    const max = rango;
+    return Math.random() * (max - min) + min;
+  }
 
 
 
