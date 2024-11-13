@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Monitoreo de Ganado</title>
+    <link rel="stylesheet" href="css/styles.css">
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""/>
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+     
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""></script>
+    
+</head>
+<body>
+    
+    <header>
+        <nav>
+            <a href="#/login" class="styled-logout-header">Logout</a> 
+            <!--todo tiraria este contra el costado para un logout, acomodarlo-->
+            <a href="#/animals" class="styled-button-header">Animals</a>
+            <a href="#/puntos-de-control" class="styled-button-header">Checkpoints</a>
+            <a href="#/locacion" class="styled-button-header">Locacion</a   >  
+        </nav>
+    </header>
+
+    <main id="app", class="box">
+
+    </main>
+    
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script type="module" src="js/router.js"></script>
+    
+</body>
+</html>
