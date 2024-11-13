@@ -38,6 +38,7 @@ export function PostAnimal(id, name, description) {
     axios.post('http://localhost:3000/api/animals', JSON.stringify(data), {
         headers: {
             'Content-Type': 'application/json',
+             authorization: `Bearer ${localStorage.getItem("accessToken")}`
         }
     })
     .then((response) => {
