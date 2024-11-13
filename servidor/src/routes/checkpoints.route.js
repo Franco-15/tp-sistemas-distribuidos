@@ -1,5 +1,7 @@
 import * as checkpointMethods from '../controllers/checkpoints.controller.js'
 
+//Clase en la que se manejan todas las rutas finales asociadas a checkpoints
+
 let parametros
 let checkpoints 
  
@@ -10,23 +12,19 @@ const setHeaders= (res) => {
 }
 
 export const checkpointsRoute = (req, res) => {
-
-
-
-
     parametros = req.url.split("/") 
     parametros = parametros.filter(el => el != '')   //filtro los vacios
     if(req.method === 'GET'){ 
         setHeaders(res);
-        if(parametros.length == 2){ //Entra en este if para obtener todos los checkpoints
+        if(parametros.length == 2){ // GET /api/checkpoints - Obtener todos los checkpoints
             checkpoints = checkpointMethods.getPuntosControl()
             res.writeHead(200,{'Content-Type': 'application/json', 'message': 'Se encontro el listado de los checkpoints'})
             res.write(checkpoints)
             return res.end()
-        }else if(parametros.length == 3){ //Entra en este if para obtener un checkpoint
+        }else if(parametros.length == 3){ // GET /api/checkpoints/:id - Obtener un checkpoint especifico
             checkpointMethods.getPuntoControl(parametros[2],res)
         }
-    }else if(req.method === 'POST'){  //Entra en este if para agregar un checkpoint
+    }else if(req.method === 'POST'){  // POST /api/checkpoints - Agregar un checkpoint
         try{
             setHeaders(res);
             let body = '';
@@ -55,11 +53,11 @@ export const checkpointsRoute = (req, res) => {
         }
     }else if(req.method === 'DELETE'){ 
         setHeaders(res);
-        if(parametros.length == 2){ //Entra en este if para eliminar todos los checkpoints
+        if(parametros.length == 2){ // DELETE /api/checkpoints - Eliminar todos los checkpoints
             checkpointMethods.deletePuntosControl(req,res)
             res.writeHead(200,{'message':'Se eliminaron los punto de control'})
             return res.end()
-        }else if(parametros.length == 3){ //Entra en este if para eliminar un checkpoint
+        }else if(parametros.length == 3){ // DELETE /api/checkpoints/:id - Eliminar un checkpoint específico
             if (checkpointMethods.deletePuntoControl(parametros[2])) {
                 res.writeHead(200, { 'message': 'Checkpoint eliminado exitosamente' });
             } else {
@@ -67,7 +65,7 @@ export const checkpointsRoute = (req, res) => {
             }
             return res.end();
         }
-    }else if(req.method === 'PATCH'){ //Entra en este if para modificar un checkpoints
+    }else if(req.method === 'PATCH'){ // PATCH /api/checkpoints/:id - Modificar un checkpoint
         try {
             setHeaders(res);
             let body = '';
