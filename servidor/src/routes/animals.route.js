@@ -16,7 +16,6 @@ export const animalsRoute = (req, res) => {
     parametros = req.url.split("/")
         parametros = parametros.filter(el => el != '')   //filtro los vacios
         if(req.method === 'GET'){
-            console.log(parametros.length)
             if(parametros.length == 2){ // GET /api/animals - Obtener todos los animales
 
                 try{
@@ -47,7 +46,6 @@ export const animalsRoute = (req, res) => {
                         res.end()
                         return;
                     }else{
-                        console.log(parsedBody.id)
                         
                         if(animalsMethods.postAnimal(parsedBody)){
                             res.writeHead(200,{'Content-Type': 'application/json', 'message': 'El animal fue agregado exitosamente'})
@@ -59,7 +57,6 @@ export const animalsRoute = (req, res) => {
                 })
 
             }catch (e){ //Fallo el intento
-                console.log('Error', e)
                 res.writeHead(500, {'message':'Error del servidor al intentar agregar al animal'})
                 return res.end()
             }
@@ -105,7 +102,6 @@ export const animalsRoute = (req, res) => {
                     }
                 })
             } catch (e) { //Problema del servidor al intentar realizar modificacion
-                console.log('Error', e)
                 res.writeHead(500, {'message':'Error del servidor al intentar modificar un animal'}) 
                 return res.end()
             }

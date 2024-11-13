@@ -12,7 +12,6 @@ const HTTP_PORT = 3000;  //Puerto desde el que se comunica el back
 const rutaAnimal = "/api/animals"
 const rutaCheckpoint = "/api/checkpoints"
 const rutaLogin = "/api/login"
-const rutaRefresh = "/api/refresh"
 const rutaDevices = "/api/availableDevices"
 const rutaPositions = "/api/animals/position"
 
@@ -55,9 +54,6 @@ const server = http.createServer((req, res) => {
     }else if(req.url.startsWith(rutaLogin)){ //Ruta para llevar a cabo el logueo inicial
         //setHeaders(res);
         loginRoute(req,res)
-    }else if(req.url.startsWith(rutaRefresh)){ //Ruta para ir refrescando la sesion de usuario (desarrollado en promocion)
-        //setHeaders(res);
-        //ACA HABRIA QUE DESARROLLAR EL TEMA DEL REFRESH
     }else if(req.url.startsWith(rutaDevices)){ // Ruta de los dispositivos no identificados 
         devicesRoute(req,res)
     }else { //Ruta invalida
