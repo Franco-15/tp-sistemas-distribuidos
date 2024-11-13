@@ -1,34 +1,37 @@
 
+export function startEventSource() {
+  const eventSource = new EventSource('http://localhost:3000/api/animals/position');
 
-export function getLoc() { 
-    return [
-        {
-          id: 'cee1f9bf-6e42-4071-859a-82d71e231cc1',
-          lat: -38.00413285734509,
-          long: -58.55136976361025,
-          description: 'Casa jose',
-          animals: [ [Object], [Object] ]
-        },
-        {
-          id: '32c7e94b-2b08-4ff5-80e9-ecb0f7795425',
-          lat: -37.959956981123014,
-          long: -57.54691270133813,
-          description: 'Casa juli',
-          animals: []
-        },
-        {
-          id: 'd5046589-a6be-4839-9454-f0ab184fa51a',
-          lat: -37.995852166115476,
-          long: -57.57091812136696,
-          description: 'Casa Manu',
-          animals: []
-        },
-        {
-          id: '16bc808b-eb20-4aa9-8b3d-048fbf4c3025',
-          lat: -38.021055327610185,
-          long: -57.57736073202042,
-          description: 'Casa Fran',
-          animals: []
-        }
-      ];
+  eventSource.onmessage = function (event) {
+    const checkpointPositionData = JSON.parse(JSON.parse(event.data));
+    console.log(checkpointPositionData);
+    if (window.location.hash === '#/locacion') {
+      renderLocationPage(checkpointPositionData);
+    }
+  };
+
+  eventSource.onerror = function (error) {
+    console.error("Error in SSE connection:", error);
+    eventSource.close();
+  };
+}
+
+function renderLocationPage(data) {
+  const positionsTableBody = document.getElementById('positionsBody');
+
+  // Limpiar las filas existentes
+  positionsTableBody.innerHTML = '';
+
+  // Renderizar los nuevos datos
+  data.forEach((item) => {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+        <td>${item.id}</td>
+        <td>${item.lat}</td>
+        <td>${item.long}</td>
+        <td>${item.description}</td>
+        <td>${item.animals?.map(animal => animal.id).join('\n') || 'No data'}</td>
+    `;
+    positionsTableBody.appendChild(row);
+  });
 }
