@@ -27,6 +27,26 @@ export function getAnimals() {
 
 }
 
+export function getNewAnimals() {
+
+    return axios.get('http://localhost:3000/api/availableDevices',{
+        headers: {
+            authorization: `Bearer ${localStorage.getItem("accessToken")}`
+        }
+    })
+    .then(response => {
+
+        const data = response.data.devices; //obj .Json
+        
+        return data;
+    })
+    .catch(error => {
+        console.error("Error en la solicitud:", error);
+        return [];
+    });
+
+}
+
 export function PostAnimal(id, name, description) {
     // axios.post('')
     const data = {

@@ -1,5 +1,5 @@
 
-import { getAnimals, PatchAnimal, PostAnimal , DeleteAnimal} from "../api/apiAnimalHelper.js";
+import { getAnimals, PatchAnimal, PostAnimal , DeleteAnimal, getNewAnimals} from "../api/apiAnimalHelper.js";
 
 
 export function loadAnimalPage() {
@@ -48,15 +48,11 @@ export function loadAnimalPage() {
                 <h3>Agregar Nuevo Animal</h3>
                 <form id="animalAddForm">
                     <label for="animalAddId">ID:</label> 
+
                     <select id="animalSelectAdd">
                         <option value="">-- Selecciona un animal --</option>
-                        ${/*animalArray.map(animal => `
-                            <option value="${animal.id}">${animal.id}</option>
-                        `).join('')*/
-                        renderNewAnimalsArray().then(newAnimalArray => {newAnimalArray.map(animal => `<option value="${animal.id}">${animal.id}</option>
-                        `).join('')})
-                    }
                     </select><br><br>
+
                     <label for="animalAddName">Nombre:</label>
                     <input type="text" id="animalAddName" name="nombre" required><br><br>
                     <label for="animalAddDescription">Descripción:</label>
@@ -130,6 +126,8 @@ export function loadAnimalPage() {
         
         // popup para agregar
         addAnimalButton.addEventListener('click', () => {
+            document.getElementById('popupAddForm').style.display = 'block';
+            fillAnimalSelectOptions();
             popupAddForm.style.display = 'block';
             popupOverlay.style.display = 'block';
         });
@@ -267,8 +265,7 @@ export function renderAnimalsArray() { //todo vendria siendo el get, cambiarlo
     
     // Llama a la funcion getAnimals (es la q esta en api.js) y espera su resultado
     return getAnimals().then(animalArray => { //devuelve promesa
-        
-        console.log("Array de animales:", animalArray); // Muestra el array en la consola
+    
         return animalArray
     })
     .catch(error => {
@@ -279,13 +276,29 @@ export function renderAnimalsArray() { //todo vendria siendo el get, cambiarlo
 
 
 export function renderNewAnimalsArray() { //para agarrar los nuevos id's
-    return getNewAnimals().then(animalArray => { //devuelve promesa
-        
-        console.log("Array de animales:", animalArray); // Muestra el array en la consola
-        return animalArray
+    return getNewAnimals().then(animalNewArray => { //devuelve promesa
+
+        return animalNewArray
     })
     .catch(error => {
         console.error("Error en la solicitud:", error);
         return [];
     });
 }
+
+
+function fillAnimalSelectOptions() {
+    renderNewAnimalsArray().then(newAnimalArray => {
+        const select = document.getElementById('animalSelectAdd');
+        select.innerHTML = '<option value="">-- Selecciona un animal --</option>'; 
+        newAnimalArray.forEach(animal => {
+            const option = document.createElement('option');
+            option.value = animal;
+            option.textContent = animal;
+            select.appendChild(option);
+        });
+    }).catch(error => {
+        console.error("Error al obtener los nuevos animales:", error);
+    });
+}
+

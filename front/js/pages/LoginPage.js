@@ -34,6 +34,7 @@ export function loadLoginView() {
         postCredentials(username, password).then(response  => {
             console.log(response);
             if (response == 200) {
+                console.log("entraste");
                 window.location.hash = '#/animals';
             } else {
                 //todo: ver como poner el acceso invalido (posiblemente cambiando los campos a rojo)

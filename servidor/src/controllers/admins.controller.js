@@ -52,7 +52,7 @@ export const validUser = (req,res) =>{
                         return res.end()
                     }
                 })
-                .catch(error => {
+                .catch(error => {   
                     res.writeHead(500,{'message':'Error al comparar la contraseña'}) 
                     return res.end()
                 });
