@@ -1,4 +1,4 @@
-
+import {refresh} from '/apiLoginHelper.js'
 
 // obtener el array de animales desde el back
 export function getAnimals() {
@@ -21,8 +21,12 @@ export function getAnimals() {
         return animals;
     })
     .catch(error => {
-        console.error("Error en la solicitud:", error);
-        return [];
+        if(error.status == 403){
+            refresh()
+        }else{
+            console.error("Error en la solicitud:", error);
+            return [];
+        }
     });
 
 }

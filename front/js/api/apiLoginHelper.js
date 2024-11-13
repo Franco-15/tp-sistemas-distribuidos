@@ -27,3 +27,18 @@ export function postCredentials(username, password) {
     });
 
 }
+
+export function refresh(){
+    return axios.post(`http://localhost:${port}/api/refresh`, '',{
+         headers: {
+             authorization: `Bearer ${localStorage.getItem("refreshToken")}`
+         }
+     }) 
+     .then((response) => {
+         console.log(response.status, response.data);
+         localStorage.setItem("accessToken",response.data.accessToken)
+         localStorage.setItem("refreshToken",response.data.refreshToken)
+     }).catch(error => {
+         console.error(error);  //! ACA HABRIA QUE DESLOGUEAR AL USUARIO DEL SISTEMA
+     });
+ }
