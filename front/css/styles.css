@@ -193,9 +193,16 @@ button {
     background-color: #0056b3;
 }
 
+
+.map-container{
+    height: 500px;
+}
+
 .map {
     height: 500px;
 }
+
+
 
 
 .styled-logout-header {
