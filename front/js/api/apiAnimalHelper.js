@@ -59,6 +59,7 @@ export function PatchAnimal(id, name, description) {
     axios.patch('http://localhost:3000/api/animals/'+id, JSON.stringify(data), {
         headers: {
             'Content-Type': 'application/json',
+            authorization: `Bearer ${localStorage.getItem("accessToken")}`
         }
     })
     .then((response) => {
@@ -73,6 +74,7 @@ export function DeleteAnimal(id) {
     axios.delete('http://localhost:3000/api/animals/'+id, {
         headers: {
             'Content-Type': 'application/json',
+            authorization: `Bearer ${localStorage.getItem("accessToken")}`
         }
     })
     .then((response) => {
