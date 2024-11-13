@@ -1,6 +1,6 @@
 //todo: ver si no pasa a ser 'HomePage.js'
 
-import { getLoc, PatchLoc, PostLoc , DeleteLoc} from "../api/apiLocacion.js";
+import { getLoc} from "../api/apiLocacionHelper.js";
 
 
 export function loadLocacionPage() {
@@ -35,8 +35,7 @@ export function loadLocacionPage() {
                                     <ul>
                                         ${(Array.isArray(loc.animal) ? loc.animal.map(animal => `
                                             <li>
-                                                <strong>ID:</strong> ${animal.id}<br>
-                                            
+                                                <strong>Nombre:</strong> ${animal.name}<br>
                                             </li>
                                         `).join('') : 'No hay animales asociados')}
                                     </ul>
