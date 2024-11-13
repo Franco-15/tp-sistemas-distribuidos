@@ -5,27 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema de Monitoreo de Ganado</title>
     <link rel="stylesheet" href="css/styles.css">
+    
+   
+    
 </head>
 <body>
-    
     <header>
         <nav>
-            <a href="#/login" style="float:right; margin-top: 0%; color:#e2e2e2" class="styled-button-header">Logout</a> 
+            <a href="#/login" class="styled-logout-header">Logout</a> 
             <!--todo tiraria este contra el costado para un logout, acomodarlo-->
             <a href="#/animals" class="styled-button-header">Animals</a>
             <a href="#/puntos-de-control" class="styled-button-header">Checkpoints</a>
             <a href="#/locacion" class="styled-button-header">Locacion</a   >
-            <a href="#/Map" style = 'color: rgb(156, 156, 156)' class="styled-button-header">Map</a>
+            <a href="#/map" class="styled-button-header">Map</a>
         </nav>
     </header>
 
-    <main id="app">
-        <!-- para vistas diamicas -->
-    </main>
+    <main id="app", class="box"></main>
     
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    
     <script type="module" src="js/router.js"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+
     
 </body>
 </html>

@@ -1,12 +1,13 @@
 
 
-
+const port = 3000;
 export function getChkPt() { 
 
-    return axios.get('http://localhost:3000/api/checkpoints')
+    return axios.get(`http://localhost:${port}/api/checkpoints`)
     .then(response => {
 
         const data = response.data.data; //obj .Json
+        console.log(data )
 
         const chkPts = data.map(chkPt => ({
             id: chkPt.id,
@@ -18,7 +19,7 @@ export function getChkPt() {
         return chkPts;
     })
     .catch(error => {
-        console.error("Error en la solicitud:", error);
+        console.error("Error al obtener datos de checkpoints:", error);
         return [];
     });
 
@@ -45,7 +46,7 @@ export function PostChkPt(id, lat, long, description) {
         description: description,
     }
 
-    axios.post('http://localhost:3000/api/checkpoints', JSON.stringify(data), {
+    axios.post(`http://localhost:${port}/api/checkpoints`, JSON.stringify(data), {
         headers: {
             'Content-Type': 'application/json',
         }
@@ -65,7 +66,7 @@ export function PatchChkPt(id, lat, long, description) {
         description: description,
     }
 
-    axios.patch('http://localhost:3000/api/checkpoints/'+id, JSON.stringify(data), {
+    axios.patch(`http://localhost:${port}/api/checkpoints/`+id, JSON.stringify(data), {
         headers: {
             'Content-Type': 'application/json',
         }
@@ -79,7 +80,7 @@ export function PatchChkPt(id, lat, long, description) {
 }
 
 export function DeleteChkPt(id) { 
-    axios.delete('http://localhost:3000/api/checkpoints/'+id, {
+    axios.delete(`http://localhost:${port}/api/checkpoints/`+id, {
         headers: {
             'Content-Type': 'application/json',
         }

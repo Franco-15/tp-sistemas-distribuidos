@@ -1,9 +1,10 @@
 
 
+const port = 3000
 // obtener el array de animales desde el back
 export function getAnimals() {
 
-    return axios.get('http://localhost:3000/api/animals')
+    return axios.get(`http://localhost:${port}/api/animals`)
     .then(response => {
 
         const data = response.data.data; //obj .Json
@@ -23,6 +24,8 @@ export function getAnimals() {
 
 }
 
+//!funcion que solicite los animales no reigstrados
+
 export function PostAnimal(id, name, description) {
     // axios.post('')
     const data = {
@@ -31,7 +34,7 @@ export function PostAnimal(id, name, description) {
         description: description
     }
 
-    axios.post('http://localhost:3000/api/animals', JSON.stringify(data), {
+    axios.post(`http://localhost:${port}/api/animals`, JSON.stringify(data), {
         headers: {
             'Content-Type': 'application/json',
         }
@@ -51,7 +54,7 @@ export function PatchAnimal(id, name, description) {
         description: description
     }
 
-    axios.patch('http://localhost:3000/api/animals/'+id, JSON.stringify(data), {
+    axios.patch(`http://localhost:${port}/api/animals/`+id, JSON.stringify(data), {
         headers: {
             'Content-Type': 'application/json',
         }
@@ -65,7 +68,7 @@ export function PatchAnimal(id, name, description) {
 export function DeleteAnimal(id) {
 
 
-    axios.delete('http://localhost:3000/api/animals/'+id, {
+    axios.delete(`http://localhost:${port}/api/animals/`+id, {
         headers: {
             'Content-Type': 'application/json',
         }

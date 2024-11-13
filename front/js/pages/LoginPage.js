@@ -1,23 +1,46 @@
 
+import { postCredentials } from "../api/apiLoginHelper.js";
+
+
 
 export function loadLoginView() {
     const app = document.getElementById('app');
     app.innerHTML = `
-        <div class="login-container" style: "width:800px; margin: 0 auto">
-            <h2>Iniciar Sesion</h2>
-            <form id="login-form">
-                <input type="text" id="username" placeholder="username" required />
-                <input type="password" id="password" placeholder="password" required />
-                <button type="submit">LogIn</button>
-            </form>
-        </div>
+    <body>
+        <form id="login-form" class="login-container">
+            <h2 class="login-label">Iniciar Sesión</h2>
+            <div class="input-field">
+                <input type="text" id="username" required />
+                <label for="username">Username</label>
+            </div>
+            <div class="input-field">
+                <input type="password" id="password" required />
+                <label for="password">Password</label>
+            </div>
+            <button type="submit" class="login-btn">LogIn</button>
+        </form>
+    </body>
     `;
-//todo ver de centrar esto, tema del token 
+
     document.getElementById("login-form").addEventListener("submit", (e) => {
         e.preventDefault();
         console.log("Formulario de login enviado");
+
         
-        window.location.hash = '#/animals';
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+        console.log(username, password);
+
+        postCredentials(username, password).then(response  => {
+            console.log(response);
+            if (response == 200) {
+                window.location.hash = '#/animals';
+            } else {
+                //todo: ver como poner el acceso invalido (posiblemente cambiando los campos a rojo)
+            }
+        });
+
+    
     });
 }
 
