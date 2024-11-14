@@ -27,7 +27,8 @@ import {
     getCheckpointData,
     deleteCheckpointData,
     saveNewPositions,
-    updatePositions
+    updatePositions,
+    getPacketToSend
 } from '../services/mqtt.service.js';
 import { sendSSE } from '../routes/events.route.js';
 
@@ -71,8 +72,9 @@ export const receiveFromCheckPoint = () => {
                         deleteCheckpointData(receivedPackets, data.checkpointID);
                         let filteredData = filterDataByRSSI(checkpointReceived);
                         const validData = validateData(filteredData);
+                        const packetToSend = getPacketToSend(validData);
                         updatePositions(positions);
-                        saveNewPositions(validData, positions);
+                        saveNewPositions(packetToSend, positions);
                         sendSSE(JSON.stringify(positions));
                         console.log('Mensaje recibido y procesado:', positions);
                     }
