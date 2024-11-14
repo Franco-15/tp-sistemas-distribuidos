@@ -8,7 +8,7 @@ export const authenticateToken = (req, res, next) => {
 
     if (!token){
         res.writeHead(401,{message: 'Acceso denegado, falta el token'})
-        res.end()
+        return res.end()
     }
 
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {

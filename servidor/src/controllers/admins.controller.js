@@ -37,25 +37,30 @@ export const validUser = (req,res) =>{
             return res.end()
         }else{
             const admin = getJson()
-            const hashedPassword = admin[0]["password"]
-            bcrypt.compare(password, hashedPassword)
-                .then(isMatch => {
-                    if (isMatch) {
-                        const id = admin[0]["id"]
-                        res.writeHead(200,{'Content-Type': 'application/json', 'message':'Usuario logueado'})
-                        const accessToken = jwt.sign({ id:username },process.env.ACCESS_TOKEN_SECRET ,{ expiresIn: '5m' }); //5 min
-                        const refreshToken = jwt.sign({ id:username }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '60m' });
-                        res.write(JSON.stringify({accessToken:accessToken,refreshToken:refreshToken,id:id}))
+            if(username == admin[0]["username"]){
+                const hashedPassword = admin[0]["password"]
+                bcrypt.compare(password, hashedPassword)
+                    .then(isMatch => {
+                        if (isMatch) {
+                            const id = admin[0]["id"]
+                            res.writeHead(200,{'Content-Type': 'application/json', 'message':'Usuario logueado'})
+                            const accessToken = jwt.sign({ id:username },process.env.ACCESS_TOKEN_SECRET ,{ expiresIn: '5m' }); //5 min
+                            const refreshToken = jwt.sign({ id:username }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '60m' });
+                            res.write(JSON.stringify({accessToken:accessToken,refreshToken:refreshToken,id:id}))
+                            return res.end()
+                        } else {
+                            res.writeHead(401,{'message':'Password invalido'}) 
+                            return res.end()
+                        }
+                    })
+                    .catch(error => {   
+                        res.writeHead(500,{'message':'Error al comparar la contraseña'}) 
                         return res.end()
-                    } else {
-                        res.writeHead(401,{'message':'Password invalido'}) 
-                        return res.end()
-                    }
-                })
-                .catch(error => {
-                    res.writeHead(500,{'message':'Error al comparar la contraseña'}) 
-                    return res.end()
-                });
+                    });
+            }else{
+                res.writeHead(401,{'message':'Usuario invalido'}) 
+                return res.end()
+            }
         }
         
     }catch (e){
