@@ -7,13 +7,13 @@ export const authenticateToken = (req, res, next) => {
     const token = authHeader && authHeader.split(' ')[1]; //Separamos el token del Bearer
 
     if (!token){
-        res.writeHead(401,{message: 'Acceso denegado, falta el token'})
+        res.writeHead(401,'Acceso denegado, falta el token')
         return res.end()
     }
 
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
         if (err){
-            res.writeHead(403,{message: 'Token inválido'})
+            res.writeHead(403,'Token inválido')
             return res.end()
         }
         next();

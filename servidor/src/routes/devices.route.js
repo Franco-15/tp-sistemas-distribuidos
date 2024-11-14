@@ -23,11 +23,11 @@ const getJson = () => {
 router.get('/', (req, res) => {
     try {
         const result = getJson()
-        res.writeHead(200,{'Content-Type': 'application/json', 'message': 'Dispositivos registrados en el sistema'})
+        res.writeHead(200,{'Content-Type': 'application/json'})
         res.write(JSON.stringify(result))
         res.end()
     } catch (error) {
-        res.status(500).json({ message: 'Error al recuperar los dispositivos disponibles'}); 
+        res.status(500).json('Error al recuperar los dispositivos disponibles'); 
     }
 });
 
