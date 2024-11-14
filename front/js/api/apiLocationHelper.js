@@ -33,19 +33,24 @@ function renderLocationPage(data) {
         <td>${item.lat}</td>
         <td>${item.long}</td>
         <td>${item.description}</td>
-        <td>${item.animals?.map(animal => animal.id).join('\n') || 'No data'}</td>
+        <td>${item.animals?.map(animal => animal.name).join(',\n') || 'No data'}</td>
     `;
     positionsTableBody.appendChild(row);
   });
 }
 
 export function renderMapPage(data) {
+  if (map) {
+    map.remove();
+  }
+
   const locAll = data;
   const posChkPt = locAll.map(item => [item.lat, item.long, item.description]);
   const posAnimales = locAll.map(item => [item.lat, item.long, item.animals]);
 
   const posMap = calculaPos(posChkPt);
 
+  // Inicializamos el nuevo mapa
   map = L.map('map').setView(posMap, 16);
   var animalIcon = L.icon({
     iconUrl: 'css/items/cow-icon.png',
@@ -65,13 +70,11 @@ export function renderMapPage(data) {
     marker.bindPopup(description).openPopup();
   })
 
-  posAnimales.forEach(([lat, long, animal]) => animal.forEach(() => {
+  posAnimales.forEach(([lat, long, animal]) => animal.forEach((a) => {
     const posAnimal = [lat + rnd(), long + rnd()];
     var marker = L.marker(posAnimal, { icon: animalIcon }).addTo(map);
-    marker.bindPopup(animal.description).openPopup();
+    marker.bindPopup(a.name).openPopup();
   }));
-
-  map = undefined;
 }
 
 function calculaPos(posChkPt) {
