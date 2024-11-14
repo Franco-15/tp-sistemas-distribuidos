@@ -96,6 +96,6 @@ Para realizar el login desde el frontend el usuario y contraseña default es "ad
 | 500    | Error interno en el servidor                |
 
  ## **Contribuciones**
-Para las implementaciones del manejo de tokens, interfaz web y manejo de tópicos MQTT nos basamos en el repositorio de un referente de la informática como lo es Martin Ignacio Casas.
+Para las implementaciones del manejo de tokens, interfaz web y manejo de tópicos MQTT nos basamos en el repositorio de Martin Ignacio Casas, ayudante de la materia.
 [https://github.com/casasmartinignacio](https://github.com/casasmartinignacio?tab=repositories) 
 
