@@ -42,7 +42,7 @@ app.use(rutaRefresh, refreshRoute);
 
 // Manejo de rutas no encontradas
 app.use((req, res) => {
-    res.writeHead(404,{'message':'Ruta no encontrada' })  
+    res.writeHead(404, 'Ruta no encontrada')  
     return res.end()
 });
 
