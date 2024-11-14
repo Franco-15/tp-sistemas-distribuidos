@@ -1,8 +1,6 @@
-import { startEventSource } from '../services/locacionService.js';
 
 export function  loadLocacionPage() {
     const app = document.getElementById('app');
-    startEventSource();
 
     app.innerHTML = `
             <div class="animal-container">
@@ -13,7 +11,7 @@ export function  loadLocacionPage() {
                         <th>Checkpoint ID</th>
                         <th>Lat</th>
                         <th>Long</th>
-                        <th>Descripción</th>
+                        <th>Descripcion</th>
                         <th>Animales</th>
                     </tr>
                 </thead>
