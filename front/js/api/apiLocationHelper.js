@@ -4,6 +4,8 @@ export function startEventSource() {
 
   eventSource.onmessage = function (event) {
     const checkpointPositionData = JSON.parse(JSON.parse(event.data));
+    console.log("Nuevo mensaje recibido desde MQTT");
+
     if (window.location.hash === '#/locacion') {
       renderLocationPage(checkpointPositionData);
     }
