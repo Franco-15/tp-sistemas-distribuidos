@@ -20,7 +20,7 @@ const getJson = () => {
 export const devicesRoute = (req, res) => { //Enviamos dispositivos al front
     const result = getJson()
     setHeaders(res);
-    res.writeHead(200,{'Content-Type': 'application/json', 'message': 'Dispositivos registrados en el sistema'})
+    res.writeHead(200,{'Content-Type': 'application/json'})
     res.write(JSON.stringify(result))
     res.end()
     return

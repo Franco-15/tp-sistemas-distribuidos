@@ -30,13 +30,13 @@ export const getAnimal = (idAnimal,res) => {
         return item.id === idAnimal
     })
     if (buscado < 0){
-        res.writeHead(404, {'message':'El animal buscado no existe o no se encuentra registrado en el sistema'});
+        res.writeHead(404,'El animal buscado no existe o no se encuentra registrado en el sistema');
         return res.end()
         
     }else{
         let animalBuscado = JSON.stringify(result[buscado])
         console.log(animalBuscado)
-        res.writeHead(200,{'Content-Type': 'application/json', 'message': 'Animal localizado'})
+        res.writeHead(200,{'Content-Type': 'application/json'})
         res.write(animalBuscado)
         return res.end()
         

@@ -57,7 +57,7 @@ const server = http.createServer((req, res) => {
     }else if(req.url.startsWith(rutaDevices)){ // Ruta de los dispositivos no identificados 
         devicesRoute(req,res)
     }else { //Ruta invalida
-        res.writeHead(404, {'message':'Ruta no encontrada'})
+        res.writeHead(404, 'Ruta no encontrada')
         return res.end() 
     }  
 })

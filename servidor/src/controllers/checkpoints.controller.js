@@ -29,12 +29,12 @@ export const getPuntoControl = (idPtoControl, res) => {
         return item.id === idPtoControl
     })
     if (buscado < 0) {
-        res.writeHead(404, { 'message': 'El checkpoint buscado no existe o no se encuentra registrado en el sistema' });
+        res.writeHead(404, 'El checkpoint buscado no existe o no se encuentra registrado en el sistema' );
         return res.end()
 
     } else {
         const checkpoint = JSON.stringify(result[buscado])
-        res.writeHead(200, { 'Content-Type': 'application/json', 'message': 'Se encontro el checkpoint' })
+        res.writeHead(200, { 'Content-Type': 'application/json'})
         res.write(checkpoint)
         return res.end()
 

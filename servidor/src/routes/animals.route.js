@@ -21,11 +21,11 @@ export const animalsRoute = (req, res) => {
                 try{
                     animals = animalsMethods.getAnimales()
                     setHeaders(res)
-                    res.writeHead(200,{'Content-Type': 'application/json', 'message': 'Se encontro el listado de animales'})
+                    res.writeHead(200,{'Content-Type': 'application/json'})
                     res.write(animals)
                     return res.end()
                 }catch(e){
-                    res.writeHead(500,{'message':'No se encontro e'})  
+                    res.writeHead(500,'No se encontro el animal')  
                     return res.end()
                 }
             }else if(parametros.length == 3){ // GET /api/animals/:id - Obtener un animal especifico
@@ -42,35 +42,35 @@ export const animalsRoute = (req, res) => {
                 req.on('end', () => {
                     const parsedBody = JSON.parse(body);
                     if(!parsedBody.id || !parsedBody.name || !parsedBody.description){ //Entra por aca si falta algun dato
-                        res.writeHead(400, {'message':'No se pudo agregar al animal debido a la falta de datos'})
+                        res.writeHead(400, 'No se pudo agregar al animal debido a la falta de datos')
                         res.end()
                         return;
                     }else{
                         
                         if(animalsMethods.postAnimal(parsedBody)){
-                            res.writeHead(200,{'Content-Type': 'application/json', 'message': 'El animal fue agregado exitosamente'})
+                            res.writeHead(200,{'Content-Type': 'application/json'})
                         }else{
-                            res.writeHead(400, {'message':'El animal con este ID ya existe'});
+                            res.writeHead(400, 'El animal con este ID ya existe');
                         }
                         return res.end()
                     }
                 })
 
             }catch (e){ //Fallo el intento
-                res.writeHead(500, {'message':'Error del servidor al intentar agregar al animal'})
+                res.writeHead(500,'Error del servidor al intentar agregar al animal')
                 return res.end()
             }
         }else if(req.method === 'DELETE'){  
             setHeaders (res) ;
             if(parametros.length == 2){ // DELETE /api/animals - Eliminar todos los animales   
                 animalsMethods.deleteAnimales(req,res)
-                res.writeHead(200, {'message':'Todos los animales han sido eliminados'})
+                res.writeHead(200, 'Todos los animales han sido eliminados')
                 return res.end()
             }else if(parametros.length == 3){ // DELETE /api/animals/:id - Eliminar un animal especifico
                 if(animalsMethods.deleteAnimal(parametros[2])){
-                    res.writeHead(200,{'message': 'El animal fue eliminado exitosamente'})
+                    res.writeHead(200,'El animal fue eliminado exitosamente')
                 }else{
-                    res.writeHead(400, {'message':'El animal buscado no existe o no se encuentra registrado en el sistema'});
+                    res.writeHead(400, 'El animal buscado no existe o no se encuentra registrado en el sistema');
                 }
                 return res.end()
             }
@@ -85,7 +85,7 @@ export const animalsRoute = (req, res) => {
                 req.on('end', () => {
                     const parsedBody = JSON.parse(body);
                     if(!parametros[1] || !parsedBody.name || !parsedBody.description){ //Entra por aca si falta algun dato
-                        res.writeHead(400, {'message':'Informacion incompleta para modificar el animal'})
+                        res.writeHead(400, 'Informacion incompleta para modificar el animal')
                         return res.end()
                     }else{
                         const newAnimal = {
@@ -94,19 +94,19 @@ export const animalsRoute = (req, res) => {
                             description: parsedBody.description
                         }
                         if(animalsMethods.patchAnimal(newAnimal)){
-                            res.writeHead(200, {'message':'Se modificó correctamente al animal'});
+                            res.writeHead(200, 'Se modificó correctamente al animal');
                         }else{
-                            res.writeHead(404, {'message':'El animal buscado no existe o no se encuentra registrado en el sistema'});
+                            res.writeHead(404, 'El animal buscado no existe o no se encuentra registrado en el sistema');
                         }
                         return res.end()
                     }
                 })
             } catch (e) { //Problema del servidor al intentar realizar modificacion
-                res.writeHead(500, {'message':'Error del servidor al intentar modificar un animal'}) 
+                res.writeHead(500, 'Error del servidor al intentar modificar un animal') 
                 return res.end()
             }
         }else{ //Caso se confundio de calle
-            res.writeHead(404,  {'message':'Ruta no encontrada'});
+            res.writeHead(404, 'Ruta no encontrada');
             return res.end() 
         }
 
