@@ -142,7 +142,6 @@ export function loadAnimalPage() {
             if (selectedAnimalId) {
                 const selectedAnimal = animalArray.find(animal => animal.id.toString() === selectedAnimalId);
                 if (selectedAnimal) {
-                    console.log(selectedAnimal)
                     animalEditName.value = selectedAnimal.name;
                     animalEditDescription.value = selectedAnimal.description;
                 }
@@ -161,7 +160,6 @@ export function loadAnimalPage() {
             if (selectedAnimalId) {
                 const selectedAnimal = animalArray.find(animal => animal.id.toString() === selectedAnimalId);
                 if (selectedAnimal) {
-                    console.log(selectedAnimal)
                     animalDeleteName.value = selectedAnimal.name;
                     animalDeleteDescription.value = selectedAnimal.description;
                 }

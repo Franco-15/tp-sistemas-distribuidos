@@ -42,14 +42,14 @@ export function loadCheckpointPage() {
             <div id="popupAddForm" class = "pop_up">
                 <h3>Agregar Nuevo CheckPoint</h3>
                 <form id="ChkPtAddForm">
-                    <label for="ChkPtAddId">ID:</label> 
-                    <input type="text" id="ChkPtAddId" name="Id" required><br><br>
+                    <label for="ChkPtAddId">ID:</label>
+                        <input type="text" id="ChkPtAddId" name="Id" required><br><br>
                     <label for="ChkPtAddlat">lat</label>
-                    <input type="text" id="ChkPtAddlat" name="Lat" required><br><br>
+                        <input type="text" id="ChkPtAddlat" name="Lat" required><br><br>
                     <label for="ChkPtAddlong">long</label>
-                    <input type="text" id="ChkPtAddlong" name="Long" required><br><br>
+                        <input type="text" id="ChkPtAddlong" name="Long" required><br><br>
                     <label for="ChkPtAddDescription">Descripcion:</label>
-                    <input type="text" id="ChkPtAddDescription" name="description" required><br><br>
+                         <input type="text" id="ChkPtAddDescription" name="description" required><br><br>
                     <button type="submit" id = "submitAdd">Guardar</button>
                     <button type="button" id="closeButton">Cerrar</button>
                 </form>
@@ -185,6 +185,7 @@ export function loadCheckpointPage() {
         closeEditButton.addEventListener('click', () => {
             popupEditForm.style.display = 'none';
             popupOverlay.style.display = 'none';
+            ChkPtSelectEdit.value = '';
             ChkPtEditlat.value = '';
             ChkPtEditlong.value = '';
             ChkPtEditDescription.value = '';
@@ -193,6 +194,7 @@ export function loadCheckpointPage() {
         closeDeleteButton.addEventListener('click', () => {
             popupDeleteForm.style.display = 'none';
             popupOverlay.style.display = 'none';
+            ChkPtSelectDelete.value = '';
             ChkPtDeletelat.value = '';
             ChkPtDeletelong.value = '';
             ChkPtDeleteDescription.value = '';
@@ -207,9 +209,13 @@ export function loadCheckpointPage() {
             ChkPtAddlat.value = '';
             ChkPtAddlong.value = '';
             ChkPtAddDescription.value = '';
+
+            ChkPtSelectEdit.value = '';
             ChkPtEditlat.value = '';
             ChkPtEditlong.value = '';
             ChkPtEditDescription.value = '';
+
+            ChkPtSelectDelete.value = '';
             ChkPtDeletelat.value = '';
             ChkPtDeletelong.value = '';
             ChkPtDeleteDescription.value = '';
