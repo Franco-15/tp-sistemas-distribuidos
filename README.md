@@ -32,7 +32,6 @@ Backend:
 - **Brcypt**: para hashear, almacenar y comparar contraseñas de los usuarios administradores del sistema.
 - **MQTT**: Comunicación entre checkpoints (Wemos/Arduino) y una Raspberry Pi que actúa como Gateway.
 
-
 Frontend:
 - **Axios:** Para las requests HTTP.
 - **HTML**
@@ -40,7 +39,7 @@ Frontend:
 
 
 Version de promocion
-- **Express**: framework utilizado en la branch "Version-Promocion", el frontend está adaptado tambien a la utilizacion de Express.
+- **Express**: framework utilizado, el frontend está adaptado tambien a la utilizacion de Express.
 - **jsonwebtoken** para gestionar los JWT.
 - Se ha implementado un mapa para mostrar los animales, fue implementado con https://leafletjs.com/
  
