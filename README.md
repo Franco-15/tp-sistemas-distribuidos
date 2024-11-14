@@ -27,27 +27,46 @@ La finalidad de este sistema es simular un monitoreo de ganado, reemplazando mé
 - **MQTT**: Comunicación entre checkpoints (Wemos/Arduino) y una Raspberry Pi que actúa como Gateway.
 - **Vanilla JavaScript (SPA)**: Interfaz gráfica compatible con navegadores modernos. Utilizada en la mayoria del proyecto.
 - **Persistencia en JSON**: Los datos de los animales, checkpoints, administradores se almacenan en archivos planos en formato JSON.
-- **Express**: framework utilizado en la branch "Version-Promocion", el frontend de está adaptado tambien a la utilizacion de Express.
 - **Brcypt**: para hashear, almacenar y comparar contraseñas de los usuarios administradores del sistema.
-- **jsonwebtoken** para gestionar los token JWT 
 
-## Requerimientos Previos
+Backend:
 
-- **Node.js** y **npm**: Asegúrate de tener instalados [Node.js](https://nodejs.org/) y npm.
+
+Frontend:
+- **Axios:** Para las requests HTTP.
+- **HTML**
+- **CSS**
+
+
+Version de promocion
+- **Express**: framework utilizado en la branch "Version-Promocion", el frontend de está adaptado tambien a la utilizacion de Express.
+- **jsonwebtoken** para gestionar los JWT.
+- Se ha implementado un mapa para mostrar los animales, fue implementado con https://leafletjs.com/
+ 
+
+
+
+## Requerimientos previos a la ejecucion del proyecto
+
+- **Node.js** y **npm**: Tener instalados [Node.js](https://nodejs.org/) y npm.
 - **Dispositivos Wemos/Arduino**: Configurados con Bluetooth para simular puntos de control.
 - **Raspberry Pi**: Actúa como Gateway con un broker MQTT instalado.
 - **MQTT Broker**: Configurado en la Raspberry Pi.
 
-## Instalación
+## Instalación del proyecto
 
-1. Clona el repositorio:
+1. Clonar el repositorio:
    ```bash
    git clone https://github.com/Franco-15/tp-sistemas-distribuidos.git
    cd tp-sistemas-distribuidos
 
 ## Ejecución
-**-Backend**: ejecutar desde la consola
+** - Backend**: ejecutar desde la consola
  ```bash
 npm run dev
 ```
 
+** - Frontend** 
+```bash
+node app.js
+```
