@@ -1,11 +1,11 @@
-#Trabajo Practico Sistemas Distribuidos
+# Trabajo Practico Sistemas Distribuidos
 
-##Integrantes
--Barriga Nahuel
--Deserti Manuel
--Firmani Gregorio
--Gonzalez Franco
--Hernandez Julieta
+## Integrantes
+-Barriga Nahuel.
+-Deserti Manuel.
+-Firmani Gregorio.
+-Gonzalez Franco.
+-Hernandez Julieta.
 
 
 # Sistema de Monitoreo y Control de Ganado
@@ -37,7 +37,7 @@ La finalidad de este sistema es simular un monitoreo de ganado, reemplazando mé
    git clone https://github.com/Franco-15/tp-sistemas-distribuidos.git
    cd tp-sistemas-distribuidos
 
-##Ejecución
+## Ejecución
 **-Backend**: ejecutar desde la consola
  ```bash
 npm run dev
