@@ -27,8 +27,9 @@ import {
     getCheckpointData,
     deleteCheckpointData,
     saveNewPositions,
-    updatePositions
-} from '../services/mqtt.services.js';
+    updatePositions,
+    getPacketToSend
+} from '../services/mqtt.service.js';
 import { sendSSE } from '../routes/events.route.js';
 
 dotenv.config(); // carga variables de entorno
@@ -55,8 +56,7 @@ export const receiveFromCheckPoint = () => {
     });
 
     mqttClient.on('error', (err) => {
-        //console.error('Error en el cliente MQTT:', err.message);  
-        //! agregarlo
+        console.error('Error en el cliente MQTT:', err.message);
     });
 
 
@@ -72,11 +72,11 @@ export const receiveFromCheckPoint = () => {
                         deleteCheckpointData(receivedPackets, data.checkpointID);
                         let filteredData = filterDataByRSSI(checkpointReceived);
                         const validData = validateData(filteredData);
+                        const packetToSend = getPacketToSend(validData);
                         updatePositions(positions);
-                        saveNewPositions(validData, positions);
-                        console.log("positions");
-                        console.log(positions);
+                        saveNewPositions(packetToSend, positions);
                         sendSSE(JSON.stringify(positions));
+                        console.log('Mensaje recibido y procesado:', positions);
                     }
                 } else
                     console.error('Mensaje en formato incorrecto:', data);

@@ -1,9 +1,11 @@
-import fs from 'fs';
+/**
+ * Servicios para el manejo de los mensajes MQTT
+ */
+
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { readJSONFile } from './files.services.js';
+import { readJSONFile } from './files.service.js';
 
-// Crea __dirname en el entorno de módulos ESM
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const animalsFilePath = path.join(__dirname, '../data/animals.json');
@@ -87,7 +89,7 @@ export const saveNewPositions = (validData, positions) => {
     try {
         //De las posiciones que no coincidan con el checkpointID, eliminar los animales que coincidan con el id de los animales de validData
         positions.forEach(position => {
-            if (position.id !== validData.checkpointID) {
+            if (position.id !== validData.id) {
                 position.animals = position.animals.filter(animal => !validData.animals.some(validAnimal => validAnimal.id === animal.id));
             } else {
                 position.animals = validData.animals;
@@ -132,4 +134,17 @@ export const updatePositions = (positions) => {
     } catch (error) {
         console.error('Error al actualizar las posiciones:', error);
     }
+};
+
+export const getPacketToSend = (data) => {
+    const checkpointsData = readJSONFile(checkpointsFilePath);
+    const animalsData = readJSONFile(animalsFilePath);
+    const checkpoint = checkpointsData.find(checkpoint => checkpoint.id === data.checkpointID);
+    const animals = data.animals.map(animal => animalsData.find(storedAnimal => storedAnimal.id === animal.id));
+    const packet = {
+        ...checkpoint,
+        animals: animals
+    };
+    
+    return packet;
 };
