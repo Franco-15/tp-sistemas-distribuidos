@@ -1,20 +1,15 @@
-//todo: ver si no pasa a ser 'HomePage.js'
-
 import { getChkPt, PatchChkPt, PostChkPt , DeleteChkPt} from "../api/apiCheckpointHelper.js";
 
 
 export function loadCheckpointPage() {
-    console.log('entra') //!sacar
-    
+
     renderChkPtArray().then(chkPtArray => {
+
         const app = document.getElementById('app');
-
-
         //todo ver como centrar los input del popup
         app.innerHTML = `
-                        
             <div class="animal-container">
-                <h2 class="animal-title">Lista de CheckPoints</h2>
+                <h2 class="animal-title">Lista de puntos de control</h2>
                 <table class="animal-table">
                     <thead>
                         <tr>
@@ -44,8 +39,7 @@ export function loadCheckpointPage() {
 
 
             <!--popup para agregar-->
-            <div id="popupAddForm" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
-                background-color: white; padding: 20px; border: 1px solid #ccc; z-index: 1000;">
+            <div id="popupAddForm" class = "pop_up">
                 <h3>Agregar Nuevo CheckPoint</h3>
                 <form id="ChkPtAddForm">
                     <label for="ChkPtAddId">ID:</label> 
@@ -54,7 +48,7 @@ export function loadCheckpointPage() {
                     <input type="text" id="ChkPtAddlat" name="Lat" required><br><br>
                     <label for="ChkPtAddlong">long</label>
                     <input type="text" id="ChkPtAddlong" name="Long" required><br><br>
-                    <label for="ChkPtAddDescription">Descripción:</label>
+                    <label for="ChkPtAddDescription">Descripcion:</label>
                     <input type="text" id="ChkPtAddDescription" name="description" required><br><br>
                     <button type="submit" id = "submitAdd">Guardar</button>
                     <button type="button" id="closeButton">Cerrar</button>
@@ -62,8 +56,7 @@ export function loadCheckpointPage() {
             </div>
             
             <!--popup para editar-->
-            <div id="popupEditForm" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
-                background-color: white; padding: 20px; border: 1px solid #ccc; z-index: 1000;">
+            <div id="popupEditForm" class = "pop_up">
                 <h3>Editar ChkPt</h3>
                 <form id="ChkPtEditForm">
                     <label for="ChkPtEditId">ID:</label> 
@@ -78,7 +71,7 @@ export function loadCheckpointPage() {
                     <input type="text" id="ChkPtEditlat" name="Lat" required ><br><br>
                     <label for="ChkPtEditlong">long</label>
                     <input type="text" id="ChkPtEditlong" name="Long" required><br><br>
-                    <label for="ChkPtEditDescription">Descripción:</label>
+                    <label for="ChkPtEditDescription">Descripcion:</label>
                     <input type="text" id="ChkPtEditDescription" name="description" required><br><br>
                     <button type="submit" id = "submitEdit">Guardar</button>
                     <button type="button" id="closeEditButton">Cerrar</button>
@@ -86,8 +79,7 @@ export function loadCheckpointPage() {
             </div>
 
             <!--popup para eliminar-->
-            <div id="popupDeleteForm" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
-                background-color: white; padding: 20px; border: 1px solid #ccc; z-index: 1000;">
+            <div id="popupDeleteForm" class = "pop_up">
                 <h3>Eliminar ChkPt</h3>
                 <form id="ChkPtDeleteForm">
                     <label for="ChkPtDeleteId">ID:</label> 
@@ -102,7 +94,7 @@ export function loadCheckpointPage() {
                     <input type="text" id="ChkPtDeletelat" name="Lat" required readonly><br><br>
                     <label for="ChkPtDeletelonng">long</label>
                     <input type="text" id="ChkPtDeletelong" name="Long" required readonly><br><br>
-                    <label for="ChkPtDeleteDescription">Descripción:</label>
+                    <label for="ChkPtDeleteDescription">Descripcion:</label>
                     <input type="text" id="ChkPtDeleteDescription" name="description" required readonly><br><br>
                     <button type="submit" id = "submitDelete">Guardar</button>
                     <button type="button" id="closeDeleteButton">Cerrar</button>
@@ -148,15 +140,12 @@ export function loadCheckpointPage() {
         //esto rellena los valores para el editado
         ChkPtSelectEdit.addEventListener('change', () => {
             const selectedChkPtId = ChkPtSelectEdit.value;
-            console.log(selectedChkPtId)
             if (selectedChkPtId) {
                 const selectedChkPt = chkPtArray.find(chkPt => chkPt.id.toString() === selectedChkPtId);
                 if (selectedChkPt) {
-                    console.log(selectedChkPt)
                     ChkPtEditlat.value = selectedChkPt.lat;
                     ChkPtEditlong.value = selectedChkPt.long;
                     ChkPtEditDescription.value = selectedChkPt.description;
-                    
                 }
                 else {
                     console.log('no encontre')
@@ -170,18 +159,12 @@ export function loadCheckpointPage() {
         //esto rellena los valores para borrar el ChkPt
         ChkPtSelectDelete.addEventListener('change', () => {
             const selectedChkPtId = ChkPtSelectDelete.value;
-            console.log(selectedChkPtId)
             if (selectedChkPtId) {
                 const selectedChkPt = chkPtArray.find(chkPt  => chkPt .id.toString() === selectedChkPtId);
                 if (selectedChkPt) {
-                    console.log(selectedChkPt)
                     ChkPtDeletelat.value = selectedChkPt.lat;
                     ChkPtDeletelong.value = selectedChkPt.long;
                     ChkPtDeleteDescription.value = selectedChkPt.description;
-                    
-                }
-                else {
-                    console.log('no encontre')
                 }
             } else {
                 ChkPtName.value = '';
@@ -215,16 +198,11 @@ export function loadCheckpointPage() {
     //manejo de los datos al apretar submit del formulario agregar (pegaria a la API)
     ChkPtAddForm.addEventListener('submit', (event) => {
         event.preventDefault(); // evita que se recarge la pagina
-        
         const id = ChkPtAddId.value;
         const lat = ChkPtAddlat.value;
         const long = ChkPtAddlong.value;
         const description = ChkPtAddDescription.value;
-
-        console.log("Datos del nuevo ChkPt:", {id, lat, long, description }); //para comprobar //!borrar
-
         PostChkPt(id, lat, long, description);
-
         popupAddForm.style.display = 'none';
         popupOverlay.style.display = 'none';
     });
@@ -232,16 +210,11 @@ export function loadCheckpointPage() {
     //manejo de los datos al apretar submit del formulario editar (pegaria a la API)
     ChkPtEditForm.addEventListener('submit', (event) => {
         event.preventDefault(); // evita que se recarge la pagina
-        
         const id = ChkPtSelectEdit.value;
         const lat = ChkPtEditlat.value;
         const long = ChkPtEditlong.value;
         const description = ChkPtEditDescription.value;
-
-        console.log("ChkPt editado:", {id, lat, long, description }); //para comprobar //!borrar
-
         PatchChkPt(id, lat, long, description);
-
         popupEditForm.style.display = 'none';
         popupOverlay.style.display = 'none';
     });
@@ -249,28 +222,20 @@ export function loadCheckpointPage() {
     //manejo de los datos al apretar submit del formulario delete (pegaria a la API)
     ChkPtDeleteForm.addEventListener('submit', (event) => {
         event.preventDefault(); // evita que se recarge la pagina
-        
         const id = ChkPtSelectDelete.value;
         const lat = ChkPtDeletelat.value;
         const long = ChkPtDeletelong.value;
         const description = ChkPtDeleteDescription.value;
-
-        console.log("ChkPt a eliminar:", {id, lat, long, description }); //para comprobar //!borrar
-
         DeleteChkPt(id);
-
         popupDeleteForm.style.display = 'none';
         popupOverlay.style.display = 'none';
     });
-
     });
 }
 
 export function renderChkPtArray() { //todo vendria siendo el get, cambiarlo
     // Llama a la función getChkPts (es la q esta en api.js) y espera su resultado
     return getChkPt().then(chkPtArray => { //devuelve promesa
-        
-        console.log("Array de checkpointss:", chkPtArray); // Muestra el array en la consola
         return chkPtArray
     });
 }

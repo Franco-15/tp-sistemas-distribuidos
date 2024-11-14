@@ -19,9 +19,15 @@ const getJson = () => {
 // GET /api/availableDevices - Obtiene todos los dispositivos no identificados del sistema
 export const devicesRoute = (req, res) => { //Enviamos dispositivos al front
     const result = getJson()
+    setHeaders(res);
     res.writeHead(200,{'Content-Type': 'application/json', 'message': 'Dispositivos registrados en el sistema'})
     res.write(JSON.stringify(result))
     res.end()
     return
 }
 
+const setHeaders= (res) => {
+    res.setHeader("Access-Control-Allow-Origin", "*"); // Permite todas las fuentes
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PATCH, OPTIONS"); // Metodos permitidos
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With"); // Encabezados permitidos 
+}
