@@ -4,11 +4,13 @@ import { loadLoginView } from './pages/LoginPage.js';
 import { loadAnimalPage } from './pages/AnimalsPage.js';
 import { loadCheckpointPage } from './pages/CheckpointPage.js';
 import { loadLocacionPage } from './pages/LocacionPage.js';
+import { startEventSource } from './api/apiLocationHelper.js';
 
 
 function router() {
     const app = document.getElementById('app');
     const hash = window.location.hash;
+    startEventSource();
 
     // Si no hay hash, redirige directamente a login
     if (!hash || hash === '#/') {
