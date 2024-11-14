@@ -43,9 +43,9 @@ export const validUser = (req,res) =>{
                     .then(isMatch => {
                         if (isMatch) {
                             const id = admin[0]["id"]
-                            res.writeHead(200,{'Content-Type': 'application/json', 'message':'Usuario logueado'})
                             const accessToken = jwt.sign({ id:username },process.env.ACCESS_TOKEN_SECRET ,{ expiresIn: '5m' }); //5 min
                             const refreshToken = jwt.sign({ id:username }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '60m' });
+                            res.writeHead(200,{'Content-Type': 'application/json', 'message':'Usuario logueado con exito'})
                             res.write(JSON.stringify({accessToken:accessToken,refreshToken:refreshToken,id:id}))
                             return res.end()
                         } else {

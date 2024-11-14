@@ -32,7 +32,7 @@ app.use(cors({
 app.use(express.json()); // Middleware para analizar JSON
 
 // Definición de rutas
-app.use(rutaPositions,authenticateToken, eventsRoute);
+app.use(rutaPositions, eventsRoute);
 app.use(rutaAnimal,authenticateToken, animalsRoute);
 app.use(rutaCheckpoint,authenticateToken, checkpointsRoute);
 app.use(rutaLogin, loginRoute);

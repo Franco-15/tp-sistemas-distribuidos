@@ -1,16 +1,18 @@
-import { getLoc } from "../api/apiLocationHelper.js";
-
+import { startEventSource } from '../services/eventSource.js';
 
 export function loadMapPage() {
     const app = document.getElementById('app');
+    startEventSource();
 
     app.innerHTML = `
     <div class="map-container">
         <div class="map" id="map"></div>
     </div>
     `;
+}
 
-    const locAll = getLoc(); 
+export function renderMapPage(data) {
+    const locAll = data;
     const posChkPt = locAll.map(item => [item.lat, item.long, item.description]); 
     const posAnimales = locAll.map(item => [item.lat, item.long, item.animals]); 
 
@@ -39,10 +41,8 @@ export function loadMapPage() {
         const posAnimal = [lat + rnd(), long + rnd()];
         var marker = L.marker(posAnimal, {icon: animalIcon}).addTo(map);
         marker.bindPopup(animal.description).openPopup(); 
-    }))
-    
+    }));
 }
-
 
 function calculaPos(posChkPt) { 
     let sumaLat = 0;
@@ -60,7 +60,6 @@ function calculaPos(posChkPt) {
     ];
     return puntoMedio;
 }
-    
 
 function rnd() {
     const rango = 0.0005;

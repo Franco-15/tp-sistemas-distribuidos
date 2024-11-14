@@ -30,8 +30,8 @@ function router() {
         case '#/puntos-de-control': 
             loadCheckpointPage(); 
             break;
-        case '#/locacion': 
-            loadLocacionPage(hash);
+        case '#/locacion':
+            loadLocacionPage();
             break;
         case '#/map': 
             loadMapPage();
