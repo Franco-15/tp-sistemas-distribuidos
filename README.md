@@ -1,16 +1,21 @@
 # Trabajo Practico Sistemas Distribuidos
 
 ## Integrantes
--Barriga Nahuel.
--Deserti Manuel.
--Firmani Gregorio.
--Gonzalez Franco.
--Hernandez Julieta.
+- Barriga Nahuel.
+
+- Deserti Manuel.
+
+- Firmani Gregorio.
+
+- Gonzalez Franco.
+
+- Hernandez Julieta.
 
 
 # Sistema de Monitoreo y Control de Ganado
 
 Este proyecto es una implementación de un sistema distribuido para monitorear y controlar ganado mediante tecnología Bluetooth y puntos de control basados en Wemos/Arduino. Fue desarrollado como parte del trabajo práctico integrador de la materia **Sistemas Distribuidos** en la Universidad Nacional de Mar del Plata.
+El trabajo constará de dos versiones, una con los requisitos funcionales y no funcionales para la aprobación del trabajo y otra con los requisitos para su promoción, la cual implementa frameworks y otras funcionalidades.
 
 ## Descripción
 
@@ -18,10 +23,13 @@ La finalidad de este sistema es simular un monitoreo de ganado, reemplazando mé
 
 ## Tecnologías y Herramientas
 
-- **Node.js**: API HTTP y lógica de negocio sin frameworks externos.
-- **MQTT**: Comunicación entre puntos de control (Wemos/Arduino) y una Raspberry Pi que actúa como Gateway.
-- **Vanilla JavaScript (SPA)**: Interfaz gráfica compatible con navegadores modernos.
-- **Persistencia en JSON**: Los datos de los animales y administradores se almacenan en archivos planos en formato JSON.
+- **Node.js**: API HTTP y lógica de negocio sin frameworks externos (en la version que no contempla los requisitos de promocion de la materia).
+- **MQTT**: Comunicación entre checkpoints (Wemos/Arduino) y una Raspberry Pi que actúa como Gateway.
+- **Vanilla JavaScript (SPA)**: Interfaz gráfica compatible con navegadores modernos. Utilizada en la mayoria del proyecto.
+- **Persistencia en JSON**: Los datos de los animales, checkpoints, administradores se almacenan en archivos planos en formato JSON.
+- **Express**: framework utilizado en la branch "Version-Promocion", el frontend de está adaptado tambien a la utilizacion de Express.
+- **Brcypt**: para hashear, almacenar y comparar contraseñas de los usuarios administradores del sistema.
+- **jsonwebtoken** para gestionar los token JWT 
 
 ## Requerimientos Previos
 
