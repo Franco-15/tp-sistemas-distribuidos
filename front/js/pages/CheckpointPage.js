@@ -176,16 +176,26 @@ export function loadCheckpointPage() {
         closeButton.addEventListener('click', () => {
             popupAddForm.style.display = 'none';
             popupOverlay.style.display = 'none';
+            ChkPtAddId.value = '';
+            ChkPtAddlat.value = '';
+            ChkPtAddlong.value = '';
+            ChkPtAddDescription.value = '';
         });
 
         closeEditButton.addEventListener('click', () => {
             popupEditForm.style.display = 'none';
             popupOverlay.style.display = 'none';
+            ChkPtEditlat.value = '';
+            ChkPtEditlong.value = '';
+            ChkPtEditDescription.value = '';
         });
         
         closeDeleteButton.addEventListener('click', () => {
             popupDeleteForm.style.display = 'none';
             popupOverlay.style.display = 'none';
+            ChkPtDeletelat.value = '';
+            ChkPtDeletelong.value = '';
+            ChkPtDeleteDescription.value = '';
         });
 
         popupOverlay.addEventListener('click', () => {
@@ -193,6 +203,16 @@ export function loadCheckpointPage() {
             popupEditForm.style.display = 'none';
             popupDeleteForm.style.display = 'none';
             popupOverlay.style.display = 'none';
+            ChkPtAddId.value = '';
+            ChkPtAddlat.value = '';
+            ChkPtAddlong.value = '';
+            ChkPtAddDescription.value = '';
+            ChkPtEditlat.value = '';
+            ChkPtEditlong.value = '';
+            ChkPtEditDescription.value = '';
+            ChkPtDeletelat.value = '';
+            ChkPtDeletelong.value = '';
+            ChkPtDeleteDescription.value = '';
         });
 
     //manejo de los datos al apretar submit del formulario agregar (pegaria a la API)

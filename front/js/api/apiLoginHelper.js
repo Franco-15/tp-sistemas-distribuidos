@@ -22,5 +22,4 @@ export function postCredentials(username, password) {
     }).catch(error => {
         console.error(error);
     });
-
 }

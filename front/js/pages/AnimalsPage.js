@@ -145,7 +145,6 @@ export function loadAnimalPage() {
                     console.log(selectedAnimal)
                     animalEditName.value = selectedAnimal.name;
                     animalEditDescription.value = selectedAnimal.description;
-                    
                 }
                 else {
                     console.log('no encontre')
@@ -179,23 +178,41 @@ export function loadAnimalPage() {
         closeButton.addEventListener('click', () => {
             popupAddForm.style.display = 'none';
             popupOverlay.style.display = 'none';
+            animalSelectAdd.value = '';
+            animalAddName.value = ''; 
+            animalAddDescription.value = '';
         });
 
         closeEditButton.addEventListener('click', () => {
             popupEditForm.style.display = 'none';
             popupOverlay.style.display = 'none';
+            animalSelectEdit.value = '';
+            animalEditName.value = ''; 
+            animalEditDescription.value = '';
         });
         
         closeDeleteButton.addEventListener('click', () => {
             popupDeleteForm.style.display = 'none';
             popupOverlay.style.display = 'none';
+            animalSelectDelete.value = '';
+            animalDeleteName.value = ''; 
+            animalDeleteDescription.value = '';
         });
+
 
         popupOverlay.addEventListener('click', () => {
             popupAddForm.style.display = 'none';
             popupEditForm.style.display = 'none';
             popupDeleteForm.style.display = 'none';
             popupOverlay.style.display = 'none';
+            animalSelectDelete.value = '';
+            animalSelectEdit.value = '';
+            animalAddName.value = ''; 
+            animalAddDescription.value = '';
+            animalEditName.value = ''; 
+            animalEditDescription.value = '';
+            animalDeleteName.value = ''; 
+            animalDeleteDescription.value = '';
         });
 
     //manejo de los datos al apretar submit del formulario agregar (pegaria a la API)
