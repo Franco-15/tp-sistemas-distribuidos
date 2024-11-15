@@ -28,7 +28,8 @@ import {
     deleteCheckpointData,
     saveNewPositions,
     updatePositions,
-    getPacketToSend
+    getPacketToSend,
+    updateAvailableDevices
 } from '../services/mqtt.service.js';
 import { sendSSE } from '../routes/events.route.js';
 
@@ -68,6 +69,8 @@ export const receiveFromCheckPoint = () => {
                 if (checkMessageFormat(data)) {
                     addReceivedPacket(data, receivedPackets);
                     if (data.totalPackages == data.packageNum) {
+                        receivedPackets.forEach(packet => console.log('Paquete recibido:', packet));
+                        updateAvailableDevices(receivedPackets);
                         const checkpointReceived = getCheckpointData(receivedPackets, data.checkpointID);
                         deleteCheckpointData(receivedPackets, data.checkpointID);
                         let filteredData = filterDataByRSSI(checkpointReceived);
@@ -82,9 +85,7 @@ export const receiveFromCheckPoint = () => {
                     console.error('Mensaje en formato incorrecto:', data);
             }
         } catch (err) {
-            // Si ocurre un error al parsear el JSON, muestra el mensaje original y el error
-            console.error(`Error al parsear el mensaje en ${topic}:`, message.toString());
-            console.error('Detalle del error:', err);
+            console.error(`Error al parsear el mensaje en ${topic}:`, err);
         }
     });
 };
