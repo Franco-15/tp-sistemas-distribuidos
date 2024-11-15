@@ -56,11 +56,6 @@ export const postAnimal = (parsedBody) => {
     return true
 }
 
-export const deleteAnimales = () => {
-    const result = getJson()
-    writeFileSync(FILE_PATH,JSON.stringify([]),'utf-8')
-}
-
 export const deleteAnimal = (idAnimal, res) => {
     const result = getJson()
     const buscado = result.findIndex((item) => item.id === idAnimal);

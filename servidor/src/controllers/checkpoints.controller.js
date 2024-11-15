@@ -54,12 +54,6 @@ export const postPuntoControl = (parsedBody) => {
     return true
 }
 
-export const deletePuntosControl = () => {
-    const result = getJson()
-
-    writeFileSync(FILE_PATH, JSON.stringify({}), 'utf-8')
-}
-
 export const deletePuntoControl = (idPtoControl, res) => {
     const result = getJson()
     const buscado = result.findIndex((item) => item.id === idPtoControl);

@@ -60,21 +60,15 @@ export const animalsRoute = (req, res) => {
                 res.writeHead(500,'Error del servidor al intentar agregar al animal')
                 return res.end()
             }
-        }else if(req.method === 'DELETE'){  
+        }else if(req.method === 'DELETE'){  // DELETE /api/animals/:id - Eliminar un animal especifico
             setHeaders (res) ;
-            if(parametros.length == 2){ // DELETE /api/animals - Eliminar todos los animales   
-                animalsMethods.deleteAnimales(req,res)
-                res.writeHead(200, 'Todos los animales han sido eliminados')
-                return res.end()
-            }else if(parametros.length == 3){ // DELETE /api/animals/:id - Eliminar un animal especifico
-                if(animalsMethods.deleteAnimal(parametros[2])){
-                    res.writeHead(200,'El animal fue eliminado exitosamente')
-                }else{
-                    res.writeHead(400, 'El animal buscado no existe o no se encuentra registrado en el sistema');
-                }
-                return res.end()
+            if(animalsMethods.deleteAnimal(parametros[2])){
+                res.writeHead(200,'El animal fue eliminado exitosamente')
+            }else{
+                res.writeHead(400, 'El animal buscado no existe o no se encuentra registrado en el sistema');
             }
             return res.end()
+            
         }else if(req.method === 'PATCH'){ // PATCH /api/animals/:id - Modificar un animal
             try {
                 setHeaders(res);
