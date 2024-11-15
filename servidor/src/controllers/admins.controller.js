@@ -28,12 +28,12 @@ export const validUser = (req,res) =>{
         const password = decodedArray[1]; 
 
         if (!authHeader) {
-            res.writeHead(400, { 'message': 'No se pudo verificar al usuario debido a la ausencia del header de autorizacion' });
+            res.writeHead(400,'No se pudo verificar al usuario debido a la ausencia del header de autorizacion' );
             return res.end();
         }
 
         if (!username || !password) {
-            res.writeHead(400, {'message':'No se pudo verificar al usuario debido a la ausencia de datos'})
+            res.writeHead(400, 'No se pudo verificar al usuario debido a la ausencia de datos')
             return res.end()
         }else{
             const admin = getJson()
@@ -43,28 +43,28 @@ export const validUser = (req,res) =>{
                     .then(isMatch => {
                         if (isMatch) {
                             const id = admin[0]["id"]
-                            res.writeHead(200,{'Content-Type': 'application/json', 'message':'Usuario logueado'})
                             const accessToken = jwt.sign({ id:username },process.env.ACCESS_TOKEN_SECRET ,{ expiresIn: '5m' }); //5 min
                             const refreshToken = jwt.sign({ id:username }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '60m' });
+                            res.writeHead(200,{'Content-Type': 'application/json', 'message':'Usuario logueado con exito'})
                             res.write(JSON.stringify({accessToken:accessToken,refreshToken:refreshToken,id:id}))
                             return res.end()
                         } else {
-                            res.writeHead(401,{'message':'Password invalido'}) 
+                            res.writeHead(401,'Password invalido') 
                             return res.end()
                         }
                     })
                     .catch(error => {   
-                        res.writeHead(500,{'message':'Error al comparar la contraseña'}) 
+                        res.writeHead(500,'Error al comparar la contraseña') 
                         return res.end()
                     });
             }else{
-                res.writeHead(401,{'message':'Usuario invalido'}) 
+                res.writeHead(401,'Usuario invalido') 
                 return res.end()
             }
         }
         
     }catch (e){
-        res.writeHead(500, {'message':'Error del servidor al intentar verificar la identidad del usuario'})
+        res.writeHead(500, 'Error del servidor al intentar verificar la identidad del usuario')
         return res.end()
     }
 }
@@ -75,17 +75,17 @@ export const refreshUser  = (req,res) =>{
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1]; //Separamos el token del Bearer
     if (!token){
-        res.writeHead(401,{'message':'Acceso denegado, falta el token'}) 
+        res.writeHead(401,'Acceso denegado, falta el token') 
         return res.end()
     } 
     jwt.verify(token, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
         if (err){
-            res.writeHead(403,{'message':'Token invalido'}) 
+            res.writeHead(403,'Token invalido') 
             return res.end()
         } 
         const admin = getJson()
         const id = admin[0]["id"]
-        res.writeHead(200,{'Content-Type': 'application/json', 'message':'Nuevo token de acceso brindado'})
+        res.writeHead(200,{'Content-Type': 'application/json'})
         const accessToken = jwt.sign({ id:id },process.env.ACCESS_TOKEN_SECRET ,{ expiresIn: '5m' });
         res.write(JSON.stringify({accessToken:accessToken,refreshToken:token}))
         return res.end()

@@ -1,6 +1,8 @@
 import { readFileSync, writeFileSync, existsSync } from 'fs';
+import { readJSONFile, writeJSONFile } from '../services/file.service.js';
 
-const FILE_PATH =  './src/data/animals.json' 
+const FILE_PATH =  './src/data/animals.json'
+const AVAILABLE_DEVICES_FILE_PATH = './src/data/availableDevices.json'
 
 //En esta clase se abarcan todos los metodos en respuesta a las solicitudes que pueden llegar del cliente en relación a los animales
 
@@ -15,7 +17,7 @@ export const getJson = () => {
     } 
 } 
 
-export const getAnimales = () => {
+export const getAnimales = () => { //Metodo que recupera todos los animales
         const result = getJson()
         const response = {
             data: result
@@ -24,42 +26,43 @@ export const getAnimales = () => {
 
 }
 
-export const getAnimal = (idAnimal,res) => { 
+export const getAnimal = (idAnimal,res) => { //Metodo que recupera un animal
     const result = getJson()
     const buscado = result.findIndex((item) => {
         return item.id === idAnimal
     })
     if (buscado < 0){
-        res.writeHead(404, {'message':'El animal buscado no existe o no se encuentra registrado en el sistema'});
+        res.writeHead(404, 'El animal buscado no existe o no se encuentra registrado en el sistema');
         return res.end()
         
     }else{
         let animalBuscado = JSON.stringify(result[buscado])
-        res.writeHead(200,{'Content-Type': 'application/json', 'message': 'Animal localizado'})
+        res.writeHead(200,{'Content-Type': 'application/json'})
         res.write(animalBuscado)
         return res.end()
         
     }
 }
 
-export const postAnimal = (parsedBody) => {
+export const postAnimal = (parsedBody) => { //Metodo que agrega un animal
     const result = getJson();
+    const availableDevices = readJSONFile(AVAILABLE_DEVICES_FILE_PATH);
 
     const exists = result.findIndex((animal) => animal.id === parsedBody.id);
     if (exists > -1) {
         return false
         
     }
+    if (availableDevices.devices.includes(parsedBody.id)) {
+        availableDevices.devices.splice(availableDevices.devices.indexOf(parsedBody.id), 1);
+        writeJSONFile(AVAILABLE_DEVICES_FILE_PATH, availableDevices);
+    }
     result.push(parsedBody);
     writeFileSync(FILE_PATH, JSON.stringify(result),'utf-8')
     return true
 }
 
-export const deleteAnimales = () => {
-    writeFileSync(FILE_PATH,JSON.stringify([]),'utf-8')
-}
-
-export const deleteAnimal = (idAnimal, res) => {
+export const deleteAnimal = (idAnimal, res) => { //Metodo que elimina un animal
     const result = getJson()
     const buscado = result.findIndex((item) => item.id === idAnimal);
 
@@ -73,7 +76,7 @@ export const deleteAnimal = (idAnimal, res) => {
     
 }
 
-export const patchAnimal = (newAnimal) => {
+export const patchAnimal = (newAnimal) => { //Metodo que modifica un animal
     const result = getJson();
     const buscado = result.findIndex((item) => {
         return item.id === newAnimal.id

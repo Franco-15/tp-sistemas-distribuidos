@@ -12,11 +12,11 @@ let id
 router.get('/', (req, res) => {
     try {
         animals = animalsMethods.getAnimales();
-        res.writeHead(200,{'Content-Type': 'application/json', 'message': 'Se encontro el listado de animales'})
+        res.writeHead(200,{'Content-Type': 'application/json'})
         res.write(animals)
         return res.end()
     } catch (error) {
-        res.writeHead(500,{'message':'Error del servidor al intentar recuperar informacion sobre animales'})  
+        res.writeHead(500, 'Error del servidor al intentar recuperar informacion sobre animales')  
         return res.end()
     }
 });
@@ -32,32 +32,20 @@ router.post('/', (req, res) => {
     const { id, name, description } = req.body;
 
     if (!id || !name || !description) {
-        res.writeHead(400,{ message: 'No se pudo agregar al animal debido a la falta de datos' });
+        res.writeHead(400, 'No se pudo agregar al animal debido a la falta de datos' );
         return res.end()
     }
 
     try {
         if(animalsMethods.postAnimal(req.body)){
-            res.writeHead(200,{'Content-Type': 'application/json', 'message': 'El animal fue agregado exitosamente'})
+            res.writeHead(200,'El animal fue agregado exitosamente')
         }else{
-            res.writeHead(400, {'message':'El animal con este ID ya existe'});
+            res.writeHead(400, 'El animal con este ID ya existe');
         }
         return res.end()
         
     } catch (error) {
-        res.writeHead(500, {'message':'Error del servidor al intentar agregar al animal'})
-        return res.end()
-    }
-});
-
-// DELETE /api/animals - Eliminar todos los animales
-router.delete('/', (req, res) => {
-    try {
-        animalsMethods.deleteAnimales();
-        res.writeHead(200, {'message':'Todos los animales han sido eliminados'})
-        return res.end()
-    } catch (error) {
-        res.writeHead(500, {'message':'Error del servidor al intentar eliminar los animales'})
+        res.writeHead(500, 'Error del servidor al intentar agregar al animal')
         return res.end()
     }
 });
@@ -67,13 +55,13 @@ router.delete('/:id', (req, res) => {
     try {
         id = req.url.split("/")
         if(animalsMethods.deleteAnimal(id[1])){
-            res.writeHead(200,{'message': 'El animal fue eliminado exitosamente'})
+            res.writeHead(200, 'El animal fue eliminado exitosamente')
         }else{
-            res.writeHead(404, {'message':'El animal buscado no existe o no se encuentra registrado en el sistema'});
+            res.writeHead(404, 'El animal buscado no existe o no se encuentra registrado en el sistema');
         }
         return res.end()
     } catch (error) {
-        res.writeHead(500, {'message':'Error del servidor al intentar eliminar al animal'})
+        res.writeHead(500,'Error del servidor al intentar eliminar al animal')
         return res.end()
     }
 });
@@ -84,7 +72,7 @@ router.patch('/:id', (req, res) => {
     const { name, description } = req.body;
 
     if (!name || !description) {
-        res.writeHead(400,{ message: 'Información incompleta para modificar el animal'});
+        res.writeHead(400, 'Información incompleta para modificar el animal');
         return res.end()
     }
 
@@ -95,13 +83,13 @@ router.patch('/:id', (req, res) => {
             description: description
         }
         if(animalsMethods.patchAnimal(newAnimal)){
-            res.writeHead(200, {'message':'Se modificó correctamente al animal'});
+            res.writeHead(200, 'Se modificó correctamente al animal');
         }else{
-            res.writeHead(404, {'message':'El animal buscado no existe o no se encuentra registrado en el sistema'});
+            res.writeHead(404, 'El animal buscado no existe o no se encuentra registrado en el sistema');
         }
         return res.end()
     } catch (error) {
-        res.writeHead(500, {'message':'Error del servidor al intentar modificar al animal'})
+        res.writeHead(500, 'Error del servidor al intentar modificar al animal')
         return res.end()
     }
 });

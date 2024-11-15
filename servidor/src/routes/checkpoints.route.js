@@ -11,11 +11,11 @@ let id;
 router.get('/', (req, res) => {
     try {
         checkpoints = checkpointMethods.getPuntosControl();
-        res.writeHead(200, { 'Content-Type': 'application/json', 'message': 'Se encontró el listado de los checkpoints' });
+        res.writeHead(200, { 'Content-Type': 'application/json'});
         res.write(checkpoints);
         return res.end();
     } catch (error) {
-        res.writeHead(500, { 'message': 'Error al obtener el listado de checkpoints' });
+        res.writeHead(500, 'Error al obtener el listado de checkpoints');
         return res.end();
     }
 });
@@ -31,31 +31,19 @@ router.post('/', (req, res) => {
     const { id, lat, long, description } = req.body;
 
     if (!id || !lat || !long || !description) {
-        res.writeHead(400, { 'message': 'No se pudo agregar el checkpoint debido a la falta de datos' });
+        res.writeHead(400, 'No se pudo agregar el checkpoint debido a la falta de datos' );
         return res.end();
     }
 
     try {
         if (checkpointMethods.postPuntoControl(req.body)) {
-            res.writeHead(200, { 'message': 'Checkpoint agregado exitosamente' });
+            res.writeHead(200, 'Checkpoint agregado exitosamente' );
         } else {
-            res.writeHead(400, { 'message': 'El checkpoint con este ID ya existe' });
+            res.writeHead(400, 'El checkpoint con este ID ya existe');
         }
         return res.end();
     } catch (error) {
-        res.writeHead(500, { 'message': 'Error del servidor, no se pudo agregar el checkpoint' });
-        return res.end();
-    }
-});
-
-// DELETE /api/checkpoints - Eliminar todos los checkpoints
-router.delete('/', (req, res) => {
-    try {
-        checkpointMethods.deletePuntosControl();
-        res.writeHead(200, { 'message': 'Se eliminaron todos los puntos de control' });
-        return res.end();
-    } catch (error) {
-        res.writeHead(500, { 'message': 'Error al eliminar los puntos de control' });
+        res.writeHead(500, 'Error del servidor, no se pudo agregar el checkpoint');
         return res.end();
     }
 });
@@ -65,13 +53,13 @@ router.delete('/:id', (req, res) => {
     try {
         id = req.url.split("/")
         if (checkpointMethods.deletePuntoControl(id[1])) {
-            res.writeHead(200, { 'message': 'Checkpoint eliminado exitosamente' });
+            res.writeHead(200, 'Checkpoint eliminado exitosamente');
         } else {
-            res.writeHead(404, { 'message': 'El checkpoint buscado no existe o no se encuentra registrado en el sistema' });
+            res.writeHead(404, 'El checkpoint buscado no existe o no se encuentra registrado en el sistema');
         }
         return res.end();
     } catch (error) {
-        res.writeHead(500, { 'message': 'Error al eliminar el checkpoint' });
+        res.writeHead(500, 'Error al eliminar el checkpoint');
         return res.end();
     }
 });
@@ -82,20 +70,20 @@ router.patch('/:id', (req, res) => {
     const { lat, long, description } = req.body;
 
     if (!lat || !long || !description) {
-        res.writeHead(400, { 'message': 'No se pudo modificar el checkpoint debido a la falta de datos' });
+        res.writeHead(400, 'No se pudo modificar el checkpoint debido a la falta de datos');
         return res.end();
     }
 
     try {
         const newCheckpoint = { id: id[1], lat: lat, long: long, description: description };
         if (checkpointMethods.patchPuntosControl(newCheckpoint)) {
-            res.writeHead(200, { 'message': 'Checkpoint modificado exitosamente' });
+            res.writeHead(200, 'Checkpoint modificado exitosamente');
         } else {
-            res.writeHead(404, { 'message': 'El checkpoint buscado no existe o no se encuentra registrado en el sistema' });
+            res.writeHead(404, 'El checkpoint buscado no existe o no se encuentra registrado en el sistema');
         }
         return res.end();
     } catch (error) {
-        res.writeHead(500, { 'message': 'Error al modificar el checkpoint' });
+        res.writeHead(500, 'Error al modificar el checkpoint');
         return res.end();
     }
 });

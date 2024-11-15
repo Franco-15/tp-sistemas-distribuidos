@@ -18,7 +18,7 @@ export function postCredentials(username, password) {
         }
     })
     .then((response) => {
-        console.log(response.status, response.data);
+        // console.log(response.status, response.data);
         localStorage.setItem("accessToken",response.data.accessToken)
         localStorage.setItem("refreshToken",response.data.refreshToken)
         return response.status;

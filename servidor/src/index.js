@@ -25,14 +25,14 @@ const app = express();
 // Configuramos CORS globalmente para todas las rutas
 app.use(cors({
     origin: 'http://localhost:3001', // Cambia al origen correcto
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
     allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
 app.use(express.json()); // Middleware para analizar JSON
 
 // Definición de rutas
-app.use(rutaPositions,authenticateToken, eventsRoute);
+app.use(rutaPositions, eventsRoute);
 app.use(rutaAnimal,authenticateToken, animalsRoute);
 app.use(rutaCheckpoint,authenticateToken, checkpointsRoute);
 app.use(rutaLogin, loginRoute);
@@ -42,7 +42,7 @@ app.use(rutaRefresh, refreshRoute);
 
 // Manejo de rutas no encontradas
 app.use((req, res) => {
-    res.writeHead(404,{'message':'Ruta no encontrada' })  
+    res.writeHead(404, 'Ruta no encontrada')  
     return res.end()
 });
 

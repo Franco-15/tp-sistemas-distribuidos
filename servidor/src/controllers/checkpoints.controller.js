@@ -15,7 +15,7 @@ export const getJson = () => {
     }
 }
 
-export const getPuntosControl = () => {
+export const getPuntosControl = () => { //Metodo que recupera todos los checkpoints
     const result = getJson()
     const response = {
         data: result
@@ -23,25 +23,25 @@ export const getPuntosControl = () => {
     return JSON.stringify(response)
 }
 
-export const getPuntoControl = (idPtoControl, res) => {
+export const getPuntoControl = (idPtoControl, res) => { //Metodo que recupera un checkpoint
     const result = getJson()
     const buscado = result.findIndex((item) => {
         return item.id === idPtoControl
     })
     if (buscado < 0) {
-        res.writeHead(404, { 'message': 'El checkpoint buscado no existe o no se encuentra registrado en el sistema' });
+        res.writeHead(404, 'El checkpoint buscado no existe o no se encuentra registrado en el sistema');
         return res.end()
 
     } else {
         const checkpoint = JSON.stringify(result[buscado])
-        res.writeHead(200, { 'Content-Type': 'application/json', 'message': 'Se encontro el checkpoint' })
+        res.writeHead(200, { 'Content-Type': 'application/json'})
         res.write(checkpoint)
         return res.end()
 
     }
 }
 
-export const postPuntoControl = (parsedBody) => {
+export const postPuntoControl = (parsedBody) => { //Metodo que agrega un checkpoint
     const result = getJson();
 
     const exists = result.findIndex((ptoControl) => ptoControl.id === parsedBody.id);
@@ -54,13 +54,8 @@ export const postPuntoControl = (parsedBody) => {
     return true
 }
 
-export const deletePuntosControl = () => {
-    const result = getJson()
 
-    writeFileSync(FILE_PATH, JSON.stringify({}), 'utf-8')
-}
-
-export const deletePuntoControl = (idPtoControl, res) => {
+export const deletePuntoControl = (idPtoControl, res) => { //Metodo que elimina un checkpoint
     const result = getJson()
     const buscado = result.findIndex((item) => item.id === idPtoControl);
     if (buscado < 0) {
@@ -74,7 +69,7 @@ export const deletePuntoControl = (idPtoControl, res) => {
 
 }
 
-export const patchPuntosControl = (newCheckpoint, res) => {
+export const patchPuntosControl = (newCheckpoint, res) => { //Metodo que modifica un checkpoint
     const result = getJson();
     const buscado = result.findIndex((item) => {
         return item.id === newCheckpoint.id
