@@ -229,7 +229,6 @@ export function loadCheckpointPage() {
 
     //manejo de los datos al apretar submit del formulario agregar (pegaria a la API)
     ChkPtAddForm.addEventListener('submit', (event) => {
-        // event.preventDefault(); // evita que se recarge la pagina
         const id = ChkPtAddId.value;
         const lat = ChkPtAddlat.value;
         const long = ChkPtAddlong.value;
@@ -241,7 +240,6 @@ export function loadCheckpointPage() {
 
     //manejo de los datos al apretar submit del formulario editar (pegaria a la API)
     ChkPtEditForm.addEventListener('submit', (event) => {
-        // event.preventDefault(); // evita que se recarge la pagina
         const id = ChkPtSelectEdit.value;
         const lat = ChkPtEditlat.value;
         const long = ChkPtEditlong.value;
@@ -253,7 +251,6 @@ export function loadCheckpointPage() {
 
     //manejo de los datos al apretar submit del formulario delete (pegaria a la API)
     ChkPtDeleteForm.addEventListener('submit', (event) => {
-        // event.preventDefault(); // evita que se recarge la pagina
         const id = ChkPtSelectDelete.value;
         DeleteChkPt(id);
         popupDeleteForm.style.display = 'none';

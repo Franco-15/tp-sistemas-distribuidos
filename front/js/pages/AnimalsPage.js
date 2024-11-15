@@ -223,7 +223,6 @@ export function loadAnimalPage() {
 
     //manejo de los datos al apretar submit del formulario agregar (pegaria a la API)
     animalAddForm.addEventListener('submit', (event) => {
-        event.preventDefault(); // evita que se recarge la pagina
         const id = animalSelectAdd.value;
         const name = animalAddName.value;
         const description = animalAddDescription.value;
@@ -234,7 +233,6 @@ export function loadAnimalPage() {
 
     //manejo de los datos al apretar submit del formulario editar (pegaria a la API)
     animalEditForm.addEventListener('submit', (event) => {
-        event.preventDefault(); // evita que se recarge la pagina
         const id = animalSelectEdit.value;
         const name = animalEditName.value;
         const description = animalEditDescription.value;
@@ -245,7 +243,6 @@ export function loadAnimalPage() {
 
     //manejo de los datos al apretar submit del formulario delete (pegaria a la API)
     animalDeleteForm.addEventListener('submit', (event) => {
-        event.preventDefault(); // evita que se recarge la pagina
         const id = animalSelectDelete.value;
         DeleteAnimal(id);
         popupDeleteForm.style.display = 'none';

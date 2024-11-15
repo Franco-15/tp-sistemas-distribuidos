@@ -45,7 +45,6 @@ export function PostAnimal(id, name, description) {
         name: name,
         description: description
     }
-    console.log(data);
     axios.post(`http://localhost:${port}/api/animals`, JSON.stringify(data), {
         headers: {
             'Content-Type': 'application/json',
