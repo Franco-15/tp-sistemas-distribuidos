@@ -15,7 +15,7 @@ export const getJson = () => {
     } 
 } 
 
-export const getAnimales = () => {
+export const getAnimales = () => { //Metodo que recupera todos los animales
         const result = getJson()
         const response = {
             data: result
@@ -24,7 +24,7 @@ export const getAnimales = () => {
 
 }
 
-export const getAnimal = (idAnimal,res) => { 
+export const getAnimal = (idAnimal,res) => { //Metodo que recupera un animal
     const result = getJson()
     const buscado = result.findIndex((item) => {
         return item.id === idAnimal
@@ -42,7 +42,7 @@ export const getAnimal = (idAnimal,res) => {
     }
 }
 
-export const postAnimal = (parsedBody) => {
+export const postAnimal = (parsedBody) => { //Metodo que agrega un animal
     const result = getJson();
 
     const exists = result.findIndex((animal) => animal.id === parsedBody.id);
@@ -55,11 +55,7 @@ export const postAnimal = (parsedBody) => {
     return true
 }
 
-export const deleteAnimales = () => {
-    writeFileSync(FILE_PATH,JSON.stringify([]),'utf-8')
-}
-
-export const deleteAnimal = (idAnimal, res) => {
+export const deleteAnimal = (idAnimal, res) => { //Metodo que elimina un animal
     const result = getJson()
     const buscado = result.findIndex((item) => item.id === idAnimal);
 
@@ -73,7 +69,7 @@ export const deleteAnimal = (idAnimal, res) => {
     
 }
 
-export const patchAnimal = (newAnimal) => {
+export const patchAnimal = (newAnimal) => { //Metodo que modifica un animal
     const result = getJson();
     const buscado = result.findIndex((item) => {
         return item.id === newAnimal.id

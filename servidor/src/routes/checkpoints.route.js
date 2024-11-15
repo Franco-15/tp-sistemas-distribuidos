@@ -48,18 +48,6 @@ router.post('/', (req, res) => {
     }
 });
 
-// DELETE /api/checkpoints - Eliminar todos los checkpoints
-router.delete('/', (req, res) => {
-    try {
-        checkpointMethods.deletePuntosControl();
-        res.writeHead(200, 'Se eliminaron todos los puntos de control');
-        return res.end();
-    } catch (error) {
-        res.writeHead(500, 'Error al eliminar los puntos de control');
-        return res.end();
-    }
-});
-
 // DELETE /api/checkpoints/:id - Eliminar un checkpoint especifico
 router.delete('/:id', (req, res) => {
     try {

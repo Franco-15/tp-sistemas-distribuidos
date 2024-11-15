@@ -50,18 +50,6 @@ router.post('/', (req, res) => {
     }
 });
 
-// DELETE /api/animals - Eliminar todos los animales
-router.delete('/', (req, res) => {
-    try {
-        animalsMethods.deleteAnimales();
-        res.writeHead(200, 'Todos los animales han sido eliminados')
-        return res.end()
-    } catch (error) {
-        res.writeHead(500, 'Error del servidor al intentar eliminar los animales')
-        return res.end()
-    }
-});
-
 // DELETE /api/animals/:id - Eliminar un animal especifico
 router.delete('/:id', (req, res) => {
     try {
