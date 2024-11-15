@@ -1,15 +1,15 @@
 # Trabajo Practico Sistemas Distribuidos
 
 ## Integrantes
-- Barriga Nahuel.
+- Barriga, Nahuel.
 
-- Deserti Manuel.
+- Deserti, Manuel.
 
-- Firmani Gregorio.
+- Firmani, Gregorio.
 
-- Gonzalez Franco.
+- Gonzalez, Franco.
 
-- Hernandez Julieta.
+- Hernandez, Julieta.
 
 
 # Sistema de Monitoreo y Control de Ganado
