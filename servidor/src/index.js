@@ -25,7 +25,7 @@ const app = express();
 // Configuramos CORS globalmente para todas las rutas
 app.use(cors({
     origin: 'http://localhost:3001', // Cambia al origen correcto
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
     allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
