@@ -1,5 +1,3 @@
-var map;
-
 export function startEventSource() {
   const eventSource = new EventSource('http://localhost:3000/api/animals/position');
 
@@ -39,43 +37,61 @@ function renderLocationPage(data) {
   });
 }
 
+var map;
+var initial = true;
+var animalIcon;
+
+function mapToRender(posChkPt){
+    const posMap = calculaPos(posChkPt);
+
+    // Inicializamos el nuevo mapa
+    map = L.map('map').setView(posMap, 16);
+    animalIcon = L.icon({
+      iconUrl: 'css/items/cow-icon.png',
+      iconSize: [38, 38], // size of the icon
+      iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
+      popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+    });
+  
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+  
+    }).addTo(map);
+}
+
+let markers = []; // Array global para almacenar los marcadores
+
 export function renderMapPage(data) {
-  if (map) {
-    map.remove();
-  }
+  // Eliminar todos los marcadores previos
+  markers.forEach(marker => map.removeLayer(marker));
+  markers = []; // Vaciar el array de marcadores
 
   const locAll = data;
   const posChkPt = locAll.map(item => [item.lat, item.long, item.description]);
   const posAnimales = locAll.map(item => [item.lat, item.long, item.animals]);
 
-  const posMap = calculaPos(posChkPt);
-
-  // Inicializamos el nuevo mapa
-  map = L.map('map').setView(posMap, 16);
-  var animalIcon = L.icon({
-    iconUrl: 'css/items/cow-icon.png',
-    iconSize: [38, 38], // size of the icon
-    iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
-    popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
-  });
-
-  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-
-  }).addTo(map);
+  if (initial) {
+    mapToRender(posChkPt);
+    initial = false;
+  }
 
   posChkPt.forEach(([lat, long, description]) => {
     var marker = L.marker([lat, long]).addTo(map);
     marker.bindPopup(description).openPopup();
-  })
+    markers.push(marker); // Agregar el marcador al array
+  });
 
-  posAnimales.forEach(([lat, long, animal]) => animal.forEach((a) => {
-    const posAnimal = [lat + rnd(), long + rnd()];
-    var marker = L.marker(posAnimal, { icon: animalIcon }).addTo(map);
-    marker.bindPopup(a.name).openPopup();
-  }));
+  posAnimales.forEach(([lat, long, animal]) =>
+    animal.forEach((a) => {
+      const posAnimal = [lat + rnd(), long + rnd()];
+      var marker = L.marker(posAnimal, { icon: animalIcon }).addTo(map);
+      marker.bindPopup(a.name).openPopup();
+      markers.push(marker); // Agregar el marcador al array
+    })
+  );
 }
+
 
 function calculaPos(posChkPt) {
   let sumaLat = 0;

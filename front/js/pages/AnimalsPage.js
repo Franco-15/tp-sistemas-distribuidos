@@ -71,7 +71,7 @@ export function loadAnimalPage() {
                     <input type="text" id="animalEditName" name="nombre" required><br><br>
                     <label for="animalEditDescription">Descripcion:</label>
                     <input type="text" id="animalEditDescription" name="description" required><br><br>
-                    <button type="submit" id = "submitEdit">Guardar</button>
+                    <button type="submit" id = "submitEdit" disabled>Guardar</button>
                     <button type="button" id="closeEditButton">Cerrar</button>
                 </form>
             </div>
@@ -92,7 +92,7 @@ export function loadAnimalPage() {
                     <input type="text" id="animalDeleteName" name="nombre" required readonly><br><br>
                     <label for="animalDeleteDescription">Descripcion:</label>
                     <input type="text" id="animalDeleteDescription" name="description" required readonly><br><br>
-                    <button type="submit" id = "submitDelete">Guardar</button>
+                    <button type="submit" id = "submitDelete" disabled>Eliminar</button>
                     <button type="button" id="closeDeleteButton">Cerrar</button>
                 </form>
             </div>
@@ -142,17 +142,19 @@ export function loadAnimalPage() {
             if (selectedAnimalId) {
                 const selectedAnimal = animalArray.find(animal => animal.id.toString() === selectedAnimalId);
                 if (selectedAnimal) {
-                    console.log(selectedAnimal)
                     animalEditName.value = selectedAnimal.name;
                     animalEditDescription.value = selectedAnimal.description;
-                    
+                    document.getElementById('submitEdit').disabled = false;
                 }
                 else {
-                    console.log('no encontre')
+                    animalEditName.value = "";
+                    animalEditDescription.value = "";
+                    document.getElementById('submitEdit').disabled = true;
                 }
             } else {
-                animalName.value = '';
-                animalDescription.value = '';
+                animalEditName.value = "";
+                animalEditDescription.value = "";
+                document.getElementById('submitEdit').disabled = true;
             }
         });
 
@@ -162,16 +164,19 @@ export function loadAnimalPage() {
             if (selectedAnimalId) {
                 const selectedAnimal = animalArray.find(animal => animal.id.toString() === selectedAnimalId);
                 if (selectedAnimal) {
-                    console.log(selectedAnimal)
                     animalDeleteName.value = selectedAnimal.name;
                     animalDeleteDescription.value = selectedAnimal.description;
+                    document.getElementById('submitDelete').disabled = false;
                 }
                 else {
-                    console.log('no encontre')
+                    animalDeleteName.value = "";
+                    animalDeleteDescription.value = "";
+                    document.getElementById('submitDelete').disabled = true;
                 }
             } else {
-                animalName.value = '';
-                animalDescription.value = '';
+                animalDeleteName.value = "";
+                animalDeleteDescription.value = "";
+                document.getElementById('submitDelete').disabled = true;
             }
         });
 
@@ -179,29 +184,47 @@ export function loadAnimalPage() {
         closeButton.addEventListener('click', () => {
             popupAddForm.style.display = 'none';
             popupOverlay.style.display = 'none';
+            animalSelectAdd.value = '';
+            animalAddName.value = ''; 
+            animalAddDescription.value = '';
         });
 
         closeEditButton.addEventListener('click', () => {
             popupEditForm.style.display = 'none';
             popupOverlay.style.display = 'none';
+            animalSelectEdit.value = '';
+            animalEditName.value = ''; 
+            animalEditDescription.value = '';
         });
         
         closeDeleteButton.addEventListener('click', () => {
             popupDeleteForm.style.display = 'none';
             popupOverlay.style.display = 'none';
+            animalSelectDelete.value = '';
+            animalDeleteName.value = ''; 
+            animalDeleteDescription.value = '';
         });
+
 
         popupOverlay.addEventListener('click', () => {
             popupAddForm.style.display = 'none';
             popupEditForm.style.display = 'none';
             popupDeleteForm.style.display = 'none';
             popupOverlay.style.display = 'none';
+            animalSelectDelete.value = '';
+            animalSelectEdit.value = '';
+            animalAddName.value = ''; 
+            animalAddDescription.value = '';
+            animalEditName.value = ''; 
+            animalEditDescription.value = '';
+            animalDeleteName.value = ''; 
+            animalDeleteDescription.value = '';
         });
 
     //manejo de los datos al apretar submit del formulario agregar (pegaria a la API)
     animalAddForm.addEventListener('submit', (event) => {
         event.preventDefault(); // evita que se recarge la pagina
-        const id = animalAddId.value;
+        const id = animalSelectAdd.value;
         const name = animalAddName.value;
         const description = animalAddDescription.value;
         PostAnimal(id, name, description);
@@ -224,8 +247,6 @@ export function loadAnimalPage() {
     animalDeleteForm.addEventListener('submit', (event) => {
         event.preventDefault(); // evita que se recarge la pagina
         const id = animalSelectDelete.value;
-        const name = animalDeleteName.value;
-        const description = animalDeleteDescription.value;
         DeleteAnimal(id);
         popupDeleteForm.style.display = 'none';
         popupOverlay.style.display = 'none';
@@ -271,4 +292,3 @@ function fillAnimalSelectOptions() {
         console.error("Error al obtener los nuevos animales:", error);
     });
 }
-
