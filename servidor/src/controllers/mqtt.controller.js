@@ -27,8 +27,10 @@ import {
     getCheckpointData,
     deleteCheckpointData,
     saveNewPositions,
-    updatePositions
-} from '../services/mqtt.services.js';
+    updatePositions,
+    getPacketToSend,
+    updateAvailableDevices
+} from '../services/mqtt.service.js';
 import { sendSSE } from '../routes/events.route.js';
 
 dotenv.config(); // carga variables de entorno
@@ -55,8 +57,7 @@ export const receiveFromCheckPoint = () => {
     });
 
     mqttClient.on('error', (err) => {
-        //console.error('Error en el cliente MQTT:', err.message);  
-        //! agregarlo
+        console.error('Error en el cliente MQTT:', err.message);
     });
 
 
@@ -68,23 +69,22 @@ export const receiveFromCheckPoint = () => {
                 if (checkMessageFormat(data)) {
                     addReceivedPacket(data, receivedPackets);
                     if (data.totalPackages == data.packageNum) {
+                        updateAvailableDevices(receivedPackets);
                         const checkpointReceived = getCheckpointData(receivedPackets, data.checkpointID);
                         deleteCheckpointData(receivedPackets, data.checkpointID);
                         let filteredData = filterDataByRSSI(checkpointReceived);
                         const validData = validateData(filteredData);
+                        const packetToSend = getPacketToSend(validData);
                         updatePositions(positions);
-                        saveNewPositions(validData, positions);
-                        console.log("positions");
-                        console.log(positions);
+                        saveNewPositions(packetToSend, positions);
                         sendSSE(JSON.stringify(positions));
+                        console.log('Mensaje recibido y procesado:', positions);
                     }
                 } else
                     console.error('Mensaje en formato incorrecto:', data);
             }
         } catch (err) {
-            // Si ocurre un error al parsear el JSON, muestra el mensaje original y el error
-            console.error(`Error al parsear el mensaje en ${topic}:`, message.toString());
-            console.error('Detalle del error:', err);
+            console.error(`Error al parsear el mensaje en ${topic}:`, err);
         }
     });
 };

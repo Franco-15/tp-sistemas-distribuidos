@@ -1,14 +1,14 @@
-const port = 3000
 
+
+const port = 3000;
 
 export function postCredentials(username, password) {
+    const port = 3000;
     // axios.post('')
     const credentials = {
         username: username,
         password: password
     };
-
-    
 
     return axios.post(`http://localhost:${port}/api/login`, '',{
         headers: {
@@ -16,12 +16,10 @@ export function postCredentials(username, password) {
         }
     })
     .then((response) => {
-        
         console.log(response.status, response.data);
         return response.status;
 
     }).catch(error => {
         console.error(error);
     });
-
 }

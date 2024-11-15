@@ -6,15 +6,14 @@ import { loadCheckpointPage } from './pages/CheckpointPage.js';
 import { loadLocacionPage } from './pages/LocacionPage.js';
 import { startEventSource } from './api/apiLocationHelper.js';
 
+
 function router() {
     const app = document.getElementById('app');
     const hash = window.location.hash;
-    
     startEventSource();
 
     // Si no hay hash, redirige directamente a login
     if (!hash || hash === '#/') {
-        console.log("funca"); //!borrar
         window.location.hash = '#/login'; // Cambia el hash a /login
         return loadLoginView();           // Carga la vista de login
     }
@@ -22,19 +21,18 @@ function router() {
     // Controla las vistas según el hash actual
     switch (hash) {
         case '#/login':
+            document.getElementById("nav_bar").style.display = "none";
             loadLoginView();
             break;
         case '#/animals':
-            console.log("animales") //!borrar
+            document.getElementById("nav_bar").style.display = "block";
             loadAnimalPage(); 
             break;
         case '#/puntos-de-control': 
-            console.log("ptos de control") //!borrar 
-            loadCheckpointPage();
+            loadCheckpointPage(); 
             break;
         case '#/locacion': 
-            console.log('locacion');
-            loadLocacionPage();
+            loadLocacionPage(hash);
             break;
         default:
             app.innerHTML = `<h2>Proximamente...</h2>`;

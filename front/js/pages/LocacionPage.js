@@ -1,8 +1,6 @@
-//todo: ver si no pasa a ser 'HomePage.js'
 export function  loadLocacionPage() {
     const app = document.getElementById('app');
 
-    //todo ver como centrar los input del popup
     app.innerHTML = `
             <div class="animal-container">
             <h2 class="animal-title">Locaciones</h2>
@@ -12,7 +10,7 @@ export function  loadLocacionPage() {
                         <th>Checkpoint ID</th>
                         <th>Lat</th>
                         <th>Long</th>
-                        <th>Descripción</th>
+                        <th>Descripcion</th>
                         <th>Animales</th>
                     </tr>
                 </thead>
@@ -21,5 +19,4 @@ export function  loadLocacionPage() {
             </table>
         </div>
     `;
-    
 }

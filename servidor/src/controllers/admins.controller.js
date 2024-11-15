@@ -26,12 +26,12 @@ export const validUser = (req,res) =>{
         const password = decodedArray[1]; 
 
         if (!authHeader) {
-            res.writeHead(400, { 'message': 'No se pudo verificar al usuario debido a la ausencia del header de autorizacion' });
+            res.writeHead(400, 'No se pudo verificar al usuario debido a la ausencia del header de autorizacion');
             return res.end();
         }
         
         if (!username || !password) {
-            res.writeHead(400, {'message':'No se pudo verificar al usuario debido a la ausencia de datos'})
+            res.writeHead(400, 'No se pudo verificar al usuario debido a la ausencia de datos')
             return res.end()
         }else{
             const admin = getJson()
@@ -41,25 +41,25 @@ export const validUser = (req,res) =>{
                     .then(isMatch => {
                         if (isMatch) {
                             const id = admin[0]["id"]
-                            res.writeHead(200,{'message':'Usuario logueado'})
+                            res.writeHead(200,'Usuario logueado')
                             return res.end()
                         } else {
-                            res.writeHead(401,{'message':'Password invalido'}) 
+                            res.writeHead(401,'Password invalido') 
                             return res.end()
                         }
                     })
                     .catch(error => {
-                        res.writeHead(500,{'message':'Error al comparar la contraseña'}) 
+                        res.writeHead(500,'Error al comparar la contraseña') 
                         return res.end()
                     });
             }else{
-                res.writeHead(401,{'message':'Password invalido'}) 
+                res.writeHead(401,'Password invalido') 
                 return res.end() 
             }
         }
         
     }catch (e){
-        res.writeHead(500, {'message':'Error del servidor al intentar verificar la identidad del usuario'})
+        res.writeHead(500, 'Error del servidor al intentar verificar la identidad del usuario')
         return res.end()
     }
 }

@@ -1,39 +1,50 @@
 
 
-const port = 3000
+const port = 3000;
 // obtener el array de animales desde el back
 export function getAnimals() {
 
-    return axios.get(`http://localhost:${port}/api/animals`)
+    return axios.get(`http://localhost:${port}/api/animals`,{
+        headers: {
+        }
+    })
     .then(response => {
-
         const data = response.data.data; //obj .Json
-
         const animals = data.map(animal => ({
             id: animal.id,
             name: animal.name,
             description: animal.description
         }));
-
         return animals;
     })
     .catch(error => {
         console.error("Error en la solicitud:", error);
         return [];
     });
-
 }
 
-//!funcion que solicite los animales no reigstrados
+export function getNewAnimals() {
+    return axios.get(`http://localhost:${port}/api/availableDevices`,{
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+    .then(response => {
+        const data = response.data.devices; //obj .Json
+        return data;
+    })
+    .catch(error => {
+        console.error("Error en la solicitud:", error);
+        return [];
+    });
+}
 
 export function PostAnimal(id, name, description) {
-    // axios.post('')
     const data = {
         id: id,
         name: name,
         description: description
     }
-
     axios.post(`http://localhost:${port}/api/animals`, JSON.stringify(data), {
         headers: {
             'Content-Type': 'application/json',
@@ -42,13 +53,12 @@ export function PostAnimal(id, name, description) {
     .then((response) => {
         console.log(response.status, response.data);
     }).catch(error => {
-        console.error(error);
+        console.error("Error en la solicitud:", error);
+        return [];
     });
-
 }
 
 export function PatchAnimal(id, name, description) {
-    
     const data = {
         name: name,
         description: description
@@ -62,12 +72,12 @@ export function PatchAnimal(id, name, description) {
     .then((response) => {
         console.log(response.status, response.data);
     }).catch(error => {
-        console.error(error);
+        console.error("Error en la solicitud:", error);
+        return [];
     });   
 }
+
 export function DeleteAnimal(id) {
-
-
     axios.delete(`http://localhost:${port}/api/animals/`+id, {
         headers: {
             'Content-Type': 'application/json',
@@ -76,7 +86,8 @@ export function DeleteAnimal(id) {
     .then((response) => {
         console.log(response.status, response.data);
     }).catch(error => {
-        console.error(error);
+        console.error("Error en la solicitud:", error);
+        return [];
     });
 
 }

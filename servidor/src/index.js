@@ -27,7 +27,7 @@ app.options('*', cors()); // Permite todas las solicitudes de preflight OPTIONS
 
 app.use(cors({
     origin: 'http://localhost:3000', // Cambia al origen correcto
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Metodos permitidos
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS','PATCH'], // Metodos permitidos
     allowedHeaders: ['Content-Type', 'Authorization'], // Encabezados permitidos
     //credentials: true
 }));
@@ -57,7 +57,7 @@ const server = http.createServer((req, res) => {
     }else if(req.url.startsWith(rutaDevices)){ // Ruta de los dispositivos no identificados 
         devicesRoute(req,res)
     }else { //Ruta invalida
-        res.writeHead(404, {'message':'Ruta no encontrada'})
+        res.writeHead(404, 'Ruta no encontrada')
         return res.end() 
     }  
 })
