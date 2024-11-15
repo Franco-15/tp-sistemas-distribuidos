@@ -69,7 +69,6 @@ export const receiveFromCheckPoint = () => {
                 if (checkMessageFormat(data)) {
                     addReceivedPacket(data, receivedPackets);
                     if (data.totalPackages == data.packageNum) {
-                        receivedPackets.forEach(packet => console.log('Paquete recibido:', packet));
                         updateAvailableDevices(receivedPackets);
                         const checkpointReceived = getCheckpointData(receivedPackets, data.checkpointID);
                         deleteCheckpointData(receivedPackets, data.checkpointID);
