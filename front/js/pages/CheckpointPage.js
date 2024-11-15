@@ -73,7 +73,7 @@ export function loadCheckpointPage() {
                     <input type="text" id="ChkPtEditlong" name="Long" required><br><br>
                     <label for="ChkPtEditDescription">Descripcion:</label>
                     <input type="text" id="ChkPtEditDescription" name="description" required><br><br>
-                    <button type="submit" id = "submitEdit">Guardar</button>
+                    <button type="submit" id = "submitEdit" disabled>Guardar</button>
                     <button type="button" id="closeEditButton">Cerrar</button>
                 </form>
             </div>
@@ -96,7 +96,7 @@ export function loadCheckpointPage() {
                     <input type="text" id="ChkPtDeletelong" name="Long" required readonly><br><br>
                     <label for="ChkPtDeleteDescription">Descripcion:</label>
                     <input type="text" id="ChkPtDeleteDescription" name="description" required readonly><br><br>
-                    <button type="submit" id = "submitDelete">Guardar</button>
+                    <button type="submit" id = "submitDelete" disabled>Eliminar</button>
                     <button type="button" id="closeDeleteButton">Cerrar</button>
                 </form>
             </div>
@@ -146,13 +146,16 @@ export function loadCheckpointPage() {
                     ChkPtEditlat.value = selectedChkPt.lat;
                     ChkPtEditlong.value = selectedChkPt.long;
                     ChkPtEditDescription.value = selectedChkPt.description;
+                    document.getElementById('submitEdit').disabled = false;
                 }
                 else {
                     console.log('no encontre')
                 }
             } else {
-                ChkPtName.value = '';
-                ChkPtDescription.value = '';
+                ChkPtEditlat.value = "";
+                ChkPtEditlong.value = "";
+                ChkPtEditDescription.value = "";
+                document.getElementById('submitEdit').disabled = true;
             }
         });
 
@@ -165,10 +168,13 @@ export function loadCheckpointPage() {
                     ChkPtDeletelat.value = selectedChkPt.lat;
                     ChkPtDeletelong.value = selectedChkPt.long;
                     ChkPtDeleteDescription.value = selectedChkPt.description;
+                    document.getElementById('submitDelete').disabled = false;
                 }
             } else {
-                ChkPtName.value = '';
-                ChkPtDescription.value = '';
+                ChkPtDeletelat.value = '';
+                ChkPtDeletelong.value = '';
+                ChkPtDeleteDescription.value = '';
+                document.getElementById('submitDelete').disabled = true;
             }
         });
 
@@ -223,7 +229,7 @@ export function loadCheckpointPage() {
 
     //manejo de los datos al apretar submit del formulario agregar (pegaria a la API)
     ChkPtAddForm.addEventListener('submit', (event) => {
-        event.preventDefault(); // evita que se recarge la pagina
+        // event.preventDefault(); // evita que se recarge la pagina
         const id = ChkPtAddId.value;
         const lat = ChkPtAddlat.value;
         const long = ChkPtAddlong.value;
@@ -235,7 +241,7 @@ export function loadCheckpointPage() {
 
     //manejo de los datos al apretar submit del formulario editar (pegaria a la API)
     ChkPtEditForm.addEventListener('submit', (event) => {
-        event.preventDefault(); // evita que se recarge la pagina
+        // event.preventDefault(); // evita que se recarge la pagina
         const id = ChkPtSelectEdit.value;
         const lat = ChkPtEditlat.value;
         const long = ChkPtEditlong.value;
@@ -247,11 +253,8 @@ export function loadCheckpointPage() {
 
     //manejo de los datos al apretar submit del formulario delete (pegaria a la API)
     ChkPtDeleteForm.addEventListener('submit', (event) => {
-        event.preventDefault(); // evita que se recarge la pagina
+        // event.preventDefault(); // evita que se recarge la pagina
         const id = ChkPtSelectDelete.value;
-        const lat = ChkPtDeletelat.value;
-        const long = ChkPtDeletelong.value;
-        const description = ChkPtDeleteDescription.value;
         DeleteChkPt(id);
         popupDeleteForm.style.display = 'none';
         popupOverlay.style.display = 'none';

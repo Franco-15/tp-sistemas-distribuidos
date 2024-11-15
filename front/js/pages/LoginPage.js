@@ -29,6 +29,8 @@ export function loadLoginView() {
         postCredentials(username, password).then(response  => {
             if (response == 200) {
                 window.location.hash = '#/animals';
+                username.value = "";
+                password.value = "";
             } else {
                 const userField = document.getElementById("userField");
                 const passField = document.getElementById("PassField");

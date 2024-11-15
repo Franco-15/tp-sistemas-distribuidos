@@ -71,7 +71,7 @@ export function loadAnimalPage() {
                     <input type="text" id="animalEditName" name="nombre" required><br><br>
                     <label for="animalEditDescription">Descripcion:</label>
                     <input type="text" id="animalEditDescription" name="description" required><br><br>
-                    <button type="submit" id = "submitEdit">Guardar</button>
+                    <button type="submit" id = "submitEdit" disabled>Guardar</button>
                     <button type="button" id="closeEditButton">Cerrar</button>
                 </form>
             </div>
@@ -92,7 +92,7 @@ export function loadAnimalPage() {
                     <input type="text" id="animalDeleteName" name="nombre" required readonly><br><br>
                     <label for="animalDeleteDescription">Descripcion:</label>
                     <input type="text" id="animalDeleteDescription" name="description" required readonly><br><br>
-                    <button type="submit" id = "submitDelete">Guardar</button>
+                    <button type="submit" id = "submitDelete" disabled>Eliminar</button>
                     <button type="button" id="closeDeleteButton">Cerrar</button>
                 </form>
             </div>
@@ -144,13 +144,17 @@ export function loadAnimalPage() {
                 if (selectedAnimal) {
                     animalEditName.value = selectedAnimal.name;
                     animalEditDescription.value = selectedAnimal.description;
+                    document.getElementById('submitEdit').disabled = false;
                 }
                 else {
-                    console.log('no encontre')
+                    animalEditName.value = "";
+                    animalEditDescription.value = "";
+                    document.getElementById('submitEdit').disabled = true;
                 }
             } else {
-                animalName.value = '';
-                animalDescription.value = '';
+                animalEditName.value = "";
+                animalEditDescription.value = "";
+                document.getElementById('submitEdit').disabled = true;
             }
         });
 
@@ -162,13 +166,17 @@ export function loadAnimalPage() {
                 if (selectedAnimal) {
                     animalDeleteName.value = selectedAnimal.name;
                     animalDeleteDescription.value = selectedAnimal.description;
+                    document.getElementById('submitDelete').disabled = false;
                 }
                 else {
-                    console.log('no encontre')
+                    animalDeleteName.value = "";
+                    animalDeleteDescription.value = "";
+                    document.getElementById('submitDelete').disabled = true;
                 }
             } else {
-                animalName.value = '';
-                animalDescription.value = '';
+                animalDeleteName.value = "";
+                animalDeleteDescription.value = "";
+                document.getElementById('submitDelete').disabled = true;
             }
         });
 
