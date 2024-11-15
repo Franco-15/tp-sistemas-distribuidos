@@ -4,12 +4,13 @@
 
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { readJSONFile } from './files.service.js';
+import { readJSONFile, writeJSONFile } from './files.service.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const animalsFilePath = path.join(__dirname, '../data/animals.json');
 const checkpointsFilePath = path.join(__dirname, '../data/checkpoints.json');
+const availableDevicesFilePath = path.join(__dirname, '../data/availableDevices.json');
 
 //Chequear el formato del mensaje MQTT
 export const checkMessageFormat = (data) => {
@@ -26,6 +27,29 @@ export const checkMessageFormat = (data) => {
     return false;
 };
 
+export const updateAvailableDevices = (receivedPackets) => {
+    try {
+        const animalsData = readJSONFile(animalsFilePath);
+        const availableDevices = readJSONFile(availableDevicesFilePath);
+        const newDevices = [];
+
+        receivedPackets.forEach(packet => {
+            packet.animals.forEach(animal => {
+                if (!availableDevices.devices.includes(animal.id) && !animalsData.some(storedAnimal => storedAnimal.id === animal.id)) {
+                    newDevices.push(animal.id);
+                }
+            });
+        });
+
+        if (newDevices.length > 0) {
+            availableDevices.devices = [...availableDevices.devices, ...newDevices];
+            writeJSONFile(availableDevicesFilePath, availableDevices);
+        }
+    } catch (error) {
+        console.log('Error al actualizar los dispositivos disponibles', error.message);
+    }
+};
+
 export const filterDataByRSSI = (data) => {
     try {
         const filteredAnimals = data.animals.filter(animal => animal.rssi >= -80); // Cambiar por -40 
@@ -38,22 +62,31 @@ export const filterDataByRSSI = (data) => {
 };
 
 export const validateData = (data) => {
-    const animalsData = readJSONFile(animalsFilePath);
-    const validData = [];
-    data.animals.forEach(animal => {
-        if (animalsData.some((storedAnimal) => storedAnimal.id === animal.id)) {
-            validData.push(animal);
-        }
-    });
-    return { ...data, animals: validData };
+    try {
+        const animalsData = readJSONFile(animalsFilePath);
+        const validData = [];
+        data.animals.forEach(animal => {
+            if (animalsData.some((storedAnimal) => storedAnimal.id === animal.id)) {
+                validData.push(animal);
+            }
+        });
+        return { ...data, animals: validData };
+
+    } catch (error) {
+        throw new Error('Error al validar los datos:', error);
+    }
 };
 
 export const getInitialPositions = () => {
-    const checkpointsData = readJSONFile(checkpointsFilePath);
-    return checkpointsData.map(checkpoint => ({
-        ...checkpoint,
-        animals: []
-    }));
+    try {
+        const checkpointsData = readJSONFile(checkpointsFilePath);
+        return checkpointsData.map(checkpoint => ({
+            ...checkpoint,
+            animals: []
+        }));
+    } catch (error) {
+        throw new Error('Error al obtener las posiciones iniciales:', error);
+    }
 };
 
 export const addReceivedPacket = (packet, receivedPackets) => {
@@ -96,7 +129,7 @@ export const saveNewPositions = (validData, positions) => {
             }
         });
     } catch (error) {
-        console.error('Error al actualizar las posiciones:', error);
+        throw new Error('Error al actualizar las posiciones:', error);
     }
 };
 
@@ -132,19 +165,23 @@ export const updatePositions = (positions) => {
             }
         });
     } catch (error) {
-        console.error('Error al actualizar las posiciones:', error);
+        throw new Error('Error al actualizar las posiciones:', error);
     }
 };
 
 export const getPacketToSend = (data) => {
-    const checkpointsData = readJSONFile(checkpointsFilePath);
-    const animalsData = readJSONFile(animalsFilePath);
-    const checkpoint = checkpointsData.find(checkpoint => checkpoint.id === data.checkpointID);
-    const animals = data.animals.map(animal => animalsData.find(storedAnimal => storedAnimal.id === animal.id));
-    const packet = {
-        ...checkpoint,
-        animals: animals
-    };
-    
-    return packet;
+    try {
+        const checkpointsData = readJSONFile(checkpointsFilePath);
+        const animalsData = readJSONFile(animalsFilePath);
+        const checkpoint = checkpointsData.find(checkpoint => checkpoint.id === data.checkpointID);
+        const animals = data.animals.map(animal => animalsData.find(storedAnimal => storedAnimal.id === animal.id));
+        const packet = {
+            ...checkpoint,
+            animals: animals
+        };
+
+        return packet;
+    } catch (error) {
+        throw new Error('Error al obtener el paquete a enviar:', error);
+    }
 };

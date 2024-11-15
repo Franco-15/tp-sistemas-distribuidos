@@ -27,7 +27,7 @@ app.options('*', cors()); // Permite todas las solicitudes de preflight OPTIONS
 
 app.use(cors({
     origin: 'http://localhost:3000', // Cambia al origen correcto
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Metodos permitidos
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS','PATCH'], // Metodos permitidos
     allowedHeaders: ['Content-Type', 'Authorization'], // Encabezados permitidos
     //credentials: true
 }));

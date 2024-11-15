@@ -1,6 +1,8 @@
 import { readFileSync, writeFileSync, existsSync } from 'fs';
+import { readJSONFile, writeJSONFile } from '../services/files.service.js';
 
-const FILE_PATH =  './src/data/animals.json' 
+const FILE_PATH =  './src/data/animals.json'
+const AVAILABLE_DEVICES_FILE_PATH = './src/data/availableDevices.json'
 
 //En esta clase se abarcan todos los metodos en respuesta a las solicitudes que pueden llegar del cliente en relación a los animales
 
@@ -30,12 +32,11 @@ export const getAnimal = (idAnimal,res) => { //Metodo que recupera un animal
         return item.id === idAnimal
     })
     if (buscado < 0){
-        res.writeHead(404,'El animal buscado no existe o no se encuentra registrado en el sistema');
+        res.writeHead(404, 'El animal buscado no existe o no se encuentra registrado en el sistema');
         return res.end()
         
     }else{
         let animalBuscado = JSON.stringify(result[buscado])
-        console.log(animalBuscado)
         res.writeHead(200,{'Content-Type': 'application/json'})
         res.write(animalBuscado)
         return res.end()
@@ -45,11 +46,16 @@ export const getAnimal = (idAnimal,res) => { //Metodo que recupera un animal
 
 export const postAnimal = (parsedBody) => { //Metodo que agrega un animal
     const result = getJson();
+    const availableDevices = readJSONFile(AVAILABLE_DEVICES_FILE_PATH);
 
     const exists = result.findIndex((animal) => animal.id === parsedBody.id);
     if (exists > -1) {
         return false
         
+    }
+    if (availableDevices.devices.includes(parsedBody.id)) {
+        availableDevices.devices.splice(availableDevices.devices.indexOf(parsedBody.id), 1);
+        writeJSONFile(AVAILABLE_DEVICES_FILE_PATH, availableDevices);
     }
     result.push(parsedBody);
     writeFileSync(FILE_PATH, JSON.stringify(result),'utf-8')
