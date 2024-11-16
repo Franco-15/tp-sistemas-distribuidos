@@ -127,7 +127,7 @@ Clonar el repositorio:
 
 2. Configurar el archivo `puntoControl.ino` con las credenciales de la red WiFi y el broker MQTT.
 
-    ![alt text](image.png)
+    ![image](image.png)
 
 3. Seleccione la placa Wemos D1 R1 y el puerto correspondiente, como se muestra en la imagen.
    
