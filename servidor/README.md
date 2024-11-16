@@ -26,10 +26,10 @@ La finalidad de este sistema es simular un monitoreo de ganado. Cada animal llev
 - **Node.js**: API HTTP y lógica de negocio sin frameworks externos (en la version que no contempla los requisitos de promocion de la materia).
 - **Vanilla JavaScript (SPA)**: Interfaz gráfica compatible con navegadores modernos. Utilizada en la mayoria del proyecto.
 - **Persistencia en JSON**: Los datos de los animales, checkpoints, administradores se almacenan en archivos planos en formato JSON.
-- **Entorno de programacion Arduino:** para manipulacion de la placa Wemos. Puede descargarse desde https://www.arduino.cc/en/software 
+- **Entorno de programacion Arduino:** para manipulacion de la placa Wemos. Puede descargarse desde [Arduino](https://www.arduino.cc/en/software)
 
 Backend:
-- **Brcypt**: para hashear, almacenar y comparar contraseñas de los usuarios administradores del sistema.
+- **Bcrypt**: para hashear, almacenar y comparar contraseñas de los usuarios administradores del sistema.
 - **MQTT**: Comunicación entre checkpoints (Wemos/Arduino) y una Raspberry Pi que actúa como Gateway.
 
 Frontend:
@@ -38,10 +38,10 @@ Frontend:
 - **CSS**
 
 
-Version de promocion
+Version de promocion:
 - **Express**: framework utilizado, el frontend está adaptado tambien a la utilizacion de Express.
 - **jsonwebtoken** para gestionar los JWT.
-- Se ha implementado un mapa para mostrar los animales, fue implementado con https://leafletjs.com/
+- Se ha implementado un mapa para mostrar los animales, fue implementado con [Leafletjs](https://leafletjs.com/)
  
 
 
@@ -62,31 +62,56 @@ Clonar el repositorio:
    cd tp-sistemas-distribuidos
 ```
 
-## Instrucciones de ejecución:
+## Instrucciones de ejecución
+
+### Backend
 0. Ubicarse en el directorio de la API.
-    `cd servidor`  
+    ```bash  
+    cd servidor
+    ``` 
 1. Instalar dependencias en el package.json
-    `npm install`       
-2. **Backend**: ejecutar desde el directorio del package servidor
-    `npm run dev`
-3. Ubicarse en el directorio del frontend
-    `cd front`
-4. **Frontend:** ejecutar `node app.js`
-   
-5. Abrir un navegador web y acceder a http://localhost:3001 para ver el frontend en acción.
-6. Desde el entorno de programacion Arduino procure seleccionar la placa correcta y ejecutar el codigo.
-   
-   ![image](https://github.com/user-attachments/assets/7ca6c836-beb9-4fdd-a0d3-fc40b03b683c)
-  
+    ```bash  
+    npm install
+    ```
+2. Configurar el archivo .env con las variables de entorno necesarias. Ver archivo `.env.example` para más información.
+    
+    ```bash  
+    MQTT_BROKER_URL =
+    MQTT_TOPIC =
+    ACCESS_TOKEN_SECRET = 
+    REFRESH_TOKEN_SECRET = 
+    ```
+
+3. Ejecutar servidor
+    ```bash  
+    npm run start
+    ```   
+
+### Frontend
+1. Ubicarse en el directorio del frontend 
+   ```bash
+   cd front
+    ```
+2. Instalar dependencias en el package.json
+    ```javascript  
+    npm install
+    ```  
+3. Ejecutar servidor
+    ```javascript  
+    node app.js
+    ```
+
+4. Abrir un navegador web y acceder a http://localhost:3001 para ver el frontend en acción.
 
 
-## **Consideraciones**:
+#### ***Consideraciones***:
 
-**Usuario administrador default**
+##### Credenciales de Login:
 
-Para realizar el login desde el frontend el usuario y contraseña default es "admin" en ambos casos.
+    username: admin
+    password: admin
 
-### Códigos de Error
+#### Códigos de Error
 | Código | Descripción                                 |
 |--------|---------------------------------------------|
 | 400    | Solicitud incompleta o incorrecta           |
@@ -95,7 +120,39 @@ Para realizar el login desde el frontend el usuario y contraseña default es "ad
 | 404    | Ruta o recurso no encontrado                |
 | 500    | Error interno en el servidor                |
 
- ## **Contribuciones**
+
+### Arduino
+
+1. Ingresar en la carpeta `puntoControl` y abrir el archivo `puntoControl.ino` con el IDE de Arduino.
+
+2. Configurar el archivo `puntoControl.ino` con las credenciales de la red WiFi y el broker MQTT.
+
+    ![alt text](image.png)
+
+3. Seleccione la placa Wemos D1 R1 y el puerto correspondiente, como se muestra en la imagen.
+   
+   ![image](https://github.com/user-attachments/assets/7ca6c836-beb9-4fdd-a0d3-fc40b03b683c)
+
+4. Compile y suba el código a la placa Wemos.
+
+### Broker MQTT
+
+1. Crear el archivo de configuracion `mosquitto/config/mosquitto.conf` con el siguiente contenido:
+
+    ```text
+    allow_anonymous true
+    listener 1883
+    ```
+
+2. Ejecutar en consola el siguiente comando para crear y ejecutar el contenedor de Mosquitto:
+
+    ```bash
+    docker run -d --name mosquitto-broker -p 1883:1883 -v <ruta-absoluta-mosquitto.conf>:/mosquitto/config/mosquitto.conf eclipse-mosquitto
+    ```
+
+
+
+## **Contribuciones**
 Para las implementaciones del manejo de tokens, interfaz web y manejo de tópicos MQTT nos basamos en el repositorio de Martin Ignacio Casas, ayudante de la materia.
 [https://github.com/casasmartinignacio](https://github.com/casasmartinignacio?tab=repositories) 
 
