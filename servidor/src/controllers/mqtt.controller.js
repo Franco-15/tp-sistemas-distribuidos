@@ -43,7 +43,9 @@ export const receiveFromCheckPoint = () => {
     const mqttOptions = { reconnectPeriod: 1000 };
     const mqttBroker = process?.env?.MQTT_BROKER_URL || 'mqtt://localhost:1883';
     const mqttTopic = process?.env?.MQTT_TOPIC || 'test/checkpoint';
-    const mqttClient = mqtt.connect(mqttBroker, mqttOptions); // Conectar al broker
+    const mqttName = process?.env?.MQTT_NAME || 'mqttReceiver';
+    const mqttPassword = process?.env?.MQTT_PASSWORD || 'mqttReceiver';
+    const mqttClient = mqtt.connect(mqttBroker, { clientId: mqttName, username: mqttName, password: mqttPassword, ...mqttOptions });
 
     mqttClient.on('connect', () => {
         console.log(`Conectado al broker MQTT en ${mqttBroker}`);
