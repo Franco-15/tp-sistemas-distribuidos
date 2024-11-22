@@ -3,7 +3,7 @@ import {refresh} from './apiLoginHelper.js'
 const port = 3000;
 
 export function getChkPt() { 
-    return axios.get(`http://localhost:${port}/api/checkpoints`,{
+    return axios.get(`http://localhost:${port}/API/checkpoints`,{
         headers: {
             authorization: `Bearer ${localStorage.getItem("accessToken")}`
         }
@@ -36,7 +36,7 @@ export function PostChkPt(id, lat, long, description) {
         description: description,
     }
 
-    axios.post(`http://localhost:${port}/api/checkpoints`, JSON.stringify(data), {
+    axios.post(`http://localhost:${port}/API/checkpoints`, JSON.stringify(data), {
         headers: {
             'Content-Type': 'application/json',
             authorization: `Bearer ${localStorage.getItem("accessToken")}`
@@ -61,7 +61,7 @@ export function PatchChkPt(id, lat, long, description) {
         description: description,
     }
 
-    axios.patch(`http://localhost:${port}/api/checkpoints/`+id, JSON.stringify(data), {
+    axios.patch(`http://localhost:${port}/API/checkpoints/`+id, JSON.stringify(data), {
         headers: {
             'Content-Type': 'application/json',
             authorization: `Bearer ${localStorage.getItem("accessToken")}`
@@ -81,7 +81,7 @@ export function PatchChkPt(id, lat, long, description) {
 }
 
 export function DeleteChkPt(id) { 
-    axios.delete(`http://localhost:${port}/api/checkpoints/`+id, {
+    axios.delete(`http://localhost:${port}/API/checkpoints/`+id, {
         headers: {
             'Content-Type': 'application/json',
             authorization: `Bearer ${localStorage.getItem("accessToken")}`

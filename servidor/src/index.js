@@ -10,12 +10,12 @@ import refreshRoute from './routes/refresh.route.js';
 import {authenticateToken} from './middlewares/authenticateToken.js';
 
 const HTTP_PORT = 3000;  //Puerto desde el que se comunica el back
-const rutaAnimal = "/api/animals"
-const rutaCheckpoint = "/api/checkpoints"
-const rutaLogin = "/api/login"
-const rutaRefresh = "/api/refresh"
-const rutaDevices = "/api/availableDevices"
-const rutaPositions = "/api/animals/position"
+const rutaAnimal = "/API/animals"
+const rutaCheckpoint = "/API/checkpoints"
+const rutaLogin = "/API/login"
+const rutaRefresh = "/API/refresh"
+const rutaDevices = "/API/availableDevices"
+const rutaPositions = "/API/animals/position"
 
 
 receiveFromCheckPoint();

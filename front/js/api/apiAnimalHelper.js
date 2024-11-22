@@ -5,7 +5,7 @@ const port = 3000;
 // obtener el array de animales desde el back
 export function getAnimals() {
 
-    return axios.get(`http://localhost:${port}/api/animals`,{
+    return axios.get(`http://localhost:${port}/API/animals`,{
         headers: {
             authorization: `Bearer ${localStorage.getItem("accessToken")}`
         }
@@ -31,7 +31,7 @@ export function getAnimals() {
 }
 
 export function getNewAnimals() {
-    return axios.get(`http://localhost:${port}/api/availableDevices`,{
+    return axios.get(`http://localhost:${port}/API/availableDevices`,{
         headers: {
             authorization: `Bearer ${localStorage.getItem("accessToken")}`
         }
@@ -57,7 +57,7 @@ export function PostAnimal(id, name, description) {
         description: description
     }
 
-    axios.post(`http://localhost:${port}/api/animals`, JSON.stringify(data), {
+    axios.post(`http://localhost:${port}/API/animals`, JSON.stringify(data), {
         headers: {
             'Content-Type': 'application/json',
              authorization: `Bearer ${localStorage.getItem("accessToken")}`
@@ -81,7 +81,7 @@ export function PatchAnimal(id, name, description) {
         description: description
     }
 
-    axios.patch(`http://localhost:${port}/api/animals/`+id, JSON.stringify(data), {
+    axios.patch(`http://localhost:${port}/API/animals/`+id, JSON.stringify(data), {
         headers: {
             'Content-Type': 'application/json',
             authorization: `Bearer ${localStorage.getItem("accessToken")}`
@@ -99,7 +99,7 @@ export function PatchAnimal(id, name, description) {
     });   
 }
 export function DeleteAnimal(id) {
-    axios.delete(`http://localhost:${port}/api/animals/`+id, {
+    axios.delete(`http://localhost:${port}/API/animals/`+id, {
         headers: {
             'Content-Type': 'application/json',
             authorization: `Bearer ${localStorage.getItem("accessToken")}`

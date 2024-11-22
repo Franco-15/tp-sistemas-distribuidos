@@ -1,5 +1,5 @@
 export function startEventSource() {
-  const eventSource = new EventSource('http://localhost:3000/api/animals/position');
+  const eventSource = new EventSource('http://localhost:3000/API/animals/position');
 
   eventSource.onmessage = function (event) {
     const checkpointPositionData = JSON.parse(JSON.parse(event.data));

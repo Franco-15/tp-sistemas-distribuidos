@@ -12,7 +12,7 @@ export function postCredentials(username, password) {
 
     
 
-    return axios.post(`http://localhost:${port}/api/login`, '',{
+    return axios.post(`http://localhost:${port}/API/login`, '',{
         headers: {
             authorization: `Basic ${btoa(username + ":" + password)}`
         }
@@ -30,7 +30,7 @@ export function postCredentials(username, password) {
 }
 
 export function refresh(){
-    return axios.post(`http://localhost:${port}/api/refresh`, '',{
+    return axios.post(`http://localhost:${port}/API/refresh`, '',{
          headers: {
              authorization: `Bearer ${localStorage.getItem("refreshToken")}`
          }
