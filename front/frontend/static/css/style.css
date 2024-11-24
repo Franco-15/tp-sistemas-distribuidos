@@ -1,0 +1,84 @@
+@import url("404_style.css");
+@import url("animals_checkpoints_style.css");
+@import url("home_style.css");
+@import url("login_style.css");
+
+html,
+body {
+    font-family: sans-serif;
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#root {
+    display: flex;
+    flex-direction: column; 
+    height: 100%;
+}
+
+.layout-content {
+    display: flex; 
+    flex-direction: column;
+    height: 100%; 
+}
+
+.page-container {
+    margin-top: 60px; 
+    flex-grow: 1; 
+    display: flex; /* flexbox para centrar */
+    align-items: center; 
+    justify-content: center; 
+    padding: 1em;
+}
+
+#main-page {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* sidebar principal */
+.sidebar-principal {
+    position: fixed; /* Fijo en la parte superior */
+    top: 0;
+    left: 0;
+    width: 100%; 
+    background-color: #d5d6a8; 
+    padding: 1em; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+    z-index: 1000; 
+    display: flex; 
+    justify-content: space-around; 
+}
+
+.sidebar-principal button {
+    background: none; 
+    color: black; 
+    border: none; 
+    padding: 1rem; 
+    cursor: pointer;
+    margin: 10px 0; 
+    transition: background-color 0.3s; 
+}
+
+.sidebar-principal button:hover {
+    background-color: rgba(255,252,255,0.1); 
+}
+
+.sidebar-principal > a {
+    margin: 0.5rem;
+    display: inline-block;
+}
+.sidebar-link{
+    color: rgb(0, 0, 0); /* Color del texto */
+    text-decoration: none; /* Sin subrayado */
+}
+.sidebar-link:hover {
+    color: #00BFFF; /* Color celeste al pasar el mouse */
+  }
