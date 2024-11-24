@@ -7,15 +7,17 @@
 const char* ssid = "";
 const char* password = "";
 const char* mqtt_server = ""; //Direccion broker MQTT
+const char* mqtt_username = "";
+const char* mqtt_password = "";
 const char* topic = ""; //Topic MQTT
-const char* boardId = ""; //Generado con UUID
+const char* boardId = "cee1f9bf-6e42-4071-859a-82d71e231cc1"; //Generado con UUID
 
 WiFiClient espClient;
 PubSubClient client(espClient);
 NimBLEScan* pBLEScan;
 
 //Tamanio max de dispositivos por paquete
-int maxDevicesPerPacket = 1;
+int maxDevicesPerPacket = 3;
 
 //Funcion para conectar a la red WiFi
 void wifiConnect() {
@@ -35,7 +37,7 @@ void mqttConnect() {
   int connectionAttempts = 0;
   Serial.print("\nConnecting to MQTT server");
   while (!client.connected() && connectionAttempts < 10) {
-    if (!client.connect(boardId)) {
+    if (!client.connect(boardId, mqtt_username, mqtt_password)) {
       Serial.print(".");
       connectionAttempts += 1;
       delay(100);
@@ -104,7 +106,7 @@ void publishDataInBatches(JsonArray animals) {
 
   for (int packageNum = 0; packageNum < totalPackages; packageNum++) {
     DynamicJsonDocument packageDoc(512);
-    packageDoc["checkpointID"] = boardId;
+    packageDoc["checkpointID"] = WiFi.macAddress();
     packageDoc["packageNum"] = packageNum + 1;
     packageDoc["totalPackages"] = totalPackages;
 
