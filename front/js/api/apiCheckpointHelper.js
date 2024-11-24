@@ -31,8 +31,8 @@ export function getChkPt() {
 export function PostChkPt(id, lat, long, description) { 
     const data = {
         id: id,
-        lat: lat,
-        long: long,
+        lat: parseFloat(lat),
+        long: parseFloat(long),
         description: description,
     }
 
@@ -56,8 +56,8 @@ export function PostChkPt(id, lat, long, description) {
 
 export function PatchChkPt(id, lat, long, description) { 
     const data = {
-        lat: lat,
-        long: long,
+        lat: parseFloat(lat),
+        long: parseFloat(long),
         description: description,
     }
 
