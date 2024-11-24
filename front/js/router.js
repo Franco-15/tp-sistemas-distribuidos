@@ -18,7 +18,7 @@ function router() {
         window.location.hash = '#/login'; // Cambia el hash a /login
         return loadLoginView();           // Carga la vista de login
     }
-
+    const flag = 1; 
     // Controla las vistas segun el hash actual
     switch (hash) {
         case '#/login':
